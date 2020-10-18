@@ -1,0 +1,10 @@
+form {
+    border-radius : 3px;
+    border-color : black;
+}
+.body-container{
+    position: relative;
+    text-align: center;
+    margin: 0 auto ;
+    }
+    
