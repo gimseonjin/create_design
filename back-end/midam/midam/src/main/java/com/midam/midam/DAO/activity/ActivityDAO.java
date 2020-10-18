@@ -1,6 +1,6 @@
 package com.midam.midam.DAO.activity;
 
-import com.midam.midam.model.activity.
+import com.midam.midam.model.activity.MentorRecruitment;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

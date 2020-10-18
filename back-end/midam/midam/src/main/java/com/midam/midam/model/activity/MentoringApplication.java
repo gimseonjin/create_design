@@ -10,13 +10,7 @@ public class MentoringApplication {
     private String career;
     private String ability;
 
-    public String getMentorRecruitmentCode() {
-        return mentorRecruitmentCode;
-    }
 
-    public void setMentorRecruitmentCode(String mentorRecruitmentCode) {
-        this.mentorRecruitmentCode = mentorRecruitmentCode;
-    }
 
     public String getMentorId() {
         return mentorId;

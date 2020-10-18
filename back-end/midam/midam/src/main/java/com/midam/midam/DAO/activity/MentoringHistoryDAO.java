@@ -50,7 +50,7 @@ public class MentoringHistoryDAO {
     }
 
     public boolean create(ActivityHistory activityHistory) { // 등록
-        sql = "insert into midam.activity_history(activityHistoryCode, mentorRecruitmentCode," +
+        sql = "insert into midam.activity_history(activityHistoryCode, mentoringActivityCode," +
                 "linkAgencyManagerId, regionManagerId,mentorId,startTime)"
                 + " values(?, ?, ?, ?, ?, ?)";
         try {
@@ -58,7 +58,7 @@ public class MentoringHistoryDAO {
             conn= getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, activityHistory.getActivityHistoryCode());
-            pstmt.setString(2, activityHistory.getMentorRecruitmentCode());
+            pstmt.setString(2, activityHistory.getMentoringActivityCode());
             pstmt.setString(3, activityHistory.getLinkAgencyManagerId());
             pstmt.setString(4, activityHistory.getRegionManagerId());
             pstmt.setString(5, activityHistory.getMentorId());
@@ -114,7 +114,7 @@ public class MentoringHistoryDAO {
                 
                 activityHistory =new ActivityHistory();
                 activityHistory.setActivityHistoryCode(rs.getInt("activityHistoryCode"));
-                activityHistory.setMentorRecruitmentCode(rs.getString("mentorRecruitmentCode"));
+                activityHistory.setMentoringActivityCode(rs.getString("mentoringActivityCode"));
                 activityHistory.setLinkAgencyManagerId(rs.getString("linkAgencyManagerId"));
                 activityHistory.setRegionManagerId(rs.getString("regionManagerId"));
                 activityHistory.setMentorId(rs.getString("mentorId"));
@@ -153,7 +153,7 @@ public class MentoringHistoryDAO {
 
             while(rs.next()) {
                 ActivityHistory activityHistory =new ActivityHistory();
-                activityHistory.setMentorRecruitmentCode(rs.getInt("mentorRecruitmentCode"));
+                activityHistory.setActivityHistoryCode(rs.getInt("activityHistoryCode"));
                 activityHistory.setMentoringActivityCode(rs.getString("mentoringActivityCode"));
                 activityHistory.setLinkAgencyManagerId(rs.getString("linkAgencyManagerId"));
                 activityHistory.setRegionManagerId(rs.getString("regionManagerId"));

@@ -27,11 +27,11 @@ public class ActivityHistory {
         this.activityHistoryCode = activityHistoryCode;
     }
 
-    public String getMentorRecruitmentCode() {
+    public String getMentoringActivityCode() {
         return mentorRecruitmentCode;
     }
 
-    public void setMentorRecruitmentCode(String mentorRecruitmentCode) {
+    public void setMentoringActivityCode(String mentorRecruitmentCode) {
         this.mentorRecruitmentCode = mentorRecruitmentCode;
     }
 
