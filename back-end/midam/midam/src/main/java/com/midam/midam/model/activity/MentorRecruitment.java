@@ -3,7 +3,7 @@ package com.midam.midam.model.activity;
 import java.sql.Timestamp;
 
 public class MentorRecruitment {
-    private char mentoringActivityCode;
+    private String mentorRecruitmentCode;
     private String linkAgencyManagerId;
     private char linkAgencyCode;
     private String activityName;
@@ -13,12 +13,12 @@ public class MentorRecruitment {
     private int recruitmentStatus;
     private String activityInfo;
 
-    public char getMentoringActivityCode() {
-        return mentoringActivityCode;
+    public String getMentorRecruitmentCode() {
+        return mentorRecruitmentCode;
     }
 
-    public void setMentoringActivityCode(char mentoringActivityCode) {
-        this.mentoringActivityCode = mentoringActivityCode;
+    public void setMentorRecruitmentCode(String mentorRecruitmentCode) {
+        this.mentorRecruitmentCode = mentorRecruitmentCode;
     }
 
     public String getLinkAgencyManagerId() {
