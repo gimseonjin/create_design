@@ -1,16 +1,15 @@
 import React from 'react';
 import {BrowserRouter, Router, Route, Switch, Link} from 'react-router-dom';
 import {Button, ButtonGroup, ButtonToolbar} from 'reactstrap';
-import RegionManagerMenu1 from '../Pages/RegionManagerMenu1';
-import RegionManagerMenu2 from '../Pages/RegionManagerMenu2';
-import RegionManagerMenu3 from '../Pages/RegionManagerMenu3';
-import RegionManagerMenu4 from '../Pages/RegionManagerMenu4';
+import SystemManagerMenu1 from './SystemManagerMenu1';
+import SystemManagerMenu2 from './SystemManagerMenu2';
+import SystemManagerMenu3 from './SystemManagerMenu3';
+import SystemManagerMenu4 from './SystemManagerMenu4';
 
-
-function HeaderRegionManager({match, history}) {
+function HeaderSystemManager({match, history}) {
     return (
         <div>
-            hello, i'm HeaderRegionManager
+            hello, i'm HeaderSystemManager
             <br></br>
             <BrowserRouter>
                     <ButtonGroup>
@@ -23,13 +22,13 @@ function HeaderRegionManager({match, history}) {
                     </ButtonGroup>
                     <hr></hr>
                 <Switch>
-                    <Route exact path ={`${match.path}/menu1`} children={RegionManagerMenu1}></Route>
-                    <Route exact path ={`${match.path}/menu2`} children={RegionManagerMenu2}></Route>
-                    <Route exact path ={`${match.path}/menu3`} children={RegionManagerMenu3}></Route>
-                    <Route exact path ={`${match.path}/menu4`} children={RegionManagerMenu4}></Route>
+                    <Route exact path ={`${match.path}/menu1`} children={SystemManagerMenu1}></Route>
+                    <Route exact path ={`${match.path}/menu2`} children={SystemManagerMenu2}></Route>
+                    <Route exact path ={`${match.path}/menu3`} children={SystemManagerMenu3}></Route>
+                    <Route exact path ={`${match.path}/menu4`} children={SystemManagerMenu4}></Route>
                 </Switch>
             </BrowserRouter>
         </div>
     )
 }
-export default HeaderRegionManager;
+export default HeaderSystemManager;

@@ -1,16 +1,17 @@
 import React from 'react';
 import {BrowserRouter, Router, Route, Switch, Link} from 'react-router-dom';
 import {Button, ButtonGroup, ButtonToolbar} from 'reactstrap';
-import LinkAgencyMenu1 from '../Pages/LinkAgencyMenu1';
-import LinkAgencyMenu2 from '../Pages/LinkAgencyMenu2';
-import LinkAgencyMenu3 from '../Pages/LinkAgencyMenu3';
-import LinkAgencyMenu4 from '../Pages/LinkAgencyMenu4';
+import RegionManagerMenu1 from './RegionManagerMenu1';
+import RegionManagerMenu2 from './RegionManagerMenu2';
+import RegionManagerMenu3 from './RegionManagerMenu3';
+import RegionManagerMenu4 from './RegionManagerMenu4';
 
-function HeaderLinkAgencyManager({match, history}) {
+
+function HeaderRegionManager({match, history}) {
     return (
         <div>
-            hello, i'm HeaderLinkAgencyManager        
-            <br />
+            hello, i'm HeaderRegionManager
+            <br></br>
             <BrowserRouter>
                     <ButtonGroup>
                         <Link to={`${match.url}/menu1`}><Button>Menu 1</Button></Link>
@@ -22,13 +23,13 @@ function HeaderLinkAgencyManager({match, history}) {
                     </ButtonGroup>
                     <hr></hr>
                 <Switch>
-                    <Route exact path ={`${match.path}/menu1`} children={LinkAgencyMenu1}></Route>
-                    <Route exact path ={`${match.path}/menu2`} children={LinkAgencyMenu2}></Route>
-                    <Route exact path ={`${match.path}/menu3`} children={LinkAgencyMenu3}></Route>
-                    <Route exact path ={`${match.path}/menu4`} children={LinkAgencyMenu4}></Route>
+                    <Route exact path ={`${match.path}/menu1`} children={RegionManagerMenu1}></Route>
+                    <Route exact path ={`${match.path}/menu2`} children={RegionManagerMenu2}></Route>
+                    <Route exact path ={`${match.path}/menu3`} children={RegionManagerMenu3}></Route>
+                    <Route exact path ={`${match.path}/menu4`} children={RegionManagerMenu4}></Route>
                 </Switch>
-            </BrowserRouter>    
+            </BrowserRouter>
         </div>
     )
 }
-export default HeaderLinkAgencyManager;
+export default HeaderRegionManager;

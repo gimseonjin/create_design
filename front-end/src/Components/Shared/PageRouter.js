@@ -1,10 +1,10 @@
 import React from 'react';
 import {Router, Switch, Route, Link, useLocation} from 'react-router-dom';
-import HeaderMentor from './HeaderMentor';
-import HeaderRegionManager from './HeaderRegionManager';
-import Login from '../Pages/Login';
-import HeaderLinkAgencyManager from './HeaderLinkAgencyManager';
-import HeaderSystemManager from './HeaderSystemManager';
+import HeaderMentor from '../Mentor/HeaderMentor';
+import HeaderRegionManager from '../RegionManager/HeaderRegionManager';
+import Login from './Login';
+import HeaderLinkAgencyManager from '../LinkAgencyManager/HeaderLinkAgencyManager';
+import HeaderSystemManager from '../SystemManager/HeaderSystemManager';
 import PageNotFound from './PageNotFound';
 
 function PageRouter() {
