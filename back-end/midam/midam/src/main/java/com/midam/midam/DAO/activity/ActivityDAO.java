@@ -1,6 +1,6 @@
-package com.example.midam.DAO.actitvity;
+package com.midam.midam.DAO.activity;
 
-import com.example.midam.vo.activity.MentorRecruitment;
+import com.midam.midam.model.activity.
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -46,7 +46,7 @@ public class ActivityDAO {
         }
     }
 
-    public boolean creat(MentorRecruitment mentorRecruitment) { // 등록
+    public boolean create(MentorRecruitment mentorRecruitment) { // 등록
         sql = "insert into midam.user(id, password, name, gender,age,address, authority) values(?, ?, ?, ?, ?, ?, ?)";
         try {
 

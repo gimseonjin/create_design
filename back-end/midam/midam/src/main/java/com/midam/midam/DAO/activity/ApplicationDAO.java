@@ -1,4 +1,4 @@
-package com.example.midam.DAO.actitvity;
+package com.midam.midam.DAO.activity;
 
 public class ApplicationDAO {
 }

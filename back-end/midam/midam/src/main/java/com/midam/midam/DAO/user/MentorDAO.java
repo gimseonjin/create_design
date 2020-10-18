@@ -1,6 +1,6 @@
-package com.example.midam.DAO;
+package com.midam.midam.DAO;
 
-import com.example.midam.vo.user.Mentor;
+import com.midam.midam.model.user.Mentor;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

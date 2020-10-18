@@ -1,22 +1,16 @@
-package com.example.midam.vo.activity;
+package com.midam.midam.model.activity;
 
 import java.sql.Timestamp;
 
 public class MentoringApplication {
-    private char mentoringActivityCode;
+    private String mentorRecruitmentCode;
     private String mentorId;
     private java.sql.Timestamp applicationDate;
     private String applicationMotivation;
     private String career;
     private String ability;
 
-    public char getMentoringActivityCode() {
-        return mentoringActivityCode;
-    }
 
-    public void setMentoringActivityCode(char mentoringActivityCode) {
-        this.mentoringActivityCode = mentoringActivityCode;
-    }
 
     public String getMentorId() {
         return mentorId;

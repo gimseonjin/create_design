@@ -1,4 +1,4 @@
-package com.example.midam.vo.region;
+package com.midam.midam.model.region;
 
 public class Region {
 

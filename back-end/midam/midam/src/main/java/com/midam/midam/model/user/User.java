@@ -1,4 +1,4 @@
-package com.example.midam.vo;
+package com.midam.midam.model.user;
 
 import lombok.Data;
 

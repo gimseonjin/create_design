@@ -1,6 +1,6 @@
-package com.example.midam.DAO.actitvity;
+package com.midam.midam.DAO.activity;
 
-import com.example.midam.vo.activity.ActivityHistory;
+import com.midam.midam.model.activity.ActivityHistory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,11 +1,11 @@
-package com.example.midam.vo.activity;
+package com.midam.midam.model.activity;
 
 import java.sql.Timestamp;
 
 public class ActivityHistory {
 
     private int activityHistoryCode;
-    private String mentoringActivityCode;
+    private String mentorRecruitmentCode;
     private String linkAgencyManagerId;
     private String regionManagerId;
     private String mentorId;

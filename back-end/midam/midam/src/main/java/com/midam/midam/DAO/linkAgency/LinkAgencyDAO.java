@@ -1,4 +1,4 @@
-package com.example.midam.DAO.linkAgency;
+package com.midam.midam.DAO.linkAgency;
 
 public class LinkAgencyDAO {
 }

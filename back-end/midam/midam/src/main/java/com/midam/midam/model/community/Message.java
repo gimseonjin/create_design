@@ -1,4 +1,4 @@
-package com.example.midam.vo.community;
+package com.midam.midam.model.community;
 
 import java.sql.Timestamp;
 

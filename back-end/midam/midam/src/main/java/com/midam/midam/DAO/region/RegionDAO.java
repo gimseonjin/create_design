@@ -1,4 +1,4 @@
-package com.example.midam.DAO.region;
+package com.midam.midam.DAO.region;
 
 public class RegionDAO {
 }

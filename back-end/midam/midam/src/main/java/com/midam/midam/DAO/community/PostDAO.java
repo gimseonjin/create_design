@@ -1,4 +1,4 @@
-package com.example.midam.DAO.community;
+package com.midam.midam.DAO.community;
 
 public class PostDAO {
 }
