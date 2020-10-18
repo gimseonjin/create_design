@@ -1,9 +1,14 @@
+<<<<<<< Updated upstream
 package com.midam.midam.model.user;
+=======
+package com.midam.midam.model.user.;
+>>>>>>> Stashed changes
 
 public class Mentor extends User{
     String regionCode;
     String volunteerId;
 
+<<<<<<< Updated upstream
     public Mentor(String id, String password, String name, String gender, int age, String address, String phoneNumber, int authority, String regionCode, String volunteerId) {
         super(id, password, name, gender, age, address, phoneNumber, authority);
         this.regionCode = regionCode;
@@ -25,4 +30,7 @@ public class Mentor extends User{
     public void setVolunteerId(String volunteerId) {
         this.volunteerId = volunteerId;
     }
+=======
+    
+>>>>>>> Stashed changes
 }

@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 package com.midam.midam.model.user;
+=======
+package com.midam.midam.model.user.;
+>>>>>>> Stashed changes
 
 public class User {
     String id;
@@ -21,8 +25,21 @@ public class User {
         this.authority = authority;
     }
 
+<<<<<<< Updated upstream
     public String getId() {
         return id;
+=======
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public int getAge() {
+        return age;
+>>>>>>> Stashed changes
     }
 
     public String getPassword() {
@@ -33,10 +50,18 @@ public class User {
         return name;
     }
 
+<<<<<<< Updated upstream
+=======
+    public int getAuthority() {
+        return authority;
+    }
+
+>>>>>>> Stashed changes
     public String getGender() {
         return gender;
     }
 
+<<<<<<< Updated upstream
     public int getAge() {
         return age;
     }
@@ -51,6 +76,22 @@ public class User {
 
     public int getAuthority() {
         return authority;
+=======
+    public String getId() {
+        return id;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+>>>>>>> Stashed changes
     }
 
     public void setId(String id) {
@@ -65,6 +106,7 @@ public class User {
         this.name = name;
     }
 
+<<<<<<< Updated upstream
     public void setGender(String gender) {
         this.gender = gender;
     }
@@ -84,4 +126,13 @@ public class User {
     public void setAuthority(int authority) {
         this.authority = authority;
     }
+=======
+    public void setAuthority(int authority) {
+        this.authority = authority;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+>>>>>>> Stashed changes
 }
