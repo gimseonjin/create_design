@@ -1,18 +1,10 @@
 package com.midam.midam.DAO.user;
-
-import com.midam.midam.model.user.Mentor;
+import com.midam.midam.model.user.LinkAgencyManager;
 import com.midam.midam.model.user.User;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
-public class MentorDAO {
-
-    UserDAO userDAO = new UserDAO();
+public class LinkAgencyDAO {UserDAO userDAO = new UserDAO();
 
     private Connection conn;
     private PreparedStatement pstmt;
@@ -20,21 +12,22 @@ public class MentorDAO {
     private ResultSet rs;
     private String sql;
 
-    public String create(Mentor mentor) { // 등록
-        sql = "insert into mentor(id, regionCode, 1365Id) values(?, ?, ?)";
+    public String create(LinkAgencyManager linkAgencyManager) { // 등록
+        sql = "insert into LinkAgencyManager(id, linkAgencyCode) values(?, ?)";
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?useSSL=false", "root", "emm05235");
             System.out.println(conn);
 
-            User user = new User(mentor.getId(), mentor.getPassword(), mentor.getName(), mentor.getGender(), mentor.getAge(), mentor.getAddress(), mentor.getPhoneNumber(), mentor.getAuthority());
+            User user = new User(linkAgencyManager.getId(), linkAgencyManager.getPassword(), linkAgencyManager.getName(),
+                    linkAgencyManager.getGender(), linkAgencyManager.getAge(), linkAgencyManager.getAddress(),
+                    linkAgencyManager.getPhoneNumber(), linkAgencyManager.getAuthority());
             String userInsert = userDAO.create(user);
             System.out.println(userInsert);
             if (userInsert == "true") {
                 pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, mentor.getId());
-                pstmt.setString(2, mentor.getRegionCode());
-                pstmt.setString(3, mentor.getVolunteerId());
+                pstmt.setString(1, linkAgencyManager.getId());
+                pstmt.setString(2, linkAgencyManager.getLinkAgencyCode());
                 int r = pstmt.executeUpdate();
                 return "true";
             } else

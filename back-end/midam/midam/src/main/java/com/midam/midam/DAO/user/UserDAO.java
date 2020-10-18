@@ -1,4 +1,4 @@
-package com.midam.midam.DAO;
+package com.midam.midam.DAO.user;
 
 import com.midam.midam.model.user.User;
 
@@ -17,7 +17,7 @@ public class UserDAO {
     private ResultSet rs;
     private String sql;
 
-    public String creat(User user) { // 등록
+    public String create(User user) { // 등록
         sql = "insert into user(id, password, name, gender, authority) values(?, ?, ?, ?, ?)";
         try {
             Class.forName("com.mysql.jdbc.Driver");

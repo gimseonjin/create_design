@@ -1,6 +1,6 @@
 package com.midam.midam.model.linkAgency;
 
-public class LinkAgency {
+public class LinkAgency{
 
     private String linkAgencyCode;
     private String regionCode;

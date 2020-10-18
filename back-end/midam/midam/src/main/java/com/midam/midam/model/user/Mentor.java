@@ -1,21 +1,28 @@
 package com.midam.midam.model.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class Mentor {
-    User user;
+public class Mentor extends User{
     String regionCode;
-    String address;
-    String phoneNumber;
-    int age;
     String volunteerId;
+
+    public Mentor(String id, String password, String name, String gender, int age, String address, String phoneNumber, int authority, String regionCode, String volunteerId) {
+        super(id, password, name, gender, age, address, phoneNumber, authority);
+        this.regionCode = regionCode;
+        this.volunteerId = volunteerId;
+    }
+
+    public String getRegionCode() {
+        return regionCode;
+    }
+
+    public String getVolunteerId() {
+        return volunteerId;
+    }
+
+    public void setRegionCode(String regionCode) {
+        this.regionCode = regionCode;
+    }
+
+    public void setVolunteerId(String volunteerId) {
+        this.volunteerId = volunteerId;
+    }
 }
