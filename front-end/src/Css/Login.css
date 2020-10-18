@@ -1,10 +1,9 @@
-form {
-    border-radius : 3px;
-    border-color : black;
+html,
+body {
+  height: 100%;
 }
-.body-container{
-    position: relative;
-    text-align: center;
-    margin: 0 auto ;
-    }
-    
+
+.vl {
+  border-left: 1px solid gray;
+  height: 15px;
+}

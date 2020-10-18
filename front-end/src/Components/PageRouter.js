@@ -9,15 +9,16 @@ import PageNotFound from './PageNotFound';
 
 function PageRouter() {
     return(
-        <div>
+        <div >
             
             <Switch>
-                <Route exact path="/" children = {Login} />
+                <Route exact path="/" component = {Login} />
                 <Route exact path="/mentor" children={HeaderMentor} />
                 <Route exact path="/regionManager" children={HeaderRegionManager} />
                 <Route exact path="/linkAgencyManager" children={HeaderLinkAgencyManager} />
                 <Route exact path="/systemManager" children={HeaderSystemManager} />
                 <Route path="/*" children={PageNotFound} />
+
             </Switch>
           
         
