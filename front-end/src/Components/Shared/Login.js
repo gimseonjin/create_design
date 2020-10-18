@@ -1,10 +1,10 @@
 import React from 'react';
 import {Router, Route, Link} from 'react-router-dom';
 import {Button, ButtonGroup, ButtonToolbar, Form ,FormGroup, Label, Input, Col, Row} from 'reactstrap';
-import HeaderMentor from '../Components/HeaderMentor' ;
-import PageRouter from '../Components/PageRouter';
-import midamLogo from '../midam.png';
-import '../Css/Login.css';
+import HeaderMentor from '../Mentor/HeaderMentor' ;
+import PageRouter from './PageRouter';
+import midamLogo from '../../midam.png';
+import '../../Css/Login.css';
 
 function Login() {
     return (
