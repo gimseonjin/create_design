@@ -1,8 +1,5 @@
-<<<<<<< Updated upstream
 package com.midam.midam.model.user;
-=======
-package com.midam.midam.model.user.;
->>>>>>> Stashed changes
+
 
 public class User {
     String id;
@@ -25,114 +22,67 @@ public class User {
         this.authority = authority;
     }
 
-<<<<<<< Updated upstream
     public String getId() {
         return id;
-=======
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public int getAge() {
-        return age;
->>>>>>> Stashed changes
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-<<<<<<< Updated upstream
-=======
-    public int getAuthority() {
-        return authority;
-    }
-
->>>>>>> Stashed changes
-    public String getGender() {
-        return gender;
-    }
-
-<<<<<<< Updated upstream
-    public int getAge() {
-        return age;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public int getAuthority() {
-        return authority;
-=======
-    public String getId() {
-        return id;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
->>>>>>> Stashed changes
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-<<<<<<< Updated upstream
+    public String getGender() {
+        return gender;
+    }
+
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public int getAge() {
+        return age;
     }
 
     public void setAge(int age) {
         this.age = age;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setAuthority(int authority) {
-        this.authority = authority;
-    }
-=======
-    public void setAuthority(int authority) {
-        this.authority = authority;
+    public int getAuthority() {
+        return authority;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setAuthority(int authority) {
+        this.authority = authority;
     }
->>>>>>> Stashed changes
 }
