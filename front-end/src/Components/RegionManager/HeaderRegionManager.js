@@ -14,7 +14,7 @@ function HeaderRegionManager({match, history}) {
                 
                 <ReactBootStrap.Navbar.Brand href="/RegionManager">미담장학회 관리자</ReactBootStrap.Navbar.Brand>
                 <ReactBootStrap.Nav className="mr-auto">
-                <ReactBootStrap.Nav.Link href="#pricing">멘토링활동</ReactBootStrap.Nav.Link>
+                <ReactBootStrap.Nav.Link href="#pricing">활동조회</ReactBootStrap.Nav.Link>
                 <ReactBootStrap.NavDropdown title="인원관리" id="basic-nav-dropdown">
                         <ReactBootStrap.NavDropdown.Item href="#Mentor/menu1">소속멘토 조회</ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Item href="#action/3.2">연계기관 담당자 조회</ReactBootStrap.NavDropdown.Item>
