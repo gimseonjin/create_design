@@ -5,7 +5,7 @@ import LinkAgencyMenu1 from './LinkAgencyMenu1';
 import LinkAgencyMenu2 from './LinkAgencyMenu2';
 import LinkAgencyMenu3 from './LinkAgencyMenu3';
 import LinkAgencyMenu4 from './LinkAgencyMenu4';
-
+import * as ReactBootStrap from "react-bootstrap"; //nav
 function HeaderLinkAgencyManager({match, history}) {
     return (
         <div>
