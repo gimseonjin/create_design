@@ -1,10 +1,10 @@
 import React from 'react';
 
-//회원 가입
+//연계기관 등록 문의
 function SignIn() {
     return (
         <div>
-            회원 가입
+            연계기관 등록
         </div>
     )
 }

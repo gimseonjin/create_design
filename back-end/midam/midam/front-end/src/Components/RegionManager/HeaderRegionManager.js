@@ -39,7 +39,7 @@ function HeaderRegionManager({match, history}) {
                 </ReactBootStrap.Nav>
                 <ReactBootStrap.Form inline="inline">                   
                 <ReactBootStrap.Button variant="outline-light">회원정보</ReactBootStrap.Button>
-                    <ReactBootStrap.Button variant="outline-light">로그아웃</ReactBootStrap.Button>
+                <ReactBootStrap.Button variant="outline-light" href="/">로그아웃</ReactBootStrap.Button>
                 </ReactBootStrap.Form>
             </ReactBootStrap.Navbar>
             hello, i'm HeaderRegionManager
