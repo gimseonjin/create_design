@@ -19,7 +19,7 @@ const Login = (props) => {
         const [rSelected, setRSelected] = useState(null);
 
         return (
-            <div class="login_container" className = "d-flex justify-content-center align-self-center" style = {{margin : "100px"}}>
+            <div className = "login_container d-flex justify-content-center align-self-center" style = {{margin : "100px"}}>
                 <Form>
                     <div class = "logo">
                         <img src={midamLogo} art="midam"></img>
@@ -29,10 +29,10 @@ const Login = (props) => {
                     <FormGroup>
                         
                         <ButtonGroup className = "w-100" style = {{marginBottom : '5px'}}>
-                            <Button className = "w-25" onClick={()=> setRSelected("mentor")}>멘토</Button>
-                            <Button className = "w-25" onClick={()=> setRSelected("regionManager")}>지역본부 관리자</Button>
-                            <Button className = "w-25" onClick={()=> setRSelected("linkAgencyManager")}>연계기관 담당자</Button>
-                            <Button className = "w-25" onClick={()=> setRSelected("systemManager")}>시스템 관리자</Button>
+                            <Button className = "w-25" color = 'primary' onClick={()=> setRSelected("mentor")}>멘토</Button>
+                            <Button className = "w-25" color = 'primary' onClick={()=> setRSelected("regionManager")}>지역본부 관리자</Button>
+                            <Button className = "w-25" color = 'primary' onClick={()=> setRSelected("linkAgencyManager")}>연계기관 담당자</Button>
+                            <Button className = "w-25" color = 'primary' onClick={()=> setRSelected("systemManager")}>시스템 관리자</Button>
                         </ButtonGroup>
     
                         <div className = "d-flex justify-content-around align-self-center">
@@ -50,7 +50,7 @@ const Login = (props) => {
                                 />
                         </div>
     
-                        <Link to={`/${rSelected}`}><Button className = "w-100" >로그인</Button></Link>
+                        <Link to={`/${rSelected}`}><Button color = 'primary' className = "w-100" >로그인</Button></Link>
                         
                         <hr class = "under_line"></hr>
     
