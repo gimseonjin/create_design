@@ -5,6 +5,8 @@ import HeaderRegionManager from '../RegionManager/HeaderRegionManager';
 import Login from './Login';
 import HeaderLinkAgencyManager from '../LinkAgencyManager/HeaderLinkAgencyManager';
 import HeaderSystemManager from '../SystemManager/HeaderSystemManager';
+import SignIn from '../Shared/SignIn'
+import InquiryOfLinkAgency from '../Shared/InquiryOfLinkAgency'
 import PageNotFound from './PageNotFound';
 
 function PageRouter() {
@@ -17,6 +19,8 @@ function PageRouter() {
                 <Route exact path="/regionManager" children={HeaderRegionManager} />
                 <Route exact path="/linkAgencyManager" children={HeaderLinkAgencyManager} />
                 <Route exact path="/systemManager" children={HeaderSystemManager} />
+                <Route exact path="/SignIn" children={SignIn} />
+                <Route exact path="/Inquiry" children={InquiryOfLinkAgency} />
                 <Route path="/*" children={PageNotFound} />
 
             </Switch>

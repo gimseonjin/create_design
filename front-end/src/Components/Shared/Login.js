@@ -56,11 +56,9 @@ const Login = (props) => {
     
                     </FormGroup>
                     <div className = "d-flex justify-content-center align-self-center">
-                        <Link to={`/signUp`} style={{ textDecoration: 'none', color : 'black', fontSize : '10px', marginRight : '2%', marginLeft : '2%'}}>회원 가입</Link> 
+                        <Link to={`/SignIn`} style={{ textDecoration: 'none', color : 'black', fontSize : '10px', marginRight : '2%', marginLeft : '2%'}}>회원 가입</Link> 
                         <div class="vl"></div>                       
-                        <Link to={`/findId`} style={{ textDecoration: 'none', color : 'black', fontSize : '10px', marginRight : '2%', marginLeft : '2%'}}>아이디 찾기</Link>
-                        <div class="vl"></div>
-                        <Link to={`/findPw`} style={{ textDecoration: 'none', color : 'black', fontSize : '10px', marginRight : '2%', marginLeft : '2%'}}>비밀번호 찾기</Link>
+                        <Link to={`/Inquiry`} style={{ textDecoration: 'none', color : 'black', fontSize : '10px', marginRight : '2%', marginLeft : '2%'}}>연계 기관 문의</Link>
                     </div>
 
                 </Form>
