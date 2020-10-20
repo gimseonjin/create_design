@@ -5,6 +5,13 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const props = {
+  name: 'loginForm',
+  method: 'POST',
+  action: '/',
+  inputs: inputs
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
