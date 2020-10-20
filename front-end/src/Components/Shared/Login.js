@@ -30,7 +30,7 @@ const Login = (props) => {
                         
                         <ButtonGroup className = "w-100" style = {{marginBottom : '5px'}}>
                             <Button className = "w-25" onClick={()=> setRSelected("mentor")}>멘토</Button>
-                            <Button className = "w-25" onClick={()=> setRSelected("rigionManager")}>지역본부 관리자</Button>
+                            <Button className = "w-25" onClick={()=> setRSelected("regionManager")}>지역본부 관리자</Button>
                             <Button className = "w-25" onClick={()=> setRSelected("linkAgencyManager")}>연계기관 담당자</Button>
                             <Button className = "w-25" onClick={()=> setRSelected("systemManager")}>시스템 관리자</Button>
                         </ButtonGroup>
