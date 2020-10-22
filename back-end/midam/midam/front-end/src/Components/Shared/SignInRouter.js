@@ -9,18 +9,18 @@ import SignIn from '../Shared/SignIn'
 import InquiryOfLinkAgency from '../Shared/InquiryOfLinkAgency'
 import PageNotFound from './PageNotFound';
 
-function PageRouter() {
+function SignInRouter() {
     return(
         <div >
             
             <Switch>
                 <Route exact path="/" component = {Login} />
-                <Route path="/mentor" component={HeaderMentor} />
-                <Route path="/regionManager" component={HeaderRegionManager} />
-                <Route path="/linkAgencyManager" component={HeaderLinkAgencyManager} />
-                <Route path="/systemManager" component={HeaderSystemManager} />
-                <Route path="/SignIn" component={SignIn} />
-                <Route path="/Inquiry" component={InquiryOfLinkAgency} />
+                <Route exact path="/mentor" component={HeaderMentor} />
+                <Route exact path="/regionManager" component={HeaderRegionManager} />
+                <Route exact path="/linkAgencyManager" component={HeaderLinkAgencyManager} />
+                <Route exact path="/systemManager" component={HeaderSystemManager} />
+                <Route exact path="/SignIn" component={SignIn} />
+                <Route exact path="/Inquiry" component={InquiryOfLinkAgency} />
                 <Route path="/*" component={PageNotFound} />
 
             </Switch>

@@ -16,7 +16,9 @@ import midamLogo from '../img/midam.png';
 import '../Css/Login.css'
 
 const Login = (props) => {
+    
         const [rSelected, setRSelected] = useState(null);
+        const [activeTab, setActiveTab] = useState(null);
 
         return (
             <div className = "login_container d-flex justify-content-center align-self-center" style = {{margin : "100px"}}>

@@ -9,7 +9,7 @@ const props = {
   name: 'loginForm',
   method: 'POST',
   action: '/',
-  inputs: inputs
+  inputs: 'inputs'
 }
 
 ReactDOM.render(

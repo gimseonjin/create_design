@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {BrowserRouter, Router, Route, Switch, Link, HashRouter} from 'react-router-dom';
 import {Button, ButtonGroup, ButtonToolbar} from 'reactstrap';
 
@@ -11,10 +11,11 @@ import ReadActivityHistory from '../Shared/ReadActivityHistory';
 import CreateMentorRecruitment from '../LinkAgencyManager/CreateMentorRecruitment';
 import CreateReport from './CreateReport';
 import ReadMentoringApplication from './ReadMentoringApplication';
-function HeaderMentor({match, history}) {
+const HeaderMentor = ({match, history,}) => {
+
     return (
         <div>
-            <HashRouter>
+            
              <ReactBootStrap.Navbar bg="primary" variant="dark" > 
                 <ReactBootStrap.Navbar.Brand href="/Mentor">미담장학회 멘토</ReactBootStrap.Navbar.Brand>
                 <ReactBootStrap.Nav className="mr-auto">
@@ -56,16 +57,16 @@ function HeaderMentor({match, history}) {
 
 
             <Switch>
-                <Route exact path={`${match.path}/applyChangeRegion`} children={ApplyChangeRegion}></Route>
-                <Route exact path={`${match.path}/readUserInformation`} children={ReadUserInformation}></Route>
-                <Route exact path={`${match.path}/updateUserInformation`} children={UpdateUserInformation}></Route>
-                <Route exact path={`${match.path}/withdraw`} children={Withdraw}></Route>
-                <Route exact path={`${match.path}/readActivityHistory`} children={ReadActivityHistory}></Route>
-                <Route exact path={`${match.path}/createReport`} children={CreateReport}></Route>
-                <Route exact path={`${match.path}/readMentoringApplication`} children={ReadMentoringApplication}></Route>
+                <Route exact path={`${match.path}/applyChangeRegion`} component={ApplyChangeRegion}></Route>
+                <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
+                <Route exact path={`${match.path}/updateUserInformation`} component={UpdateUserInformation}></Route>
+                <Route exact path={`${match.path}/withdraw`} component={Withdraw}></Route>
+                <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistory}></Route>
+                <Route exact path={`${match.path}/createReport`} component={CreateReport}></Route>
+                <Route exact path={`${match.path}/readMentoringApplication`} component={ReadMentoringApplication}></Route>
                 
             </Switch>
-            </HashRouter>
+            
         </div>
     )
 }

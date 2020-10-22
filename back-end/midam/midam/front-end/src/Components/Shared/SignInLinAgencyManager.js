@@ -23,7 +23,7 @@ const SignIn = (props) => {
                     <h3 style={{
                             marginBottom: '5%'
                             
-                        }}>멘토</h3>
+                        }}>연계기관</h3>
 
                     <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
                         <InputGroupAddon addonType="prepend">
