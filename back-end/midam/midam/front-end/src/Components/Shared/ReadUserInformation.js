@@ -7,7 +7,9 @@ import UpdateUserInformation from './UpdateUserInformation';
 //회원 정보 조회
 
 const ReadUserInformation = (props) => {
+
     const [modalUpdateInfo, setModalUpdateInfo] = useState(false);
+    
     const [modalUpdateRegion, setModalUpdateRegion] = useState(false);
 
     const [backdrop, setBackdrop] = useState(true);
@@ -60,7 +62,7 @@ const ReadUserInformation = (props) => {
             </InputGroup>
 
             <Modal isOpen={modalUpdateInfo}  backdrop={backdrop}>
-                <ModalHeader toggle = {toggleUpdateInfo}>회원정보 수정</ModalHeader>
+                <ModalHeader toggle={toggleUpdateInfo}>회원정보 수정</ModalHeader>
                 <UpdateUserInformation></UpdateUserInformation>
 
             </Modal>
