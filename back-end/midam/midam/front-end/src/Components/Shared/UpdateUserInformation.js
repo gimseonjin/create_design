@@ -53,10 +53,8 @@ const UpdateUserInformation = (props) => {
             {/* submit 버튼. */}
 
             <Button type="submit">수정</Button>
-            {/* <Input type="submit" value="수정" size=''></Input> */}
 
             </Form>
-            <Route path="update" ></Route>
         
         </div>
     )

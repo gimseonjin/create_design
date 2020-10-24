@@ -20,9 +20,7 @@ const HeaderMentor = ({match, history}) => {
                 <ReactBootStrap.Navbar.Brand href="/Mentor">미담장학회 멘토</ReactBootStrap.Navbar.Brand>
                 <ReactBootStrap.Nav className="mr-auto">
                 <ReactBootStrap.NavDropdown title="회원정보" id="basic-nav-dropdown">
-                        <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/applyChangeRegion`}>소속 본부 변경 요청</Link></ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/readUserInformation`}>회원 정보 조회</Link></ReactBootStrap.NavDropdown.Item>
-                        <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/updateUserInformation`}>회원 정보 수정</Link></ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/withdraw`}>회원 탈퇴</Link></ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Divider/>
                 </ReactBootStrap.NavDropdown>
@@ -56,14 +54,14 @@ const HeaderMentor = ({match, history}) => {
 
 
             <Switch>
-                <Route exact path={`${match.path}/applyChangeRegion`} component={ApplyChangeRegion}></Route>
                 <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
-                <Route exact path={`${match.path}/updateUserInformation`} component={UpdateUserInformation}></Route>
                 <Route exact path={`${match.path}/withdraw`} component={Withdraw}></Route>
                 <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistory}></Route>
                 <Route exact path={`${match.path}/createReport`} component={CreateReport}></Route>
                 <Route exact path={`${match.path}/readMentoringApplication`} component={ReadMentoringApplication}></Route>
                 
+                {/* 활동 */}
+                <Route exact path={`${match.path}/readActivityHistory`} component = {ReadActivityHistory}></Route>
             </Switch>
             
         </div>

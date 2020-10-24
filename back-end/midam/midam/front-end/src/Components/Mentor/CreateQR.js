@@ -4,7 +4,7 @@ import React from 'react';
 function CreateQR() {
     return (
         <div>
-            
+            createQR
         </div>
     )
 }
