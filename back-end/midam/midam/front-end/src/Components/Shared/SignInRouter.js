@@ -1,32 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Router, Switch, Route, Link, useLocation} from 'react-router-dom';
-import HeaderMentor from '../Mentor/HeaderMentor';
-import HeaderRegionManager from '../RegionManager/HeaderRegionManager';
-import Login from './Login';
-import HeaderLinkAgencyManager from '../LinkAgencyManager/HeaderLinkAgencyManager';
-import HeaderSystemManager from '../SystemManager/HeaderSystemManager';
-import SignIn from '../Shared/SignIn'
-import InquiryOfLinkAgency from '../Shared/InquiryOfLinkAgency'
-import PageNotFound from './PageNotFound';
+import { Button, ButtonGroup } from 'reactstrap';
+import SignIn from '../Shared/SignIn';
+import SignInLinkAgencyManager from '../Shared/SignInLinAgencyManager';
 
-function SignInRouter() {
+const SignInRouter = ({match}, props) => {
+const [rSelected, setRSelected]  = useState("mentor");
+
+
+
     return(
         <div >
+            <ButtonGroup>
+                <Link to = {`${match.url}/mentor`}><Button color="primary" onClick={() => setRSelected("mentor")} active={ rSelected=== "mentor"}>멘토</Button></Link>
+                <Link to = {`${match.url}/linkAgencyManager`}><Button color="primary" onClick={() => setRSelected("linkAgencyManager")} active={ rSelected=== "linkAgencyManager"}>연계기관담당자</Button></Link>
+            </ButtonGroup>
             
             <Switch>
-                <Route exact path="/" component = {Login} />
-                <Route exact path="/mentor" component={HeaderMentor} />
-                <Route exact path="/regionManager" component={HeaderRegionManager} />
-                <Route exact path="/linkAgencyManager" component={HeaderLinkAgencyManager} />
-                <Route exact path="/systemManager" component={HeaderSystemManager} />
-                <Route exact path="/SignIn" component={SignIn} />
-                <Route exact path="/Inquiry" component={InquiryOfLinkAgency} />
-                <Route path="/*" component={PageNotFound} />
-
+                <Route exact path={`${match.path}/`} component={SignIn}></Route>
+                <Route path={`${match.path}/mentor`} component={SignIn}></Route>
+                <Route path={`${match.path}/linkAgencyManager`} component={SignInLinkAgencyManager}></Route>
             </Switch>
-          
-        
         </div>
     )
 }
-export default PageRouter;
+export default SignInRouter;

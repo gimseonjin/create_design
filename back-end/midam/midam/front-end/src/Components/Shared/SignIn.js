@@ -6,7 +6,7 @@ import classnames from 'classnames';
 // import '../Css/SignIn.css'
 
 //회원 가입
-const SignIn = (props) => {
+const SignIn = ({history}, props) => {
     const [activeTab, setActiveTab] = useState(null);
   
     const toggle = tab => {
@@ -19,7 +19,7 @@ const SignIn = (props) => {
                 style={{
                     margin: "50px"
                 }}>
-                { <Form className="w-75">
+                 <Form className="w-75">
                     <h3 style={{
                             marginBottom: '5%'
                             
@@ -77,7 +77,15 @@ const SignIn = (props) => {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">소속 지역 본부</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text' placeholder="username"/>
+                        <Col sm={4}>
+                            <Input type='select' name='selectRegion'>
+                            {/* 여기에 option을 지역본부를 DB에서 select 해서 for문으로 추가하면 될듯! */}
+                                <option>선택</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </Input>
+                        </Col>
                     </InputGroup>
 
                     
@@ -103,13 +111,16 @@ const SignIn = (props) => {
                         <Input type='text' placeholder="username"/>
                     </InputGroup>
 
-                    <button
+                    <Button onClick={()=>history.push("/")} style={{float: 'right'}}>취소</Button>
+                    <Button
                         type="submit"
                         className="btn btn-primary btn-block w-25"
                         style={{
                             float: 'right'
-                        }}>회원 가입</button>
-                </Form> }
+                        }}>회원 가입</Button>
+                    
+                </Form> 
+                
             </div>
         )
 }

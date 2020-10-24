@@ -5,7 +5,7 @@ import HeaderRegionManager from '../RegionManager/HeaderRegionManager';
 import Login from './Login';
 import HeaderLinkAgencyManager from '../LinkAgencyManager/HeaderLinkAgencyManager';
 import HeaderSystemManager from '../SystemManager/HeaderSystemManager';
-import SignIn from '../Shared/SignIn'
+import SignInRouter from '../Shared/SignInRouter'
 import InquiryOfLinkAgency from '../Shared/InquiryOfLinkAgency'
 import PageNotFound from './PageNotFound';
 
@@ -19,7 +19,7 @@ function PageRouter() {
                 <Route path="/regionManager" component={HeaderRegionManager} />
                 <Route path="/linkAgencyManager" component={HeaderLinkAgencyManager} />
                 <Route path="/systemManager" component={HeaderSystemManager} />
-                <Route path="/SignIn" component={SignIn} />
+                <Route path="/SignIn" component={SignInRouter} />
                 <Route path="/Inquiry" component={InquiryOfLinkAgency} />
                 <Route path="/*" component={PageNotFound} />
 
