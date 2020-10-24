@@ -11,7 +11,7 @@ import ReadActivityHistory from '../Shared/ReadActivityHistory';
 import CreateMentorRecruitment from '../LinkAgencyManager/CreateMentorRecruitment';
 import CreateReport from './CreateReport';
 import ReadMentoringApplication from './ReadMentoringApplication';
-const HeaderMentor = ({match, history,}) => {
+const HeaderMentor = ({match, history}) => {
 
     return (
         <div>
@@ -53,7 +53,6 @@ const HeaderMentor = ({match, history,}) => {
                 </ReactBootStrap.Form>
             </ReactBootStrap.Navbar>
 
-            hello, i'm HeaderMentor <br />
 
 
             <Switch>
