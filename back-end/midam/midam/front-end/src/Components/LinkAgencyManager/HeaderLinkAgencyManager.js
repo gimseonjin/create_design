@@ -6,7 +6,7 @@ function HeaderLinkAgencyManager({match, history}) {
     return (
         <div>
             <ReactBootStrap.Navbar bg="primary" variant="dark"> 
-                <ReactBootStrap.Navbar.Brand href="/LinkAgencyManager">미담장학회 담당자</ReactBootStrap.Navbar.Brand>
+                <ReactBootStrap.Navbar.Brand><span onClick={()=>history.push("/linkAgencyManager")} color="white" style={{cursor: 'pointer'}}>연계기관 담당자</span></ReactBootStrap.Navbar.Brand>
                 <ReactBootStrap.Nav className="mr-auto">
                 <ReactBootStrap.NavDropdown title="멘토링활동" id="basic-nav-dropdown">
                         <ReactBootStrap.NavDropdown.Item href="#Mentor/menu1">활동조회</ReactBootStrap.NavDropdown.Item>

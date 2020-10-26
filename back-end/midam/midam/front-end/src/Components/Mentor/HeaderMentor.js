@@ -11,13 +11,14 @@ import ReadActivityHistory from '../Shared/ReadActivityHistory';
 import CreateMentorRecruitment from '../LinkAgencyManager/CreateMentorRecruitment';
 import CreateReport from './CreateReport';
 import ReadMentoringApplication from './ReadMentoringApplication';
+import ReadPost from '../Shared/ReadPost';
 const HeaderMentor = ({match, history}) => {
 
     return (
         <div>
             
-             <ReactBootStrap.Navbar bg="primary" variant="dark" > 
-                <ReactBootStrap.Navbar.Brand href="/Mentor">미담장학회 멘토</ReactBootStrap.Navbar.Brand>
+             <ReactBootStrap.Navbar bg="primary" variant="dark" color="white">
+                <ReactBootStrap.Navbar.Brand><span onClick={()=>history.push("/mentor")} color="white" style={{cursor: 'pointer'}}>미담장학회 멘토</span></ReactBootStrap.Navbar.Brand>
                 <ReactBootStrap.Nav className="mr-auto">
                 <ReactBootStrap.NavDropdown title="회원정보" id="basic-nav-dropdown">
                         <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/readUserInformation`}>회원 정보 조회</Link></ReactBootStrap.NavDropdown.Item>
@@ -32,7 +33,7 @@ const HeaderMentor = ({match, history}) => {
                         <ReactBootStrap.NavDropdown.Item href="#action/3.4">QR코드 생성</ReactBootStrap.NavDropdown.Item>
                 </ReactBootStrap.NavDropdown>
                         <ReactBootStrap.NavDropdown title="커뮤니티" id="basic-nav-dropdown">
-                        <ReactBootStrap.NavDropdown.Item href="#action/3.2">자유게시판</ReactBootStrap.NavDropdown.Item>
+                        <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/readPost`}>게시판 보기</Link></ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Item href="#action/3.3">멘토링 모집</ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Divider/>                        
                     </ReactBootStrap.NavDropdown>                  
@@ -47,7 +48,7 @@ const HeaderMentor = ({match, history}) => {
                 </ReactBootStrap.Nav>
                 <ReactBootStrap.Form inline="inline">                   
                 <ReactBootStrap.Button variant="outline-light">회원정보</ReactBootStrap.Button>
-                    <ReactBootStrap.Button variant="outline-light">로그아웃</ReactBootStrap.Button>
+                    <ReactBootStrap.Button variant="outline-light" onClick={()=>history.push("/")}>로그아웃</ReactBootStrap.Button>
                 </ReactBootStrap.Form>
             </ReactBootStrap.Navbar>
 
@@ -62,6 +63,10 @@ const HeaderMentor = ({match, history}) => {
                 
                 {/* 활동 */}
                 <Route exact path={`${match.path}/readActivityHistory`} component = {ReadActivityHistory}></Route>
+                <Route exact path={`${match.path}/readMentoringApplication`} component = {ReadMentoringApplication}></Route>
+
+                {/* 커뮤니티 */}
+                <Route exact path={`${match.path}/readPost`} component = {ReadPost}></Route>
             </Switch>
             
         </div>

@@ -5,7 +5,7 @@ import CreateQR from '../Mentor/CreateQR';
 import ExportMentoringActivity from '../LinkAgencyManager/ExportMentoringActivity';
 
 //활동 내역 조회
-const ReadActivityHistory=(props)=> {
+const ReadActivityHistoryRegionManager=(props)=> {
     const [modalCreateReport, setModalCreateReport] = useState(false); 
     const [modalCreateQR, setModalCreateQR] = useState(false); 
     const [modalExportExcel, setModalExportExcel] = useState(false); 
@@ -116,4 +116,4 @@ const ReadActivityHistory=(props)=> {
         </div>
     )
 }
-export default ReadActivityHistory;
+export default ReadActivityHistoryRegionManager;

@@ -12,11 +12,11 @@ function HeaderSystemManager({match, history}) {
 
 <ReactBootStrap.Navbar bg="primary" variant="dark"> 
                 
-                <ReactBootStrap.Navbar.Brand href="/SystemManager">미담장학회 시스템관리자</ReactBootStrap.Navbar.Brand>
+                <ReactBootStrap.Navbar.Brand><span onClick={()=>history.push("/systemManager")} color="white" style={{cursor: 'pointer'}}>시스템 관리자</span></ReactBootStrap.Navbar.Brand>
                 <ReactBootStrap.Nav className="mr-auto">
-                <ReactBootStrap.Nav.Link href="#pricing">활동조회</ReactBootStrap.Nav.Link>                
-                <ReactBootStrap.Nav.Link href="#pricing">지역본부관리자조회</ReactBootStrap.Nav.Link>
-                <ReactBootStrap.Nav.Link href="#pricing">지역본부</ReactBootStrap.Nav.Link>
+                <ReactBootStrap.Nav>활동조회</ReactBootStrap.Nav>                
+                <ReactBootStrap.Nav>지역본부관리자조회</ReactBootStrap.Nav>
+                <ReactBootStrap.Nav>지역본부</ReactBootStrap.Nav>
                         <ReactBootStrap.NavDropdown title="커뮤니티" id="basic-nav-dropdown">
                         <ReactBootStrap.NavDropdown.Item href="#Mentor/menu1">공지사항</ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Item href="#action/3.2">자유게시판</ReactBootStrap.NavDropdown.Item>
