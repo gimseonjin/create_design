@@ -1,5 +1,5 @@
 import React from 'react';
-import { CustomInput, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+import { Button, CustomInput, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 
 //활동보고서 작성
 //활동 보고서 조회 페이지 필요할지. 여기서 함께할지 논의.
@@ -52,6 +52,8 @@ function CreateReport() {
                         <CustomInput type="file" name="image" label="파일 선택">asdf</CustomInput>
                     </InputGroup>
                 </FormGroup>
+
+                <Button type="submit">제출</Button>
             </Form>
         </div>
     )

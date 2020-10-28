@@ -3,9 +3,14 @@ import { Button, Col, Container, Form, Input, InputGroup, InputGroupAddon, Input
 import CreateReport from '../Mentor/CreateReport';
 import CreateQR from '../Mentor/CreateQR';
 import ExportMentoringActivity from '../LinkAgencyManager/ExportMentoringActivity';
+import useRequest from './useRequest';
+import axios from 'axios';
+import usePost from './usePost';
 
 //활동 내역 조회
 const ReadActivityHistory=(props)=> {
+    
+    const [message, setMessage] = useState("message");
     const [modalCreateReport, setModalCreateReport] = useState(false); 
     const [modalCreateQR, setModalCreateQR] = useState(false); 
     const [modalExportExcel, setModalExportExcel] = useState(false); 
@@ -13,7 +18,10 @@ const ReadActivityHistory=(props)=> {
     const toggleCreateReport = () => setModalCreateReport(!modalCreateReport);
     const toggleCreateQR = () => setModalCreateQR(!modalCreateQR);
     const toggleExportExcel = () => setModalExportExcel(!modalExportExcel);
+    const input = useState("input : abcd");
 
+    // const [response, loading, error] = usePost('http://localhost:8080/testPost', input);
+    
     return (
         <div className="container">
         
@@ -51,6 +59,7 @@ const ReadActivityHistory=(props)=> {
                         <Input type="date" name="endDate"></Input>
                         </InputGroup>
                         <Button className="float-right" color="primary">조회</Button>
+                        {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
                         <Button color="primary" onClick={()=>setModalExportExcel(true)}>내보내기</Button>
                         <Button className="float-left" color="primary" onClick={()=>setModalCreateQR(true)}>QR 생성</Button>
 

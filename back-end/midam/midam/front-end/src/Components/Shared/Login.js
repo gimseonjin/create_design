@@ -14,11 +14,31 @@ import {
 } from 'reactstrap';
 import midamLogo from '../img/midam.png';
 import '../Css/Login.css'
+import axios from 'axios';
+import usePost from './usePost';
 
 const Login = (props) => {
     
         const [rSelected, setRSelected] = useState(null);
         const [activeTab, setActiveTab] = useState(null);
+
+ 
+        
+        const [id, setId] = useState(null);
+        const [password, setPassword] = useState(null);
+        const handleSubmitId = (e) => {
+             e.preventDefault();
+            setId(e.target.value);
+        }
+        
+        const handleSubmitPw = (e) => {
+            e.preventDefault();
+            setPassword(e.target.value);
+       }
+
+       const customPost = {
+
+       }
 
         return (
             <div className = "login_container d-flex justify-content-center align-self-center" style = {{margin : "100px"}}>
@@ -38,7 +58,7 @@ const Login = (props) => {
                         </ButtonGroup>
     
                         <div className = "d-flex justify-content-around align-self-center">
-                            <Input name="id" id="loginId" placeholder="아이디를 입력하세요"
+                            <Input name="id" id="loginId" placeholder="아이디를 입력하세요"  onChange={handleSubmitId}
                                 style = {{marginBottom : '5px'}}/>    
                         </div>
     
@@ -48,11 +68,21 @@ const Login = (props) => {
                                 name="password"
                                 id="loginPassword"
                                 placeholder="비밀번호를 입력하세요"
+                                onChange={handleSubmitPw}
                                 style = {{marginBottom : '5px'}}
                                 />
                         </div>
     
-                        <Link to={`/${rSelected}`}><Button color = 'primary' className = "w-100" >로그인</Button></Link>
+                        <Button color = 'primary' className = "w-100" onClick={()=>{
+                            let form = new FormData();
+                            form.append('id', id);
+                            form.append('password', password);
+                            axios.post("http://localhost:8080/testPost", form).then((response)=>{setId(response.data.authority) })
+                            }}>로그인</Button>
+                            {id}
+                            
+                        
+                        <Link to={`/${rSelected}`}><Button color = 'primary' className = "w-100" >바로가기-test용</Button></Link>
                         
                         <hr class = "under_line"></hr>
     
