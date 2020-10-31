@@ -1,4 +1,4 @@
-package com.midam.midam.model.linkAgency;
+package com.example.demo.model.linkAgency;
 
 public class LinkAgency{
 

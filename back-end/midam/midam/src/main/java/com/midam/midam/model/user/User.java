@@ -1,4 +1,4 @@
-package com.midam.midam.model.user;
+package com.example.demo.model.user;
 
 
 public class User {
@@ -19,6 +19,17 @@ public class User {
         this.age = age;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.authority = authority;
+    }
+
+    public User(String id, String password, String name, String gender, int authority) {
+        this.id = id;
+        this.password = password;
+        this.name = name;
+        this.gender = gender;
+        this.age = 0;
+        this.address = "";
+        this.phoneNumber = "";
         this.authority = authority;
     }
 

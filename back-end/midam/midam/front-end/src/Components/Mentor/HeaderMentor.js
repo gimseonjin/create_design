@@ -12,7 +12,9 @@ import CreateMentorRecruitment from '../LinkAgencyManager/CreateMentorRecruitmen
 import CreateReport from './CreateReport';
 import ReadMentoringApplication from './ReadMentoringApplication';
 import ReadPost from '../Shared/ReadPost';
+import UserListComponent from './showUser';
 import Post from '../Shared/Post';
+
 const HeaderMentor = ({match, history}) => {
     const testFunction = () => {
         console.log(localStorage.getItem("id")+ ", " + localStorage.getItem("authority"));
@@ -76,6 +78,7 @@ const HeaderMentor = ({match, history}) => {
                 <Route exact path={`${match.path}/axiosTest`} component = {Post}></Route>
             </Switch>
             
+            <UserListComponent></UserListComponent>
         </div>
     )
 }

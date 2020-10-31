@@ -79,7 +79,9 @@ const Login = ({props, history}) => {
                         </ButtonGroup>
     
                         <div className = "d-flex justify-content-around align-self-center">
+
                             <Input name="id" id="loginId" placeholder="아이디를 입력하세요"  onChange={handleSubmitId}
+
                                 style = {{marginBottom : '5px'}}/>    
                         </div>
     
