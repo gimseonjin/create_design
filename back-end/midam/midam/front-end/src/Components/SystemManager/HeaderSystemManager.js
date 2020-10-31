@@ -1,12 +1,29 @@
-import React from 'react';
-import {BrowserRouter, Router, Route, Switch, Link} from 'react-router-dom';
-import {Button, ButtonGroup, ButtonToolbar} from 'reactstrap';
-import SystemManagerMenu1 from './SystemManagerMenu1';
-import SystemManagerMenu2 from './SystemManagerMenu2';
-import SystemManagerMenu3 from './SystemManagerMenu3';
-import SystemManagerMenu4 from './SystemManagerMenu4';
-import * as ReactBootStrap from "react-bootstrap"; //nav
-import ReadRegion from './ReadRegion';
+import React,{useState} from 'react';
+import {BrowserRouter, Router, Route, Switch, Link, HashRouter} from 'react-router-dom';
+import {
+    Collapse,
+    Navbar,
+    NavbarToggler,
+    NavbarBrand,
+    Nav,
+    NavItem,
+    NavLink,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    NavbarText,
+    Button,
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardTitle,
+    CardSubtitle
+  } from 'reactstrap';
+import midamLogo from './imp/midam.png';
+import './Header.css';
+import useModal from 'react-hooks-use-modal';
 import '../Css/Header.css';
 
 const HeaderSystemManager = (props) => {
@@ -58,18 +75,6 @@ const HeaderSystemManager = (props) => {
                                 <Nav className="mr-right" navbar >
                                     <NavItem variant="outline-light">
                                         <div class = "right">
-                                            <Button className = "header-bnt w-75" color="light" onClick={open}><span>QR 스캔</span></Button>
-                                            <Modal>
-                                                <div className = "pop-up">
-                                                    
-                                                <Card className = "pop-card">
-                                                            <Test/>
-                                                        <CardBody className = "pop-card" padding = "10px">
-                                                            <Button onClick={close}>CLOSE</Button>
-                                                        </CardBody>
-                                                    </Card>
-                                                </div>
-                                            </Modal>
                                             <Button className = "header-bnt w-75" color="light" onClick = {props.logOut}><span>Log out</span></Button>
                                         </div>
                                     </NavItem>
