@@ -1,12 +1,18 @@
-import React, {useState, setState} from 'react';
+import React, {useState, setState, useEffect} from 'react';
 import { Link, Route } from 'react-router-dom';
 import { Button, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Modal, ModalHeader } from 'reactstrap';
 import '../Css/InputRightAlign.css';
 import ApplyChangeRegion from '../Mentor/ApplyChangeRegion';
 import UpdateUserInformation from './UpdateUserInformation';
+import axios from 'axios';
 //회원 정보 조회
 
 const ReadUserInformation = (props) => {
+
+  // id,권한 일단 저장
+    const [id, setId] = useState(localStorage.getItem("id"));
+    const [authority, setAuthority] = useState("1");
+    const [userInfo, setUserInfo] = useState([]);
 
     const [modalUpdateInfo, setModalUpdateInfo] = useState(false);
     
@@ -20,6 +26,25 @@ const ReadUserInformation = (props) => {
     const callbackModal = () => {
         this.setModal(false);
     }
+    var lis = [];
+    const getUserInformation = (form) => {
+      axios.post('/reqUserInfo',form).then((response)=>{
+        
+        setUserInfo(response.data)
+        console.log(response.data.name);
+      })
+    }
+    useEffect(() => {
+      let form = new FormData();
+      form.append("id", id);
+      getUserInformation(form)
+        },[]
+      )
+// componentDidMount에 해당하는 useEffect. 두번째 매개변수로 [] 시 구성 요소가 마운트 될 때 코드 한번 실행.
+    
+    
+
+   
 
     return (
         <div className="container">
@@ -28,31 +53,31 @@ const ReadUserInformation = (props) => {
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>이름</InputGroupText>
                 </InputGroupAddon>
-                <Input  type="text" value="이름"></Input>
+                <Input  type="text" value={userInfo.name}></Input>
             </InputGroup>
             <InputGroup>
                 <InputGroupAddon addonType="prepend">
-                  <InputGroupText>생년월일</InputGroupText>
+                  <InputGroupText>나이</InputGroupText>
                 </InputGroupAddon>
-                <Input type="text" value="생년월일"></Input>
+                <Input type="text" value={userInfo.age}></Input>
             </InputGroup>
             <InputGroup>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>휴대폰 번호</InputGroupText>
                 </InputGroupAddon>
-                <Input type="text" value="휴대폰 번호"></Input>
+                <Input type="text" value={userInfo.phoneNumber}></Input>
             </InputGroup>
             <InputGroup>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>1365 ID</InputGroupText>
                 </InputGroupAddon>
-                <Input type="text" value="1365 ID"></Input>
+                <Input type="text" value="1365ID"></Input>
             </InputGroup>
             <InputGroup>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>성별</InputGroupText>
                 </InputGroupAddon>
-                <Input type="text" value="남/녀"></Input>
+                <Input type="text" value={userInfo.gender}></Input>
             </InputGroup>
             <InputGroup>
                 <InputGroupAddon addonType="prepend">
@@ -75,6 +100,11 @@ const ReadUserInformation = (props) => {
 
             </Modal>
 
+            <Button color="danger" onClick={()=>{
+              let form = new FormData();
+              form.append("id", id);
+              getUserInformation(form)
+            }}>조회</Button>
             <Button color="primary" onClick={toggleUpdateRegion}>지역본부 변경요청</Button>
             <Button color="primary" onClick={toggleUpdateInfo}>수정</Button>
             <Route path="update" ></Route>

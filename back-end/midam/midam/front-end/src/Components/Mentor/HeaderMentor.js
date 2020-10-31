@@ -14,7 +14,9 @@ import ReadMentoringApplication from './ReadMentoringApplication';
 import ReadPost from '../Shared/ReadPost';
 import Post from '../Shared/Post';
 const HeaderMentor = ({match, history}) => {
-
+    const testFunction = () => {
+        console.log(localStorage.getItem("id")+ ", " + localStorage.getItem("authority"));
+    }
     return (
         <div>
             
@@ -42,6 +44,7 @@ const HeaderMentor = ({match, history}) => {
                     <ReactBootStrap.NavDropdown title="쪽지" id="basic-nav-dropdown">
                         <ReactBootStrap.NavDropdown.Item href="#Mentor/menu1">쪽지 조회</ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Item href="#action/3.2">쪽지 보내기</ReactBootStrap.NavDropdown.Item>
+                        <ReactBootStrap.NavDropdown.Item><Button onClick={testFunction}>Test</Button></ReactBootStrap.NavDropdown.Item>
                         
                         <ReactBootStrap.NavDropdown.Divider/>                        
                     </ReactBootStrap.NavDropdown> 
