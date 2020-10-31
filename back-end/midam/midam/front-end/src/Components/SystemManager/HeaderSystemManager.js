@@ -6,6 +6,7 @@ import SystemManagerMenu2 from './SystemManagerMenu2';
 import SystemManagerMenu3 from './SystemManagerMenu3';
 import SystemManagerMenu4 from './SystemManagerMenu4';
 import * as ReactBootStrap from "react-bootstrap"; //nav
+import ReadRegion from './ReadRegion';
 function HeaderSystemManager({match, history}) {
     return (
         <div>
@@ -14,9 +15,11 @@ function HeaderSystemManager({match, history}) {
                 
                 <ReactBootStrap.Navbar.Brand><span onClick={()=>history.push("/systemManager")} color="white" style={{cursor: 'pointer'}}>시스템 관리자</span></ReactBootStrap.Navbar.Brand>
                 <ReactBootStrap.Nav className="mr-auto">
-                <ReactBootStrap.Nav>활동조회</ReactBootStrap.Nav>                
-                <ReactBootStrap.Nav>지역본부관리자조회</ReactBootStrap.Nav>
-                <ReactBootStrap.Nav>지역본부</ReactBootStrap.Nav>
+
+                <ReactBootStrap.NavDropdown title="지역본부" id="basic-nav-dropdown">
+                        <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/readRegion`}>지역본부 조회</Link></ReactBootStrap.NavDropdown.Item>
+                        <ReactBootStrap.NavDropdown.Divider/>                        
+                    </ReactBootStrap.NavDropdown>                
                         <ReactBootStrap.NavDropdown title="커뮤니티" id="basic-nav-dropdown">
                         <ReactBootStrap.NavDropdown.Item href="#Mentor/menu1">공지사항</ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Item href="#action/3.2">자유게시판</ReactBootStrap.NavDropdown.Item>
@@ -37,25 +40,10 @@ function HeaderSystemManager({match, history}) {
                     <ReactBootStrap.Button variant="outline-light" href="/">로그아웃</ReactBootStrap.Button>
                 </ReactBootStrap.Form>
             </ReactBootStrap.Navbar>
-            hello, i'm HeaderSystemManager
-            <br></br>
-            <BrowserRouter>
-                    <ButtonGroup>
-                        <Link to={`${match.url}/menu1`}><Button>Menu 1</Button></Link>
-                        <Link to={`${match.url}/menu2`}><Button>Menu 2</Button></Link>
-                        <Link to={`${match.url}/menu3`}><Button>Menu 3</Button></Link>
-                        <Link to={`${match.url}/menu4`}><Button>Menu 4</Button></Link>
-                        <Button onClick={() => history.goBack()} >history.goBack() / go back</Button>
-                        <Button onClick={() => history.push("/")} >history.push("/") / HOME</Button>
-                    </ButtonGroup>
-                    <hr></hr>
-                <Switch>
-                    <Route exact path ={`${match.path}/menu1`} children={SystemManagerMenu1}></Route>
-                    <Route exact path ={`${match.path}/menu2`} children={SystemManagerMenu2}></Route>
-                    <Route exact path ={`${match.path}/menu3`} children={SystemManagerMenu3}></Route>
-                    <Route exact path ={`${match.path}/menu4`} children={SystemManagerMenu4}></Route>
-                </Switch>
-            </BrowserRouter>
+
+            <Switch>
+                <Route path={`${match.path}/readRegion`} component={ReadRegion}></Route>
+            </Switch>
         </div>
     )
 }

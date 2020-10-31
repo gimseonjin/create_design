@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button} from 'reactstrap';
-function PageNotFound({history}) {
+const PageNotFound = ({props, history}) => {
     return (
         <div>
             Wrong access, Page Not Found.

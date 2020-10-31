@@ -12,10 +12,13 @@ import CreateMentorRecruitment from '../LinkAgencyManager/CreateMentorRecruitmen
 import CreateReport from './CreateReport';
 import ReadMentoringApplication from './ReadMentoringApplication';
 import ReadPost from '../Shared/ReadPost';
-
 import UserListComponent from './showUser';
-const HeaderMentor = ({match, history}) => {
+import Post from '../Shared/Post';
 
+const HeaderMentor = ({match, history}) => {
+    const testFunction = () => {
+        console.log(localStorage.getItem("id")+ ", " + localStorage.getItem("authority"));
+    }
     return (
         <div>
             
@@ -23,25 +26,27 @@ const HeaderMentor = ({match, history}) => {
                 <ReactBootStrap.Navbar.Brand><span onClick={()=>history.push("/mentor")} color="white" style={{cursor: 'pointer'}}>미담장학회 멘토</span></ReactBootStrap.Navbar.Brand>
                 <ReactBootStrap.Nav className="mr-auto">
                 <ReactBootStrap.NavDropdown title="회원정보" id="basic-nav-dropdown">
-                        <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/readUserInformation`}>회원 정보 조회</Link></ReactBootStrap.NavDropdown.Item>
+                        <ReactBootStrap.NavDropdown.Item><Link as="/asdf" to={`${match.url}/readUserInformation`}>회원 정보 조회</Link></ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/withdraw`}>회원 탈퇴</Link></ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Divider/>
                 </ReactBootStrap.NavDropdown>
                 <ReactBootStrap.NavDropdown title="멘토링활동" id="basic-nav-dropdown">
-                        <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/readActivityHistory`}>활동조회</Link></ReactBootStrap.NavDropdown.Item>
-                        <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/createReport`}>활동보고서 작성</Link></ReactBootStrap.NavDropdown.Item>
+                        <ReactBootStrap.NavDropdown.Item><Link as="/test1" to={`${match.url}/readActivityHistory`}>활동조회</Link></ReactBootStrap.NavDropdown.Item>
+                        <ReactBootStrap.NavDropdown.Item><Link as="/test2" to={`${match.url}/createReport`}>활동보고서 작성</Link></ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/readMentoringApplication`}>멘토링 신청 내역 조회</Link></ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Divider/>
                         <ReactBootStrap.NavDropdown.Item href="#action/3.4">QR코드 생성</ReactBootStrap.NavDropdown.Item>
                 </ReactBootStrap.NavDropdown>
                         <ReactBootStrap.NavDropdown title="커뮤니티" id="basic-nav-dropdown">
                         <ReactBootStrap.NavDropdown.Item><Link to={`${match.url}/readPost`}>게시판 보기</Link></ReactBootStrap.NavDropdown.Item>
+                        <ReactBootStrap.NavDropdown.Item><Link as="test3" to={`${match.url}/axiosTest`}>API 테스트</Link></ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Item href="#action/3.3">멘토링 모집</ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Divider/>                        
                     </ReactBootStrap.NavDropdown>                  
                     <ReactBootStrap.NavDropdown title="쪽지" id="basic-nav-dropdown">
                         <ReactBootStrap.NavDropdown.Item href="#Mentor/menu1">쪽지 조회</ReactBootStrap.NavDropdown.Item>
                         <ReactBootStrap.NavDropdown.Item href="#action/3.2">쪽지 보내기</ReactBootStrap.NavDropdown.Item>
+                        <ReactBootStrap.NavDropdown.Item><Button onClick={testFunction}>Test</Button></ReactBootStrap.NavDropdown.Item>
                         
                         <ReactBootStrap.NavDropdown.Divider/>                        
                     </ReactBootStrap.NavDropdown> 
@@ -69,6 +74,8 @@ const HeaderMentor = ({match, history}) => {
 
                 {/* 커뮤니티 */}
                 <Route exact path={`${match.path}/readPost`} component = {ReadPost}></Route>
+
+                <Route exact path={`${match.path}/axiosTest`} component = {Post}></Route>
             </Switch>
             
             <UserListComponent></UserListComponent>

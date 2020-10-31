@@ -1,19 +1,93 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import { Button, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Modal, ModalHeader, Row, Table } from 'reactstrap';
 import CreateReport from '../Mentor/CreateReport';
 import CreateQR from '../Mentor/CreateQR';
 import ExportMentoringActivity from '../LinkAgencyManager/ExportMentoringActivity';
+import useRequest from './useRequest';
+import axios from 'axios';
+import usePost from './usePost';
 
 //활동 내역 조회
 const ReadActivityHistory=(props)=> {
+    
+    const [message, setMessage] = useState("message");
     const [modalCreateReport, setModalCreateReport] = useState(false); 
     const [modalCreateQR, setModalCreateQR] = useState(false); 
     const [modalExportExcel, setModalExportExcel] = useState(false); 
+    var list = [];
+    
 
     const toggleCreateReport = () => setModalCreateReport(!modalCreateReport);
     const toggleCreateQR = () => setModalCreateQR(!modalCreateQR);
     const toggleExportExcel = () => setModalExportExcel(!modalExportExcel);
+    var input = [
+        {
+            "date" : "2020-10-10",
+            "startTime" : "15:00",
+            "endTime": "17:00",
+            "report" : "미작성",
+            "state" : "미승인"
+        },
+        {
+            "date" : "2020-10-10",
+            "startTime" : "15:00",
+            "endTime": "19:00",
+            "report" : "미작성",
+            "state" : "미승인"
+        },
+        {
+            "date" : "2020-1-10",
+            "startTime" : "15:00",
+            "endTime": "21:00",
+            "report" : "미작성",
+            "state" : "미승인"
+        }
 
+    ];
+    
+
+    const getActivityHistory = () => {
+
+    }
+
+    const setListActivityHistory = () => {
+        for(var i = 0; i < 5; i++){
+            console.log("실행됨")
+            list.push(<tr>
+                <th scope="row">{i}</th>
+                <td>2020-10-10</td>
+                <td>15:00</td>
+                <td>17:00</td>
+                <td>미작성 <Button size="sm" onClick={()=>{setModalCreateReport(true)}}>작성하기</Button></td>
+                <td>미승인</td>
+                </tr>
+                );
+            console.log(list);
+        };
+    }
+for(var i = 0; i < input.length; i++){
+    var obj = input[i];
+    var j = 1;
+    var tableData = input.map((obj) => {
+
+    return <tr>
+        <th scope="row">{j++}</th>
+        <td>{obj.date}</td>
+        <td>{obj.startTime}</td>
+        <td>{obj.endTime}</td>
+        <td>{obj.report} <Button size="sm" onClick={()=>{setModalCreateReport(true)}}>작성하기</Button></td>
+        <td>{obj.state}</td>
+        </tr>
+    
+    })
+}
+    
+    useEffect(()=>{
+        setListActivityHistory();
+      },[]
+    )
+    // const [response, loading, error] = usePost('http://localhost:8080/testPost', input);
+    
     return (
         <div className="container">
         
@@ -50,7 +124,9 @@ const ReadActivityHistory=(props)=> {
                         <Input type="date" name="startDate"></Input>~
                         <Input type="date" name="endDate"></Input>
                         </InputGroup>
-                        <Button className="float-right" color="primary">조회</Button>
+                        <Button className="float-right" color="primary" onClick={()=> setListActivityHistory()
+                        }>조회</Button>
+                        {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
                         <Button color="primary" onClick={()=>setModalExportExcel(true)}>내보내기</Button>
                         <Button className="float-left" color="primary" onClick={()=>setModalCreateQR(true)}>QR 생성</Button>
 
@@ -75,22 +151,7 @@ const ReadActivityHistory=(props)=> {
                         </thead>
                         <tbody>
                             {/* 내용부분 여기에 서버에서 정보 받아와서 포문돌려서 넣으면 될듯!*/}
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>2020-10-10</td>
-                                <td>15:00</td>
-                                <td>17:00</td>
-                                <td>미작성 <Button size="sm" onClick={()=>{setModalCreateReport(true)}}>작성하기</Button></td>
-                                <td>미승인</td>
-                            </tr>
-                            <tr>
-                            <th scope="row">2</th>
-                                <td>2020-10-12</td>
-                                <td>15:00</td>
-                                <td>17:00</td>
-                                <td>작성완료</td>
-                                <td>승인완료</td>
-                            </tr>
+                            {tableData}
                         </tbody>
                     </Table>
                 </Col>
