@@ -10,17 +10,16 @@ import usePost from './usePost';
 //활동 내역 조회
 const ReadActivityHistory=(props)=> {
     
-    const [message, setMessage] = useState("message");
+    const [tableData, setTableData] = useState();
     const [modalCreateReport, setModalCreateReport] = useState(false); 
     const [modalCreateQR, setModalCreateQR] = useState(false); 
     const [modalExportExcel, setModalExportExcel] = useState(false); 
-    var list = [];
     
 
     const toggleCreateReport = () => setModalCreateReport(!modalCreateReport);
     const toggleCreateQR = () => setModalCreateQR(!modalCreateQR);
     const toggleExportExcel = () => setModalExportExcel(!modalExportExcel);
-    var input = [
+    const [inputs, setInputs] = useState([
         {
             "date" : "2020-10-10",
             "startTime" : "15:00",
@@ -43,47 +42,38 @@ const ReadActivityHistory=(props)=> {
             "state" : "미승인"
         }
 
-    ];
-    
+    ]);
 
-    const getActivityHistory = () => {
+    const renderInput = (input, index)=>{
+        return(
+            <tr key={index}>
+                <th>{index}</th>
+                <td>{input.date}</td>
+                <td>{input.startTime}</td>
+                <td>{input.endTime}</td>
+                <td>{input.report}</td>
+                <td>{input.state}</td>
+            </tr>
+        )
+    }
+    const pushToArray = () => {
+
+        setInputs(inputs=>[...inputs,{
+            "date" : "2020-10-10",
+            "startTime" : "15:00",
+            "endTime": "19:00",
+            "report" : "미작성",
+            "state" : "신규1"
+        }]);
+      
+    }
+
+    const getActivityHistory = (form) => {
 
     }
 
-    const setListActivityHistory = () => {
-        for(var i = 0; i < 5; i++){
-            console.log("실행됨")
-            list.push(<tr>
-                <th scope="row">{i}</th>
-                <td>2020-10-10</td>
-                <td>15:00</td>
-                <td>17:00</td>
-                <td>미작성 <Button size="sm" onClick={()=>{setModalCreateReport(true)}}>작성하기</Button></td>
-                <td>미승인</td>
-                </tr>
-                );
-            console.log(list);
-        };
-    }
-for(var i = 0; i < input.length; i++){
-    var obj = input[i];
-    var j = 1;
-    var tableData = input.map((obj) => {
-
-    return <tr>
-        <th scope="row">{j++}</th>
-        <td>{obj.date}</td>
-        <td>{obj.startTime}</td>
-        <td>{obj.endTime}</td>
-        <td>{obj.report} <Button size="sm" onClick={()=>{setModalCreateReport(true)}}>작성하기</Button></td>
-        <td>{obj.state}</td>
-        </tr>
-    
-    })
-}
-    
     useEffect(()=>{
-        setListActivityHistory();
+        
       },[]
     )
     // const [response, loading, error] = usePost('http://localhost:8080/testPost', input);
@@ -124,8 +114,7 @@ for(var i = 0; i < input.length; i++){
                         <Input type="date" name="startDate"></Input>~
                         <Input type="date" name="endDate"></Input>
                         </InputGroup>
-                        <Button className="float-right" color="primary" onClick={()=> setListActivityHistory()
-                        }>조회</Button>
+                        <Button className="float-right" color="primary" onClick={()=>{/* axios.데이터요청->inputs에 넣음 */ ;setTableData(inputs.map(renderInput)) ;console.log(inputs);}}>조회</Button>
                         {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
                         <Button color="primary" onClick={()=>setModalExportExcel(true)}>내보내기</Button>
                         <Button className="float-left" color="primary" onClick={()=>setModalCreateQR(true)}>QR 생성</Button>
@@ -150,7 +139,7 @@ for(var i = 0; i < input.length; i++){
                             </tr>
                         </thead>
                         <tbody>
-                            {/* 내용부분 여기에 서버에서 정보 받아와서 포문돌려서 넣으면 될듯!*/}
+                            {/* 내용부분. 서버에서 정보 받아와서 반복문 사용!*/}
                             {tableData}
                         </tbody>
                     </Table>
