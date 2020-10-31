@@ -1,4 +1,4 @@
-package com.midam.midam.model.activity;
+package com.example.demo.model.activity;
 
 import java.sql.Timestamp;
 

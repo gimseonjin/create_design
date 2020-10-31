@@ -1,4 +1,4 @@
-package com.midam.midam.model.user;
+package com.example.demo.model.user;
 
 public class Mentor extends User{
     String regionCode;

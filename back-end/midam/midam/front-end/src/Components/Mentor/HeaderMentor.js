@@ -12,6 +12,8 @@ import CreateMentorRecruitment from '../LinkAgencyManager/CreateMentorRecruitmen
 import CreateReport from './CreateReport';
 import ReadMentoringApplication from './ReadMentoringApplication';
 import ReadPost from '../Shared/ReadPost';
+
+import UserListComponent from './showUser';
 const HeaderMentor = ({match, history}) => {
 
     return (
@@ -69,6 +71,7 @@ const HeaderMentor = ({match, history}) => {
                 <Route exact path={`${match.path}/readPost`} component = {ReadPost}></Route>
             </Switch>
             
+            <UserListComponent></UserListComponent>
         </div>
     )
 }

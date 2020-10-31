@@ -38,7 +38,7 @@ const Login = (props) => {
                         </ButtonGroup>
     
                         <div className = "d-flex justify-content-around align-self-center">
-                            <Input name="id" id="loginId" placeholder="아이디를 입력하세요"
+                            <Input name="username" id="username" placeholder="아이디를 입력하세요"
                                 style = {{marginBottom : '5px'}}/>    
                         </div>
     
