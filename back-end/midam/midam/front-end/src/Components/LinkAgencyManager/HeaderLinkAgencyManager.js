@@ -1,42 +1,90 @@
-import React from 'react';
-import {BrowserRouter, Router, Route, Switch, Link} from 'react-router-dom';
-import {Button, ButtonGroup, ButtonToolbar} from 'reactstrap';
-import * as ReactBootStrap from "react-bootstrap"; //nav
-function HeaderLinkAgencyManager({match, history}) {
+import React,{useState} from 'react';
+import {BrowserRouter, Router, Route, Switch, Link, HashRouter} from 'react-router-dom';
+import {
+    Collapse,
+    Navbar,
+    NavbarToggler,
+    NavbarBrand,
+    Nav,
+    NavItem,
+    NavLink,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    NavbarText,
+    Button,
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardTitle,
+    CardSubtitle
+  } from 'reactstrap';
+import midamLogo from './imp/midam.png';
+import './Header.css';
+import useModal from 'react-hooks-use-modal';
+import '../Css/Header.css';
+
+const HeaderLinkAgencyManager = (props) => {
+
+    const [isOpen, setIsOpen] = useState(false);
+    const toggle = () => setIsOpen(!isOpen);
+    const [Modal, open, close, isOpenPop] = useModal('root', {
+        preventScroll: true
+    });
+
     return (
         <div>
-            <ReactBootStrap.Navbar bg="primary" variant="dark"> 
-                <ReactBootStrap.Navbar.Brand><span onClick={()=>history.push("/linkAgencyManager")} color="white" style={{cursor: 'pointer'}}>연계기관 담당자</span></ReactBootStrap.Navbar.Brand>
-                <ReactBootStrap.Nav className="mr-auto">
-                <ReactBootStrap.NavDropdown title="멘토링활동" id="basic-nav-dropdown">
-                        <ReactBootStrap.NavDropdown.Item href="#Mentor/menu1">활동조회</ReactBootStrap.NavDropdown.Item>
-                        <ReactBootStrap.NavDropdown.Item href="#action/3.2">멘토 모집</ReactBootStrap.NavDropdown.Item>
-                        <ReactBootStrap.NavDropdown.Item href="#action/3.3">멘토링 신청 내역 조회</ReactBootStrap.NavDropdown.Item>
-                        <ReactBootStrap.NavDropdown.Divider/>
-                        <ReactBootStrap.NavDropdown.Item href="#action/3.4">QR코드 스캔</ReactBootStrap.NavDropdown.Item>
-                </ReactBootStrap.NavDropdown>
-                        <ReactBootStrap.NavDropdown title="커뮤니티" id="basic-nav-dropdown">
-                        <ReactBootStrap.NavDropdown.Item href="#Mentor/menu1">공지사항</ReactBootStrap.NavDropdown.Item>
-                        <ReactBootStrap.NavDropdown.Item href="#action/3.2">자유게시판</ReactBootStrap.NavDropdown.Item>
-                        <ReactBootStrap.NavDropdown.Item href="#action/3.3">멘토링 모집</ReactBootStrap.NavDropdown.Item>
-                        <ReactBootStrap.NavDropdown.Divider/>                        
-                    </ReactBootStrap.NavDropdown>                  
-                    <ReactBootStrap.NavDropdown title="쪽지" id="basic-nav-dropdown">
-                        <ReactBootStrap.NavDropdown.Item href="#Mentor/menu1">쪽지 조회</ReactBootStrap.NavDropdown.Item>
-                        <ReactBootStrap.NavDropdown.Item href="#action/3.2">쪽지 보내기</ReactBootStrap.NavDropdown.Item>
-                        
-                        <ReactBootStrap.NavDropdown.Divider/>                        
-                    </ReactBootStrap.NavDropdown> 
-     
-                 
-                </ReactBootStrap.Nav>
-                <ReactBootStrap.Form inline="inline">                   
-                <ReactBootStrap.Button variant="outline-light">회원정보</ReactBootStrap.Button>
-                <ReactBootStrap.Button variant="outline-light" href="/">로그아웃</ReactBootStrap.Button>
-                </ReactBootStrap.Form>
-            </ReactBootStrap.Navbar>
-            hello, i'm HeaderLinkAgencyManager        
-            <br /> 
+            <div class = "top-header">
+                <div class = "left">
+                    <img class = "headerLogo" src={midamLogo} art="midam"></img>
+                    <h4 class = "title">미담장학회</h4>
+                </div>
+                
+            </div>
+            <div class ="nav-bar">
+                <Navbar color="primary" light expand="md" padding = ".2%" variant="dark">
+                    <NavbarToggler onClick={toggle} />
+                        <Collapse isOpen={isOpen} navbar>
+                            <Nav className="mr-auto" navbar>
+                                <NavItem>
+                                    <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle nav caret><span class = "nav-title">커뮤니티</span></DropdownToggle>
+                                            <DropdownMenu left>
+                                                <DropdownItem onClick = {()=>setSelectedMenu("게시판 보기")}><span>게시판 보기</span></DropdownItem>
+                                                <DropdownItem onClick = {()=>setSelectedMenu("멘토링 모집")}><span>멘토링 모집</span></DropdownItem>
+                                            </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </NavItem>
+                                <NavItem>
+                                    <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle nav caret><span class = "nav-title">쪽지</span></DropdownToggle>
+                                            <DropdownMenu left>
+                                                <DropdownItem onClick = {()=>setSelectedMenu("쪽지 조회")}><span>쪽지 조회</span></DropdownItem>
+                                                <DropdownItem onClick = {()=>setSelectedMenu("쪽지 보내기")}><span>쪽지 보내기</span></DropdownItem>
+                                            </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </NavItem>
+                                
+                                </Nav>
+                                <Nav className="mr-right" navbar >
+                                    <NavItem variant="outline-light">
+                                        <div class = "right">
+                                        <Button className = "header-bnt w-75" color="light" onClick={open}><span>QR 스캔</span></Button>
+                                            <Modal>
+                                                <div className = "pop-up">
+                                                    <Test/>
+                                                </div>
+                                                 <Button onClick={close}>CLOSE</Button>
+                                            </Modal>
+                                            <Button className = "header-bnt w-75" color="light" onClick = {props.logOut}><span>Log out</span></Button>
+                                        </div>
+                                    </NavItem>
+                                </Nav>
+                            </Collapse>
+                    </Navbar>
+            </div>
         </div>
     )
 }

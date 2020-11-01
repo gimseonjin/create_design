@@ -33,8 +33,6 @@ const HeaderSystemManager = (props) => {
         preventScroll: true
     });
 
-    const [selectedMenu, setSelectedMenu] = useState(null);
-
     return (
         <div>
             <div class = "top-header">
@@ -74,7 +72,16 @@ const HeaderSystemManager = (props) => {
                                 <Nav className="mr-right" navbar >
                                     <NavItem variant="outline-light">
                                         <div class = "right">
-                                            <Button className = "header-bnt w-75" color="light"><span>Log out</span></Button>
+
+                                        <Button className = "header-bnt w-75" color="light" onClick={open}><span>QR 스캔</span></Button>
+                                            <Modal>
+                                                <div className = "pop-up">
+                                                    <Test/>
+                                                </div>
+                                                 <Button onClick={close}>CLOSE</Button>
+                                            </Modal>
+                                            <Button className = "header-bnt w-75" color="light" onClick = {props.logOut}><span>Log out</span></Button>
+
                                         </div>
                                     </NavItem>
                                 </Nav>
