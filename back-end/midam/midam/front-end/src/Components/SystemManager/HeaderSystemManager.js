@@ -32,6 +32,7 @@ const HeaderSystemManager = (props) => {
     const [Modal, open, close, isOpenPop] = useModal('root', {
         preventScroll: true
     });
+    const [selectedMenu, setSelectedMenu] = useState("");
 
     return (
         <div>
@@ -75,9 +76,7 @@ const HeaderSystemManager = (props) => {
 
                                         <Button className = "header-bnt w-75" color="light" onClick={open}><span>QR 스캔</span></Button>
                                             <Modal>
-                                                <div className = "pop-up">
-                                                    <Test/>
-                                                </div>
+                                               
                                                  <Button onClick={close}>CLOSE</Button>
                                             </Modal>
                                             <Button className = "header-bnt w-75" color="light" onClick = {props.logOut}><span>Log out</span></Button>

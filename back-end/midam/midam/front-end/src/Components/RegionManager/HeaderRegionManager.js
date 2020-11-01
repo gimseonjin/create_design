@@ -21,8 +21,7 @@ import {
     CardTitle,
     CardSubtitle
   } from 'reactstrap';
-import midamLogo from './imp/midam.png';
-import './Header.css';
+import midamLogo from '../img/midam.png';
 import useModal from 'react-hooks-use-modal';
 import '../Css/Header.css';
 
@@ -52,8 +51,8 @@ const HeaderRegionManager = (props) => {
                                     <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">커뮤니티</span></DropdownToggle>
                                             <DropdownMenu left>
-                                                <DropdownItem onClick = {()=>setSelectedMenu("게시판 보기")}><span>게시판 보기</span></DropdownItem>
-                                                <DropdownItem onClick = {()=>setSelectedMenu("멘토링 모집")}><span>멘토링 모집</span></DropdownItem>
+                                                <DropdownItem><span>게시판 보기</span></DropdownItem>
+                                                <DropdownItem><span>멘토링 모집</span></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </NavItem>
@@ -61,10 +60,10 @@ const HeaderRegionManager = (props) => {
                                     <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">쪽지</span></DropdownToggle>
                                             <DropdownMenu left>
-                                                <DropdownItem onClick = {()=>setSelectedMenu("쪽지 조회")}><span>쪽지 조회</span></DropdownItem>
-                                                <DropdownItem onClick = {()=>setSelectedMenu("쪽지 보내기")}><span>쪽지 보내기</span></DropdownItem>
-                                                <DropdownItem onClick = {()=>setSelectedMenu("멘토링 신청 내역 조회")}><span>멘토링 신청 내역 조회</span></DropdownItem>
-                                                <DropdownItem onClick = {()=>setSelectedMenu("QR코드 생성")}><span>QR코드 생성</span></DropdownItem>
+                                                <DropdownItem><span>쪽지 조회</span></DropdownItem>
+                                                <DropdownItem><span>쪽지 보내기</span></DropdownItem>
+                                                <DropdownItem><span>멘토링 신청 내역 조회</span></DropdownItem>
+                                                <DropdownItem><span>QR코드 생성</span></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </NavItem>
@@ -75,9 +74,7 @@ const HeaderRegionManager = (props) => {
                                         <div class = "right">
                                         <Button className = "header-bnt w-75" color="light" onClick={open}><span>QR 스캔</span></Button>
                                             <Modal>
-                                                <div className = "pop-up">
-                                                    <Test/>
-                                                </div>
+                                    
                                                  <Button onClick={close}>CLOSE</Button>
                                             </Modal>
                                             <Button className = "header-bnt w-75" color="light" onClick = {props.logOut}><span>Log out</span></Button>

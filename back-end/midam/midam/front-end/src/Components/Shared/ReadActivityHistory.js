@@ -19,8 +19,9 @@ const ReadActivityHistory=(props)=> {
     const toggleCreateReport = () => setModalCreateReport(!modalCreateReport);
     const toggleCreateQR = () => setModalCreateQR(!modalCreateQR);
     const toggleExportExcel = () => setModalExportExcel(!modalExportExcel);
-    const [historyArrays, setHistoryArrays] = useState([]);
-
+    /* const [historyArrays, setHistoryArrays] = useState([]); */
+    let historyArrays = [];
+    function setHistoryArrays(newArray){ historyArray = newArray; }
     const renderInput = (historyArray, index)=>{
         return(
             <tr key={index}>
@@ -45,10 +46,11 @@ const ReadActivityHistory=(props)=> {
       
     }
 
-    async function getActivityHistory (form) {
-        await axios.post('http://localhost:8080/reqActivityHistory',form).then((response)=>{
+    function getActivityHistory (form) {
+        axios.post('http://localhost:8080/reqActivityHistory',form).then((response)=>{
             console.log(response.data+"response");
-        setHistoryArrays(response.data); console.log(historyArrays+"infunction");
+        setHistoryArrays((historyArrays)=>{return response.data}); 
+        setTableData(historyArrays.map(renderInput))
         }
             );
     }
