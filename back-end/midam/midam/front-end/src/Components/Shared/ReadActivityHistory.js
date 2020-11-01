@@ -14,28 +14,66 @@ const ReadActivityHistory=(props)=> {
     const [modalCreateReport, setModalCreateReport] = useState(false); 
     const [modalCreateQR, setModalCreateQR] = useState(false); 
     const [modalExportExcel, setModalExportExcel] = useState(false); 
-    
 
     const toggleCreateReport = () => setModalCreateReport(!modalCreateReport);
     const toggleCreateQR = () => setModalCreateQR(!modalCreateQR);
     const toggleExportExcel = () => setModalExportExcel(!modalExportExcel);
     /* const [historyArrays, setHistoryArrays] = useState([]); */
+     /* setState가 비동기적이라 setHistoryArrays 한 이후 그것을 tableData로 출력할 시 받아온
+     값이아닌 기존 값이 출력되어 빈칸나옴. 그래서 state안쓰고 변수로 선언해서씀 */
     let historyArrays = [];
-    function setHistoryArrays(newArray){ historyArray = newArray; }
+    let modalInput = "";
+    function setHistoryArrays(newArrays){ historyArrays = newArrays; }
     const renderInput = (historyArray, index)=>{
+        
+        var statusValue="default";
+        var ButtonValue="default";
+        var ButtonColor="secondary";
+        var ButtonAction=historyArray.activityHistoryCode;
+
+        switch(historyArray.status){
+            case '0':
+                statusValue="보고서미작성"
+                ButtonValue="작성";
+                break;
+            case '1':
+                statusValue="미승인";
+                ButtonValue="조회";
+                ButtonColor="primary";
+                break;
+            case '2':
+                statusValue="승인완료";
+                ButtonValue="조회";
+                ButtonColor="primary";
+                break;
+            case '3':
+                statusValue="반려";
+                ButtonValue="조회";
+                ButtonColor="danger";
+                break;
+            case '-1':
+                statusValue="비활성화";
+                ButtonValue="조회불가";
+                ButtonColor="danger";
+                break;
+        }
+
+        
+        
         return(
             <tr key={index}>
-                <th>{index}</th>
+                <th>{historyArray.activityHistoryCode}</th>
                 <td>{historyArray.date}</td>
                 <td>{historyArray.startTime}</td>
                 <td>{historyArray.endTime}</td>
-                <td>{historyArray.report}</td>
-                <td>{historyArray.status}</td>
+                <td>{historyArray.report}<Button color={ButtonColor} onClick={}>{ButtonValue}</Button></td>
+                <td>{statusValue}</td>
             </tr>
         )
     }
-    const pushToArray = () => {
+    /* 보고서 버튼 값 출력 */
 
+    /* const pushToArray = () => {
         setHistoryArrays(historyArrays=>[...historyArrays,{
             "date" : "2020-10-10",
             "startTime" : "15:00",
@@ -43,13 +81,12 @@ const ReadActivityHistory=(props)=> {
             "report" : "미작성",
             "status" : "신규1"
         }]);
-      
-    }
+    } */
 
     function getActivityHistory (form) {
-        axios.post('http://localhost:8080/reqActivityHistory',form).then((response)=>{
+        axios.post('http://localhost:8080/mentor/activityHistory/read',form).then((response)=>{
             console.log(response.data+"response");
-        setHistoryArrays((historyArrays)=>{return response.data}); 
+        setHistoryArrays(response.data); 
         setTableData(historyArrays.map(renderInput))
         }
             );
