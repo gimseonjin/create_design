@@ -78,7 +78,6 @@ const HeaderMentor = ({match, history}) => {
                 <Route exact path={`${match.path}/axiosTest`} component = {Post}></Route>
             </Switch>
             
-            <UserListComponent></UserListComponent>
         </div>
     )
 }

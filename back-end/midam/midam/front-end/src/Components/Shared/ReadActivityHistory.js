@@ -19,64 +19,45 @@ const ReadActivityHistory=(props)=> {
     const toggleCreateReport = () => setModalCreateReport(!modalCreateReport);
     const toggleCreateQR = () => setModalCreateQR(!modalCreateQR);
     const toggleExportExcel = () => setModalExportExcel(!modalExportExcel);
-    const [inputs, setInputs] = useState([
-        {
-            "date" : "2020-10-10",
-            "startTime" : "15:00",
-            "endTime": "17:00",
-            "report" : "미작성",
-            "state" : "미승인"
-        },
-        {
-            "date" : "2020-10-10",
-            "startTime" : "15:00",
-            "endTime": "19:00",
-            "report" : "미작성",
-            "state" : "미승인"
-        },
-        {
-            "date" : "2020-1-10",
-            "startTime" : "15:00",
-            "endTime": "21:00",
-            "report" : "미작성",
-            "state" : "미승인"
-        }
+    const [historyArrays, setHistoryArrays] = useState([]);
 
-    ]);
-
-    const renderInput = (input, index)=>{
+    const renderInput = (historyArray, index)=>{
         return(
             <tr key={index}>
                 <th>{index}</th>
-                <td>{input.date}</td>
-                <td>{input.startTime}</td>
-                <td>{input.endTime}</td>
-                <td>{input.report}</td>
-                <td>{input.state}</td>
+                <td>{historyArray.date}</td>
+                <td>{historyArray.startTime}</td>
+                <td>{historyArray.endTime}</td>
+                <td>{historyArray.report}</td>
+                <td>{historyArray.status}</td>
             </tr>
         )
     }
     const pushToArray = () => {
 
-        setInputs(inputs=>[...inputs,{
+        setHistoryArrays(historyArrays=>[...historyArrays,{
             "date" : "2020-10-10",
             "startTime" : "15:00",
             "endTime": "19:00",
             "report" : "미작성",
-            "state" : "신규1"
+            "status" : "신규1"
         }]);
       
     }
 
-    const getActivityHistory = (form) => {
-
+    async function getActivityHistory (form) {
+        await axios.post('http://localhost:8080/reqActivityHistory',form).then((response)=>{
+            console.log(response.data+"response");
+        setHistoryArrays(response.data); console.log(historyArrays+"infunction");
+        }
+            );
     }
 
     useEffect(()=>{
         
       },[]
     )
-    // const [response, loading, error] = usePost('http://localhost:8080/testPost', input);
+    // const [response, loading, error] = usePost('http://localhost:8080/testPost', historyArray);
     
     return (
         <div className="container">
@@ -114,7 +95,14 @@ const ReadActivityHistory=(props)=> {
                         <Input type="date" name="startDate"></Input>~
                         <Input type="date" name="endDate"></Input>
                         </InputGroup>
-                        <Button className="float-right" color="primary" onClick={()=>{/* axios.데이터요청->inputs에 넣음 */ ;setTableData(inputs.map(renderInput)) ;console.log(inputs);}}>조회</Button>
+                        <Button className="float-right" color="primary" onClick={()=>{
+                            /* axios.데이터요청->inputs에 넣음 */
+                             var form=new FormData;
+                             form.append("id",localStorage.getItem('id'));
+                             getActivityHistory(form);
+                            console.log(historyArrays+"inButton");
+                            setTableData(historyArrays.map(renderInput)) ;
+                            }}>조회</Button>
                         {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
                         <Button color="primary" onClick={()=>setModalExportExcel(true)}>내보내기</Button>
                         <Button className="float-left" color="primary" onClick={()=>setModalCreateQR(true)}>QR 생성</Button>

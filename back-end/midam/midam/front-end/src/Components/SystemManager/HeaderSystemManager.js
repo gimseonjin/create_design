@@ -21,8 +21,7 @@ import {
     CardTitle,
     CardSubtitle
   } from 'reactstrap';
-import midamLogo from './imp/midam.png';
-import './Header.css';
+import midamLogo from '../img/midam.png';
 import useModal from 'react-hooks-use-modal';
 import '../Css/Header.css';
 
@@ -75,7 +74,7 @@ const HeaderSystemManager = (props) => {
                                 <Nav className="mr-right" navbar >
                                     <NavItem variant="outline-light">
                                         <div class = "right">
-                                            <Button className = "header-bnt w-75" color="light" onClick = {props.logOut}><span>Log out</span></Button>
+                                            <Button className = "header-bnt w-75" color="light"><span>Log out</span></Button>
                                         </div>
                                     </NavItem>
                                 </Nav>
