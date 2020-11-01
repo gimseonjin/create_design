@@ -29,7 +29,7 @@ const ReadActivityHistory=(props)=> {
         var statusValue="default";
         var ButtonValue="default";
         var ButtonColor="secondary";
-        var ButtonAction=historyArray.activityHistoryCode;
+        modalInput=historyArray.activityHistoryCode;
 
         switch(historyArray.status){
             case '0':
@@ -66,7 +66,7 @@ const ReadActivityHistory=(props)=> {
                 <td>{historyArray.date}</td>
                 <td>{historyArray.startTime}</td>
                 <td>{historyArray.endTime}</td>
-                <td>{historyArray.report}<Button color={ButtonColor} onClick={}>{ButtonValue}</Button></td>
+                <td>{historyArray.report}<Button color={ButtonColor} onClick={toggleCreateReport}>{ButtonValue}</Button></td>
                 <td>{statusValue}</td>
             </tr>
         )
@@ -175,7 +175,7 @@ const ReadActivityHistory=(props)=> {
 
             <Modal isOpen={modalCreateReport}>
                 <ModalHeader toggle={toggleCreateReport}>활동보고서</ModalHeader>
-                <CreateReport></CreateReport>
+                <CreateReport activityHistoryCode={modalInput}></CreateReport>
 
             </Modal>
 

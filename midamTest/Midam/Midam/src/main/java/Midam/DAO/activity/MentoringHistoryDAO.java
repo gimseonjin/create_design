@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class MentoringHistoryDAO {
@@ -22,12 +23,11 @@ public class MentoringHistoryDAO {
     private String sql;
 
     private Connection getConnection(){
-        String url= "jdbc:mysql://localhost:3306/mydb?useSSL=false";
-        String admin ="root";
-        String password="emm05235";
+
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(url, admin, password);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=utf8", "root", "root");
+
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -50,7 +50,7 @@ public class MentoringHistoryDAO {
     }
 
     public boolean create(ActivityHistory activityHistory) { // 등록
-        sql = "insert into midam.activity_history(activityHistoryCode, mentoringActivityCode," +
+        sql = "insert into activity_history(activityHistoryCode, mentoringActivityCode," +
                 "linkAgencyManagerId, regionManagerId,mentorId,startTime)"
                 + " values(?, ?, ?, ?, ?, ?)";
         try {
@@ -74,7 +74,7 @@ public class MentoringHistoryDAO {
         return false;
     }           //출석
     public boolean update(ActivityHistory activityHistory) {
-        sql = "UPDATE midam.activity_history SET startTime= ?,endTime=?,activityContent=?,note=?,activityPicture=? where (mentorId=?)";
+        sql = "UPDATE activity_history SET startTime= ?,endTime=?,activityContent=?,note=?,activityPicture=? where (mentorId=?)";
         try {
 
             conn=getConnection();
@@ -100,7 +100,7 @@ public class MentoringHistoryDAO {
     public ActivityHistory read(int activityHistoryCode){
 
         ActivityHistory activityHistory = null;
-        String sql = "SELECT * FROM midam.activity_history where activityHistoryCode=?";
+        String sql = "SELECT * FROM activity_history where activityHistoryCode=?";
 
         try {
 
@@ -141,7 +141,7 @@ public class MentoringHistoryDAO {
     public ArrayList<ActivityHistory> getList(String linkAgencyCode){
 
         ArrayList<ActivityHistory> list =new ArrayList<ActivityHistory>();
-        String sql = "SELECT * FROM midam.activity_history where linkAgencyCode=?";
+        String sql = "SELECT * FROM activity_history where linkAgencyCode=?";
 
         try {
 
@@ -160,16 +160,49 @@ public class MentoringHistoryDAO {
                 activityHistory.setMentorId(rs.getString("mentorId"));
                 activityHistory.setStartTime(rs.getTimestamp("startTime"));
                 activityHistory.setEndTime(rs.getTimestamp("endTime"));
-                /*
-                user.setAuthority(rs.getInt("activityContent"));
-                user.setPhoneNumber(rs.getString("note"));
-                user.setPhoneNumber(rs.getString("activityPicture"));
-                user.setPhoneNumber(rs.getString("createDate"));
-                user.setPhoneNumber(rs.getString("approvalDate"));
-                user.setPhoneNumber(rs.getString("approvalStatus"));
-                user.setPhoneNumber(rs.getString("companionReason"));
-                */
+                
                 list.add(activityHistory);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return list;
+    }      //전체 활동내역 목록
+
+//    지훈.11.01 추가 - 멘토가 자신의 id를 통해 자기 활동 내역만 조회
+    public ArrayList<HashMap> getListMentor(String id){
+
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+        String sql = "SELECT * FROM activity_history where mentorId=? ";
+
+        try {
+
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);  //검색하기위해 입력한 아이디
+            ResultSet rs= pstmt.executeQuery();
+
+
+            while(rs.next()) {
+
+                ActivityHistory activityHistory =new ActivityHistory();
+
+                HashMap historyHashMap = new HashMap();
+                historyHashMap.put("activityHistoryCode",rs.getInt("activityHistoryCode"));
+                historyHashMap.put("mentoringActivityCode",rs.getString("mentoringActivityCode"));
+                historyHashMap.put("linkAgencyManagerId",rs.getString("linkAgencyManagerId"));
+                historyHashMap.put("regionManagerId",rs.getString("regionManagerId"));
+                historyHashMap.put("mentorId",rs.getString("mentorId"));
+                historyHashMap.put("startTime",rs.getTimestamp("startTime"));
+                historyHashMap.put("endTime",rs.getTimestamp("endTime"));
+                historyHashMap.put("date",rs.getString("createDate"));
+                historyHashMap.put("status",rs.getString("approvalStatus"));
+                historyHashMap.put("report",rs.getString("activityContent"));
+
+                list.add(historyHashMap);
             }
         }catch(Exception e) {
             e.printStackTrace();

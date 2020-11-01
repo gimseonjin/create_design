@@ -3,16 +3,18 @@ import { Button, CustomInput, Form, FormGroup, Input, InputGroup, InputGroupAddo
 
 //활동보고서 작성
 //활동 보고서 조회 페이지 필요할지. 여기서 함께할지 논의.
-function CreateReport() {
+const CreateReport=(props)=>{
+
     return (
         <div>
+            <h1>props.activityHistoryCode : {props.activityHistoryCode}</h1>
             <Form>
                 <FormGroup>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>날짜</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="dayOfActivity" placeholder="날짜 입력"></Input>
+                         <Input type="text" name="dayOfActivity" placeholder="날짜 입력"></Input>
                     </InputGroup>
                     
                     <InputGroup>
