@@ -27,8 +27,7 @@ import useModal from 'react-hooks-use-modal';
 import '../Css/Header.css';
 import QrScanner from '../Shared/QrScanner';
 
-const HeaderRegionManager = (props) => {
-
+const HeaderRegionManager = ({match, history}) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
     const [Modal, open, close, isOpenPop] = useModal('root', {
@@ -78,10 +77,13 @@ const HeaderRegionManager = (props) => {
                                             <Modal>
                                                 <div className = "pop-up">
                                                     <QrScanner/>
+                                                    <Button onClick={close}>CLOSE</Button>
                                                 </div>
-                                                 <Button onClick={close}>CLOSE</Button>
                                             </Modal>
-                                            <Button className = "header-bnt w-75" color="light" onClick = {props.logOut}><span>Log out</span></Button>
+                                            <Button className = "header-bnt w-75" color="light" onClick = {
+                                                () => {localStorage.setItem("userToken", "null");
+                                                history.push("/")
+                                                }}><span>Log out</span></Button>
                                         </div>
                                     </NavItem>
                                 </Nav>

@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {BrowserRouter, Router, Route, Switch, Link, HashRouter} from 'react-router-dom';
 import {Button, 
     Collapse,
@@ -35,6 +35,8 @@ import Post from '../Shared/Post';
 import useModal from 'react-hooks-use-modal';
 import QRCode from 'qrcode.react';
 import midamLogo from '../img/midam.png';
+import establishment from '../img/establishment.png';
+import axios from 'axios';
 
 const HeaderMentor = ({match, history}) => {
     
@@ -43,10 +45,7 @@ const HeaderMentor = ({match, history}) => {
     const [Modal, open, close, isOpenPop] = useModal('root', {
         preventScroll: true
     });
-    
-    const testFunction = () => {
-        console.log(localStorage.getItem("id")+ ", " + localStorage.getItem("authority"));
-    }
+
     return (
         <div>
             <div>
@@ -99,7 +98,7 @@ const HeaderMentor = ({match, history}) => {
                                         <DropdownToggle nav caret><span class = "nav-title">쪽지</span></DropdownToggle>
                                             <DropdownMenu left>
                                                 <DropdownItem><span>쪽지 조회</span></DropdownItem>
-                                                <DropdownItem onClick={testFunction}><span>쪽지 보내기</span></DropdownItem>
+                                                <DropdownItem><span>쪽지 보내기</span></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </NavItem>
@@ -115,7 +114,7 @@ const HeaderMentor = ({match, history}) => {
                                                         <CardBody>
                                                             <CardTitle>내 QR 정보</CardTitle>
                                                         </CardBody>
-                                                        <QRCode value = {"test"} size = "100" includeMargin = "true"/>
+                                                        <QRCode value = {localStorage.getItem("userToken")} size = "100" includeMargin = "true"/>
                                                         <CardBody className = "pop-card" padding = "10px">
                                                             <CardText>QR 코드는 봉사활동 참가 확인용입니다.
                                                             <br/>타인에게 무단으로 넘겨주지 마세요.</CardText>
@@ -124,7 +123,10 @@ const HeaderMentor = ({match, history}) => {
                                                     </Card>
                                                 </div>
                                             </Modal>
-                                            <Button className = "header-bnt w-75" color="light"><span>Log out</span></Button>
+                                            <Button className = "header-bnt w-75" color="light" onClick = {
+                                                () => {localStorage.setItem("userToken", " ");
+                                                history.push("/")
+                                                }}><span>Log out</span></Button>
                                         </div>
                                     </NavItem>
                                 </Nav>
@@ -134,22 +136,19 @@ const HeaderMentor = ({match, history}) => {
         </div>
 
             <Switch>
+                <Route exact path={`${match.path}`} children={<img class = "establishment" src={establishment} art="midam"></img>}></Route>
                 <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
                 <Route exact path={`${match.path}/withdraw`} component={Withdraw}></Route>
                 <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistory}></Route>
                 <Route exact path={`${match.path}/createReport`} component={CreateReport}></Route>
                 <Route exact path={`${match.path}/readMentoringApplication`} component={ReadMentoringApplication}></Route>
-                
                 {/* 활동 */}
                 <Route exact path={`${match.path}/readActivityHistory`} component = {ReadActivityHistory}></Route>
                 <Route exact path={`${match.path}/readMentoringApplication`} component = {ReadMentoringApplication}></Route>
-
                 {/* 커뮤니티 */}
                 <Route exact path={`${match.path}/readPost`} component = {ReadPost}></Route>
-
                 <Route exact path={`${match.path}/axiosTest`} component = {Post}></Route>
             </Switch>
-            
         </div>
     )
 }

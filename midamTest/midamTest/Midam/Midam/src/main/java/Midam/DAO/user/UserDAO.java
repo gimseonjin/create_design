@@ -20,8 +20,6 @@ public class UserDAO {
     public UserDAO() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=utf8", "root", "root");
-
-
     }
     
 //    로그인기능, id로 조회하여 password, 권한 일치여부 검사 후 권한반환
