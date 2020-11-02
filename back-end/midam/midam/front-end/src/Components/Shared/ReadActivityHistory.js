@@ -6,6 +6,7 @@ import ExportMentoringActivity from '../LinkAgencyManager/ExportMentoringActivit
 import useRequest from './useRequest';
 import axios from 'axios';
 import usePost from './usePost';
+import $ from 'jquery';
 
 //활동 내역 조회
 const ReadActivityHistory=(props)=> {
@@ -22,14 +23,13 @@ const ReadActivityHistory=(props)=> {
      /* setState가 비동기적이라 setHistoryArrays 한 이후 그것을 tableData로 출력할 시 받아온
      값이아닌 기존 값이 출력되어 빈칸나옴. 그래서 state안쓰고 변수로 선언해서씀 */
     let historyArrays = [];
-    let modalInput = "";
+    const [modalInput,setModalInput] = useState("default");
     function setHistoryArrays(newArrays){ historyArrays = newArrays; }
     const renderInput = (historyArray, index)=>{
         
         var statusValue="default";
         var ButtonValue="default";
         var ButtonColor="secondary";
-        modalInput=historyArray.activityHistoryCode;
 
         switch(historyArray.status){
             case '0':
@@ -66,7 +66,7 @@ const ReadActivityHistory=(props)=> {
                 <td>{historyArray.date}</td>
                 <td>{historyArray.startTime}</td>
                 <td>{historyArray.endTime}</td>
-                <td>{historyArray.report}<Button color={ButtonColor} onClick={toggleCreateReport}>{ButtonValue}</Button></td>
+                <td>{historyArray.report}<Button className="reportButton" color={ButtonColor} >{ButtonValue}</Button></td>
                 <td>{statusValue}</td>
             </tr>
         )
@@ -85,19 +85,44 @@ const ReadActivityHistory=(props)=> {
 
     function getActivityHistory (form) {
         axios.post('http://localhost:8080/mentor/activityHistory/read',form).then((response)=>{
-            console.log(response.data+"response");
         setHistoryArrays(response.data); 
         setTableData(historyArrays.map(renderInput))
         }
             );
     }
 
-    useEffect(()=>{
+   /*  useEffect(()=>{
         
       },[]
-    )
-    // const [response, loading, error] = usePost('http://localhost:8080/testPost', historyArray);
+    ) */
     
+    // jquery 사용. 버튼 클릭시 해당 Row 값을 가져오기
+    $(function() {
+    $(".reportButton").on("click",function(){
+        
+        var str = "";
+        var tdArr = new Array();
+        var reportButton = $(this);
+
+        var tr = reportButton.parent().parent();
+        var td = tr.children();
+        console.log("row데이터 : "+td.eq(0).text());
+        setModalInput(td.eq(0).text());
+        toggleCreateReport();
+    }
+
+    )
+})
+    /* function testFunction(){
+        console.log("test");
+        var reportButton = $(this);
+        var tr = reportButton.parent().parent();
+        var td = tr.children();
+        console.log("row데이터 : "+tr.text());
+         
+
+    } */
+
     return (
         <div className="container">
         
@@ -152,9 +177,9 @@ const ReadActivityHistory=(props)=> {
 
                 {/* 활동 내역 테이블 */}
                 <Col>
-                    <Table className="text-nowrap">
+                    <Table>
                         {/* 문자 안끊기게 */}
-                        <thead>
+                        <thead  className="text-nowrap">
                             {/* 열 이름부분 */}
                             <tr>
                                 <th>#</th>
