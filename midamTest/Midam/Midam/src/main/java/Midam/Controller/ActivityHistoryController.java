@@ -81,10 +81,6 @@ public class ActivityHistoryController {
 
         return resultBlob;
     }
-    public  MultipartFile BlobToMultipartFile(Blob blob){
-        MultipartFile resultFile;
-        javax.sql.rowset.serial.
-        return resultFile;
-    }
+
 
 }

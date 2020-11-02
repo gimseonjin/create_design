@@ -23,7 +23,7 @@ public class SignInController {
 
     @ResponseBody
     @PostMapping(value="/signIn")
-    public HashMap signIn(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+    public HashMap createUser(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
         HashMap result = new HashMap();
         String id = request.getParameter("id");
@@ -40,7 +40,7 @@ public class SignInController {
 
         UserDAO userDAO = new UserDAO();
 
-        int createResult = UserDAO.create(id,password,name,gender,age,address,phoneNumber,authority);
+        int createResult = userDAO.createUser(id,password,name,gender,age,address,phoneNumber,authority);
         result.put("responseMsg",createResult);
         return result;
     }

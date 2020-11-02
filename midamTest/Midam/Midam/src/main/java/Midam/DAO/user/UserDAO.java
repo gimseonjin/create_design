@@ -96,7 +96,7 @@ public class UserDAO {
         }
         return null;
     }
-    public int create(String id, String password, String name, String gender, int age, String address, String phoneNumber, int authority) { // 등록
+    public int createUser(String id, String password, String name, String gender, int age, String address, String phoneNumber, int authority) { // 등록
         int result =0;
         sql = "insert into user (id, password, name, gender, age, address, phoneNumber, authority) values(?, ?, ?, ?, ?, ?, ?, ?)";
         try {
