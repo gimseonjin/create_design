@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Router, Switch, Route, Link, useLocation} from 'react-router-dom';
 import HeaderMentor from '../Mentor/HeaderMentor';
 import HeaderRegionManager from '../RegionManager/HeaderRegionManager';
@@ -10,9 +10,11 @@ import InquiryOfLinkAgency from '../Shared/InquiryOfLinkAgency'
 import PageNotFound from './PageNotFound';
 
 function PageRouter() {
+    useEffect(() => {
+        localStorage.setItem("userToken", " ");
+      });
     return(
         <div >
-            
             <Switch>
                 <Route exact path="/" component = {Login} />
                 <Route path="/mentor" component={HeaderMentor} />
@@ -22,10 +24,7 @@ function PageRouter() {
                 <Route path="/SignIn" component={SignInRouter} />
                 <Route path="/Inquiry" component={InquiryOfLinkAgency} />
                 <Route path="/*" component={PageNotFound} />
-
             </Switch>
-          
-        
         </div>
     )
 }
