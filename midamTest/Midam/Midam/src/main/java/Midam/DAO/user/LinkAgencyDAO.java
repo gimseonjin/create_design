@@ -14,7 +14,7 @@ public class LinkAgencyDAO {UserDAO userDAO = new UserDAO();
 
     public LinkAgencyDAO() throws SQLException, ClassNotFoundException {
     }
-
+/*
     public String create(LinkAgencyManager linkAgencyManager) { // 등록
         sql = "insert into LinkAgencyManager(id, linkAgencyCode) values(?, ?)";
         try {
@@ -55,4 +55,5 @@ public class LinkAgencyDAO {UserDAO userDAO = new UserDAO();
         }
         return "false2";
     }
+    */
 }

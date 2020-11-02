@@ -21,19 +21,19 @@ import {
 } from 'reactstrap';
 import classnames from 'classnames';
 import axios from 'axios';
-const SignIn = ({props, history}) => {
+function SignIn(props,{history}) {
 
-    const [rSelected, setRSelected] = useState(1);
-    const [activeTab, setActiveTab] = useState(null);
+    const [rSelected, setRSelected] = useState();
+    const [activeTab, setActiveTab] = useState();
 
-    const [id, setId] = useState(null);
-    const [password, setPassword] = useState(null);
-    const [name, setName] = useState(null);
-    const [gender, setGender] = useState(null);
-    const [age, setAge] = useState(null);
-    const [address, setAddress] = useState(null);
-    const [phoneNumber, setPhoneNumber] = useState(null);
-    const [authority, setAuthority] = useState(null);
+    const [id, setId] = useState();
+    const [password, setPassword] = useState();
+    const [name, setName] = useState();
+    const [gender, setGender] = useState();
+    const [age, setAge] = useState();
+    const [address, setAddress] = useState();
+    const [phoneNumber, setPhoneNumber] = useState();
+    const [authority, setAuthority] = useState();
 
     const handleSubmitId = (e) => {
         e.preventDefault();
@@ -73,9 +73,21 @@ const SignIn = ({props, history}) => {
     const toggle = tab => {
       if(activeTab !== tab) setActiveTab(tab);
     }
-    const signInPost = (form) => {
-        axios.post("http://localhost:8080/user/signIn", form).then((response)=>{
+    const signInPost = () => {
+        var form = new FormData;
+        form.append('id', id);
+        form.append('password', password);
+        form.append('name', name);
+        form.append('gender', gender);
+        form.append('age', age);
+        form.append('address', address);
+        form.append('phoneNumber', phoneNumber);
+        form.append('authority', authority);
+
+        axios.post("http://localhost:8080/user/createUser", form,{headers: {'content-type':'multipart/form-data'}}).then((response)=>{
          console.log(response.data.authority);
+         history.push("/");
+         /*
          switch(response.data.authority) {
              case 0:
              case -1:
@@ -87,13 +99,14 @@ const SignIn = ({props, history}) => {
              case 1:
              case 2:
 
-                 localStorage.setItem("id",id);
-                 localStorage.setItem("authority",response.data.authority);
-                 console.log("/"+response.data.authorityName)
-                 console.log("fromlocalstrorage: "+localStorage.getItem("id"));
-                 history.push("/");
+                // localStorage.setItem("id",id);
+               //  localStorage.setItem("authority",response.data.authority);
+               //  console.log("/"+response.data.authorityName)
+            //     console.log("fromlocalstrorage: "+localStorage.getItem("id"));
+            //     history.push("/");
                  break;
          }
+         */
      })
     }
         return (
@@ -104,15 +117,25 @@ const SignIn = ({props, history}) => {
                 }}>
                  <Form className="w-75">
                     <h3 style={{
-                            marginBottom: '5%'
-                            
+                            marginBottom: '5%'                            
                         }}>멘토</h3>
-
+                    <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
+                        <InputGroupAddon addonType="prepend">
+                            <InputGroupText className = "input-group-addon">권한</InputGroupText>
+                        </InputGroupAddon>
+                        <Col sm={4}>
+                            <Input type='select' name="authority" onChange={handleSubmitAuthority}>
+                            {/* 여기에 option을 지역본부를 DB에서 select 해서 for문으로 추가하면 될듯! */}
+                                <option>선택</option>
+                                <option value='1'>멘토</option>                                
+                            </Input>
+                        </Col>
+                    </InputGroup> 
                     <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">이름</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text' name='name'/>
+                        <Input type='text' name="name"onChange={handleSubmitName}/>
                     </InputGroup>                    
                  
                     <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
@@ -120,7 +143,7 @@ const SignIn = ({props, history}) => {
                             <InputGroupText className = "input-group-addon">성별</InputGroupText>
                         </InputGroupAddon>
                         <Col sm={4}>
-                            <Input type='select' name='gender'>
+                            <Input type='select' name='gender'onChange={handleSubmitGender} >
                             {/* 여기에 option을 지역본부를 DB에서 select 해서 for문으로 추가하면 될듯! */}
                                 <option>선택</option>
                                 <option value='M'>남성</option>
@@ -133,7 +156,7 @@ const SignIn = ({props, history}) => {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">나이</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text'  name='age'/>
+                        <Input type='text'  name='age' onChange={handleSubmitAge}/>
                     </InputGroup>
 
                     
@@ -141,7 +164,7 @@ const SignIn = ({props, history}) => {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">아이디</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text'  name='id'/>
+                        <Input type='text'  name='id'onChange={handleSubmitId}/>
                     </InputGroup>
 
                     
@@ -149,7 +172,7 @@ const SignIn = ({props, history}) => {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">비밀번호</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='password'  name='password'/>
+                        <Input type='password'  name='password'onChange={handleSubmitPw}/>
                     </InputGroup>
 
                     
@@ -181,7 +204,7 @@ const SignIn = ({props, history}) => {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">휴대폰 번호</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text'  name='phoneNumber'/>
+                        <Input type='text'  name='phoneNumber'onChange={handleSubmitPhoneNumber}/>
                     </InputGroup>
 
                     
@@ -189,7 +212,7 @@ const SignIn = ({props, history}) => {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">주소</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text'  name='address'/>
+                        <Input type='text'  name='address'onChange={handleSubmitAddress}/>
                     </InputGroup>
 
                     <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
@@ -202,19 +225,7 @@ const SignIn = ({props, history}) => {
                     <Button onClick={()=>history.push("/")} style={{float: 'right'}}>취소</Button>
                    
                   
-                    <Button  className="btn btn-primary btn-block w-25" style={{float: 'right'}} onClick={()=>{
-                            let form = new FormData();
-                            form.append('id', id);
-                            form.append('password', password);
-                            form.append('name', name);
-                            form.append('gender', gender);
-                            form.append('age', age);
-                            form.append('address', address);
-                            form.append('phoneNumber', phoneNumber);
-                            form.append('authority', authority);
-
-                            signInPost(form);
-                            }}>회원가입</Button>
+                    <Button  className="btn btn-primary btn-block w-25" style={{float: 'right'}} type="post" onClick={signInPost}>회원가입</Button>
                     
                 </Form> 
                 

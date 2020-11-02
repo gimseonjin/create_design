@@ -36,16 +36,7 @@ public class UserInfoController {
         result.put("phoneNumber",user.getPhoneNumber());
         result.put("authority",user.getAuthority());
 
-        /*
-        String id;
-        String password;
-        String name;
-        String gender;
-        int age;
-        String address;
-        String phoneNumber;
-        int authority;
-*/
+
 
         return result;
     }

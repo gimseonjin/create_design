@@ -10,41 +10,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class MentorDAO {
+    public class MentorDAO {
 
-    UserDAO userDAO = new UserDAO();
+
 
     private Connection conn;
     private PreparedStatement pstmt;
+    private PreparedStatement pstmt2;
     private Statement stmt;
     private ResultSet rs;
     private String sql;
+    private String sql2;
+        private Connection getConnection(){
 
-    public MentorDAO() throws SQLException, ClassNotFoundException {
-    }
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=utf8", "root", "root");
 
-    public String create(Mentor mentor) { // 등록
-        sql = "insert into mentor(id, regionCode, 1365Id) values(?, ?, ?)";
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?useSSL=false", "root", "root");
-            System.out.println(conn);
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+            }
+            return conn;
+        }
 
-            User user = new User(mentor.getId(), mentor.getPassword(), mentor.getName(), mentor.getGender(), mentor.getAge(), mentor.getAddress(), mentor.getPhoneNumber(), mentor.getAuthority());
-            String userInsert = userDAO.create(user);
-            System.out.println(userInsert);
-            if (userInsert == "true") {
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, mentor.getId());
-                pstmt.setString(2, mentor.getRegionCode());
-                pstmt.setString(3, mentor.getVolunteerId());
-                int r = pstmt.executeUpdate();
-                return "true";
-            } else
-                return "false1";
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        } finally { // 사용순서와 반대로 close 함
+        private void closeConnection(Connection conn) {
             if (pstmt != null) {
                 try {
                     pstmt.close();
@@ -52,14 +41,31 @@ public class MentorDAO {
                     e.printStackTrace();
                 }
             }
-            if (conn != null) {
+            if(conn!=null) {
                 try {
                     conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                }catch(SQLException e) {}
             }
         }
-        return "false2";
-    }
+/*
+        public int create(String id, String regionCode, String volunteerId) { // 등록
+            int result =0;
+            sql = "insert into mentor (id, regionCode, 1365Id) values( ?, ?, ?)";
+            try {
+
+                conn=getConnection();
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, id);
+                pstmt.setString(2, regionCode);
+                pstmt.setString(3, volunteerId);
+
+                result= pstmt2.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                closeConnection(conn);
+            }
+            return result;
+        }
+*/
 }

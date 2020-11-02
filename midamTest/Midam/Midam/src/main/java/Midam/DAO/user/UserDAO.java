@@ -11,19 +11,39 @@ import java.sql.Statement;
 
 public class UserDAO {
 
-    private Connection conn;
+    private Connection conn=null;
     private PreparedStatement pstmt;
     private Statement stmt;
     private ResultSet rs;
     private String sql;
 
-    public UserDAO() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=utf8", "root", "root");
 
+    private Connection getConnection(){
 
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=utf8", "root", "root");
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return conn;
     }
-    
+
+    private void closeConnection(Connection conn) {
+        if (pstmt != null) {
+            try {
+                pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if(conn!=null) {
+            try {
+                conn.close();
+            }catch(SQLException e) {}
+        }
+    }
 //    로그인기능, id로 조회하여 password, 권한 일치여부 검사 후 권한반환
     public int login(String id, String password, int reqAuthority) {
         try {
@@ -76,44 +96,31 @@ public class UserDAO {
         }
         return null;
     }
-
-    public String create(User user) { // 등록
+    
+    //회원가입
+    public int createUser(String id, String password, String name, String gender, int age, String address, String phoneNumber, int authority) { // 등록
+        int result =0;
         sql = "insert into user (id, password, name, gender, age, address, phoneNumber, authority) values(?, ?, ?, ?, ?, ?, ?, ?)";
         try {
-           System.out.println(conn);
 
+            conn=getConnection();
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, user.getId());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getName());
-            pstmt.setString(4, user.getGender());
-            pstmt.setInt(5, user.getAge());
-            pstmt.setString(6, user.getAddress());
-            pstmt.setString(7, user.getPhoneNumber());
-            pstmt.setInt(8, user.getAuthority());
+            pstmt.setString(1, id);
+            pstmt.setString(2, password);
+            pstmt.setString(3, name);
+            pstmt.setString(4, gender);
+            pstmt.setInt(5, age);
+            pstmt.setString(6, address);
+            pstmt.setString(7, phoneNumber);
+            pstmt.setInt(8, authority);
 
-
-            int r = pstmt.executeUpdate();
-            return "true";
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally { // 사용순서와 반대로 close 함
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            result= pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
         }
-        return "false";
+        return result;
     }
 
 
