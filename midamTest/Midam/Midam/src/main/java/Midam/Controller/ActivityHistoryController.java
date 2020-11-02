@@ -70,6 +70,20 @@ public class ActivityHistoryController {
         return result;
     }
 
+    @ResponseBody
+    @PostMapping(value="/readReport")
+    public HashMap readReport(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+        HashMap result = new HashMap();
+        String id = request.getParameter("id");
+        String content = request.getParameter("content");
+        String note = request.getParameter("note");
+        int activityHistoryCode = Integer.parseInt(request.getParameter("activityHistoryCode"));
+        MultipartFile file;
+
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+        return result;
+    }
+
 
 
     public Blob multipartFileToBlob(MultipartFile file) throws IOException, SQLException {
@@ -78,13 +92,7 @@ public class ActivityHistoryController {
         bytes=file.getBytes();
         resultBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
 
-
         return resultBlob;
-    }
-    public  MultipartFile BlobToMultipartFile(Blob blob){
-        MultipartFile resultFile;
-        javax.sql.rowset.serial.
-        return resultFile;
     }
 
 }

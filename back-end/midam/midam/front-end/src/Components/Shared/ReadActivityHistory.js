@@ -13,9 +13,11 @@ const ReadActivityHistory=(props)=> {
     
     const [tableData, setTableData] = useState();
     const [modalCreateReport, setModalCreateReport] = useState(false); 
+    const [modalReadReport, setModalReadReport] = useState(false);
     const [modalCreateQR, setModalCreateQR] = useState(false); 
     const [modalExportExcel, setModalExportExcel] = useState(false); 
 
+    const toggleReadReport = () => setModalReadReport(!modalReadReport);
     const toggleCreateReport = () => setModalCreateReport(!modalCreateReport);
     const toggleCreateQR = () => setModalCreateQR(!modalCreateQR);
     const toggleExportExcel = () => setModalExportExcel(!modalExportExcel);
@@ -122,7 +124,7 @@ const ReadActivityHistory=(props)=> {
             var td = tr.children();
             console.log("row데이터 : "+td.eq(0).text());
             setModalInput(td.eq(0).text());
-            toggleCreateReport();
+            toggleReadReport();
         }
         )
 
@@ -218,21 +220,23 @@ const ReadActivityHistory=(props)=> {
             </Row>
 
             <Modal isOpen={modalCreateReport}>
-                <ModalHeader toggle={toggleCreateReport}>활동보고서</ModalHeader>
+                <ModalHeader toggle={toggleCreateReport}>활동보고서 작성</ModalHeader>
                 <CreateReport activityHistoryCode={modalInput}></CreateReport>
+            </Modal>
 
+            <Modal isOpen={modalReadReport}>
+                <ModalHeader toggle={toggleReadReport}>활동보고서 조회</ModalHeader>
+                <CreateReport activityHistoryCode={modalInput}></CreateReport>
             </Modal>
 
             <Modal isOpen={modalCreateQR}>
                 <ModalHeader toggle={toggleCreateQR}>QR코드 생성</ModalHeader>
                 <CreateQR></CreateQR>
-
             </Modal>
 
             <Modal isOpen={modalExportExcel}>
                 <ModalHeader toggle={toggleExportExcel}>활동 내역 내보내기</ModalHeader>
                 <ExportMentoringActivity></ExportMentoringActivity>
-
             </Modal>
         </div>
     )
