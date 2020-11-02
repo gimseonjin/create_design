@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class SignInController {
 
     @ResponseBody
-    @PostMapping(value="/signIn")
+    @PostMapping(value="/createUser")
     public HashMap createUser(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
         HashMap result = new HashMap();
