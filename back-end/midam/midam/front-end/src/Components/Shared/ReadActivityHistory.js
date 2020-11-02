@@ -29,7 +29,6 @@ const ReadActivityHistory=(props)=> {
         var statusValue="default";
         var ButtonValue="default";
         var ButtonColor="secondary";
-        modalInput=historyArray.activityHistoryCode;
 
         switch(historyArray.status){
             case '0':

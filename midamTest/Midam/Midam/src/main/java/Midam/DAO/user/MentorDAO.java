@@ -27,7 +27,7 @@ public class MentorDAO {
         sql = "insert into mentor(id, regionCode, 1365Id) values(?, ?, ?)";
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?useSSL=false", "root", "emm05235");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?useSSL=false", "root", "root");
             System.out.println(conn);
 
             User user = new User(mentor.getId(), mentor.getPassword(), mentor.getName(), mentor.getGender(), mentor.getAge(), mentor.getAddress(), mentor.getPhoneNumber(), mentor.getAuthority());

@@ -19,7 +19,7 @@ public class LinkAgencyDAO {UserDAO userDAO = new UserDAO();
         sql = "insert into LinkAgencyManager(id, linkAgencyCode) values(?, ?)";
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?useSSL=false", "root", "emm05235");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?useSSL=false", "root", "root");
             System.out.println(conn);
 
             User user = new User(linkAgencyManager.getId(), linkAgencyManager.getPassword(), linkAgencyManager.getName(),
