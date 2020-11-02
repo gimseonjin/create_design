@@ -2,12 +2,7 @@ package Midam.DAO.activity;
 
 import Midam.model.activity.ActivityHistory;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -100,7 +95,7 @@ public class MentoringHistoryDAO {
     public ActivityHistory read(int activityHistoryCode){
 
         ActivityHistory activityHistory = null;
-        String sql = "SELECT * FROM activity_history where activityHistoryCode=?";
+        sql = "SELECT * FROM activity_history where activityHistoryCode=?";
 
         try {
 
@@ -141,7 +136,7 @@ public class MentoringHistoryDAO {
     public ArrayList<ActivityHistory> getList(String linkAgencyCode){
 
         ArrayList<ActivityHistory> list =new ArrayList<ActivityHistory>();
-        String sql = "SELECT * FROM activity_history where linkAgencyCode=?";
+        sql = "SELECT * FROM activity_history where linkAgencyCode=?";
 
         try {
 
@@ -176,7 +171,7 @@ public class MentoringHistoryDAO {
     public ArrayList<HashMap> getListMentor(String id){
 
         ArrayList<HashMap> list =new ArrayList<HashMap>();
-        String sql = "SELECT * FROM activity_history where mentorId=? ";
+        sql = "SELECT * FROM activity_history where mentorId=? ";
 
         try {
 
@@ -212,4 +207,34 @@ public class MentoringHistoryDAO {
         }
         return list;
     }      //전체 활동내역 목록
+
+    // 보고서 업데이트 updateReport. content, note, image 업데이트
+    public int updateReport(int activityHistoryCode, String id, String content, String note, Blob imageBlob){
+        int result = 0;
+        sql = "UPDATE activity_history SET activityContent = ?, note = ? ,activityPicture=?  WHERE activityHistoryCode = ? AND mentorId= ?;";
+
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,content);
+            pstmt.setString(2,note);
+            pstmt.setBlob(3,imageBlob);
+            pstmt.setInt(4,activityHistoryCode);
+            pstmt.setString(5,id);
+            result= pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+
+
+
+
+
+
+        return result;
+    }
+
 }

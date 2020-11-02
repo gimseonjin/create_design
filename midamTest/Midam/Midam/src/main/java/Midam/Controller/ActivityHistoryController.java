@@ -3,15 +3,20 @@ package Midam.Controller;
 import Midam.DAO.activity.MentoringHistoryDAO;
 import Midam.DAO.user.UserDAO;
 import Midam.model.activity.ActivityHistory;
+
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,37 +31,37 @@ public class ActivityHistoryController {
     @ResponseBody
     @PostMapping(value="/read")
     public ArrayList readActivityHistoryList(@RequestParam("id") String id) throws SQLException, ClassNotFoundException {
-        HashMap result = new HashMap();
 
         MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
         ArrayList<HashMap> historyArrayList = mentoringHistoryDAO.getListMentor(id);
-        int size = historyArrayList.size();
-
-        for(int i = 0; i< size; i++){
-            result.put("list",historyArrayList.get(i));
-        }
 
         return historyArrayList;
     }
 
     @ResponseBody
-    @PostMapping(value="/createReport")
-    public ArrayList createReport(@RequestParam("id") String id, @RequestParam("activityHistoryCode") int activityHistoryCode) throws SQLException, ClassNotFoundException {
+    @PostMapping(value="/updateReport")
+    public HashMap updateReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
-
+        String id = request.getParameter("id");
+        String content = request.getParameter("content");
+        String note = request.getParameter("note");
+        int activityHistoryCode = Integer.parseInt(request.getParameter("activityHistoryCode"));
+        MultipartFile file=request.getFile("file");
+        Blob imageBlob = multipartFileToBlob(file);
         MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
-        ArrayList<HashMap> historyArrayList = mentoringHistoryDAO.getListMentor(id);
-        int size = historyArrayList.size();
-
-        for(int i = 0; i< size; i++){
-            result.put("list",historyArrayList.get(i));
-        }
-
-        return historyArrayList;
+        int updateResult = mentoringHistoryDAO.updateReport(activityHistoryCode, id, content, note, imageBlob);
+        result.put("responseMsg",updateResult);
+        return result;
     }
 
-//    public int login(String id, String password){
-//
-//
-//    }
+    public Blob multipartFileToBlob(MultipartFile file) throws IOException, SQLException {
+        Blob blob;
+        byte[] bytes;
+        bytes=file.getBytes();
+        blob = new javax.sql.rowset.serial.SerialBlob(bytes);
+
+
+        return blob;
+    }
+
 }

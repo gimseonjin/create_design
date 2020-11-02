@@ -1,16 +1,27 @@
-import React,{useState} from 'react';
-import { Button, CustomInput, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+import React, {useState} from 'react';
+import {
+    Button,
+    CustomInput,
+    Form,
+    FormGroup,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupText
+} from 'reactstrap';
 import axios from 'axios';
-import { Image } from 'react-bootstrap';
+import {Image} from 'react-bootstrap';
 
-//활동보고서 작성
-//활동 보고서 조회 페이지 필요할지. 여기서 함께할지 논의.
-function CreateReport(props){
-    const [activityHistoryCode, setActivityHistoryCode] = useState(props.activityHistoryCode);
+//활동보고서 작성 활동 보고서 조회 페이지 필요할지. 여기서 함께할지 논의.
+function CreateReport(props) {
+    const [activityHistoryCode, setActivityHistoryCode] = useState(
+        props.activityHistoryCode
+    );
     const [dayOfActivity, setDayOfActivity] = useState();
     const [mentorName, setMentorName] = useState();
     const [place, setPlace] = useState();
     const [content, setContent] = useState();
+    const [note, setNote] = useState();
     const [file, setFile] = useState("");
     const [imagePreviewUrl, setImagePreviewUrl] = useState("");
 
@@ -18,26 +29,45 @@ function CreateReport(props){
 
     const handleImageOnChange = (e) => {
         e.preventDefault();
-        
-       let reader = new FileReader();
-       let file = e.target.files[0];
-       reader.onloadend = () => {
-         setFile(file);
-         setImagePreviewUrl(reader.result);
-       }
-       reader.readAsDataURL(file);
-       
+
+        let reader = new FileReader();
+        let file = e
+            .target
+            .files[0];
+        reader.onloadend = () => {
+            setFile(file);
+            setImagePreviewUrl(reader.result);
+        }
+        reader.readAsDataURL(file);
     }
- 
-   
+
+    const handleContentOnChange = (e) => {
+        e.preventDefault();
+        setContent(e.target.value);
+    }
+
+    const handleNoteOnChange = (e) => {
+        e.preventDefault();
+        setNote(e.target.value);
+    }
+
     let $imagePreview = null;
-   
-    function submitReport(form){
 
+    const submitReport = () => {
+        var form = new FormData;
+        form.append("id", localStorage.getItem('id'));
+        form.append("activityHistoryCode", activityHistoryCode);
+        form.append("content",content);
+        form.append("note",note);
+        form.append("file",file);
+        console.log(file);
+        axios
+            .post('http://localhost:8080/mentor/activityHistory/updateReport', form,{headers: {'content-type':'multipart/form-data'}})
+            .then((response) => {
+                alert(response.data.responseMsg);
+            })
     }
 
-   
-    
     return (
         <div className="container">
             <h1>props.activityHistoryCode : {activityHistoryCode}</h1>
@@ -47,21 +77,21 @@ function CreateReport(props){
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동일자</InputGroupText>
                         </InputGroupAddon>
-                         <Input type="text" name="dayOfActivity" placeholder="날짜" readOnly></Input>
+                        <Input type="text" name="dayOfActivity" placeholder="날짜" readOnly="readOnly"></Input>
                     </InputGroup>
-                    
+
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>참여자</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="mentorName" placeholder="참여자 입력" readOnly></Input>
+                        <Input type="text" name="mentorName" placeholder="참여자 입력" readOnly="readOnly"></Input>
                     </InputGroup>
-                    
+
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동 기관</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="place" placeholder="활동 장소 입력" readOnly></Input>
+                        <Input type="text" name="place" placeholder="활동 장소 입력" readOnly="readOnly"></Input>
                     </InputGroup>
                 </FormGroup>
 
@@ -70,13 +100,13 @@ function CreateReport(props){
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동내용</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="content" placeholder="활동내용입력"></Input>
+                        <Input type="textarea" name="content" placeholder="활동내용입력" onChange={handleContentOnChange}></Input>
                     </InputGroup>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>특이사항</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="note" placeholder="특이사항 입력"></Input>
+                        <Input type="textarea" name="note" placeholder="특이사항 입력" onChange={handleNoteOnChange}></Input>
                     </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -84,10 +114,15 @@ function CreateReport(props){
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동사진</InputGroupText>
                         </InputGroupAddon>
-                        <CustomInput type="file" accept='image/jpg,impge/png,image/jpeg,image/gif' name="image" label="파일 선택" onChange={handleImageOnChange}>asdf</CustomInput>
+                        <CustomInput
+                            type="file"
+                            accept='image/jpg,impge/png,image/jpeg,image/gif'
+                            name="file"
+                            label="파일 선택"
+                            onChange={handleImageOnChange}>asdf</CustomInput>
                     </InputGroup>
                 </FormGroup>
-                <Button type="submit">제출</Button>
+                <Button type="submit" onClick={submitReport}>제출</Button>
             </Form>
             <div className="mw-100">
                 {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
