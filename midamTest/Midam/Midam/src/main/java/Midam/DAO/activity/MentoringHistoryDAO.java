@@ -208,7 +208,29 @@ public class MentoringHistoryDAO {
         return list;
     }      //전체 활동내역 목록
 
-    // 보고서 업데이트 updateReport. content, note, image 업데이트
+    // 보고서 최초작성 createReport. content, note, image DB상에 업데이트
+    public int createReport(int activityHistoryCode, String id, String content, String note, Blob imageBlob){
+        int result = 0;
+        sql = "UPDATE activity_history SET activityContent = ?, note = ? ,activityPicture=?, approvalStatus=?  WHERE activityHistoryCode = ? AND mentorId= ?;";
+
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,content);
+            pstmt.setString(2,note);
+            pstmt.setBlob(3,imageBlob);
+            pstmt.setInt(4,2); //최초: 0 활동완료: 1 보고서작성완료: 2 보고서승인: 3 보고서반려: 4 비활성화: -1
+            pstmt.setInt(5,activityHistoryCode);
+            pstmt.setString(6,id);
+            result= pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
     public int updateReport(int activityHistoryCode, String id, String content, String note, Blob imageBlob){
         int result = 0;
         sql = "UPDATE activity_history SET activityContent = ?, note = ? ,activityPicture=?  WHERE activityHistoryCode = ? AND mentorId= ?;";
@@ -228,12 +250,6 @@ public class MentoringHistoryDAO {
         } finally {
             closeConnection(conn);
         }
-
-
-
-
-
-
         return result;
     }
 

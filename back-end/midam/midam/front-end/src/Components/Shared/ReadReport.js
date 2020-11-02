@@ -13,7 +13,7 @@ import axios from 'axios';
 import {Image} from 'react-bootstrap';
 
 //활동보고서 작성 활동 보고서 조회 페이지 필요할지. 여기서 함께할지 논의.
-function CreateReport(props) {
+function ReadReport(props) {
     const [activityHistoryCode, setActivityHistoryCode] = useState(
         props.activityHistoryCode
     );
@@ -122,7 +122,8 @@ function CreateReport(props) {
                             onChange={handleImageOnChange}>asdf</CustomInput>
                     </InputGroup>
                 </FormGroup>
-                <Button type="submit" onClick={submitReport}>제출</Button>
+                <Button onClick={submitReport}>수정</Button>
+                <Button type="hidden" color="danger" /* onClick={} */>완료</Button>
             </Form>
             <div className="mw-100">
                 {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
@@ -130,4 +131,4 @@ function CreateReport(props) {
         </div>
     )
 }
-export default CreateReport;
+export default ReadReport;
