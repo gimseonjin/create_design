@@ -30,31 +30,41 @@ const ReadActivityHistory=(props)=> {
         var statusValue="default";
         var ButtonValue="default";
         var ButtonColor="secondary";
+        var buttonClassName = "createReportButton";
 
         switch(historyArray.status){
             case '0':
-                statusValue="보고서미작성"
+                statusValue="활동미완료";
                 ButtonValue="작성";
                 break;
             case '1':
-                statusValue="미승인";
+                statusValue="활동완료/보고서미작성";
                 ButtonValue="조회";
                 ButtonColor="primary";
                 break;
             case '2':
-                statusValue="승인완료";
+                statusValue="보고서작성완료";
                 ButtonValue="조회";
                 ButtonColor="primary";
+                buttonClassName="readReportButton";
                 break;
             case '3':
+                statusValue="승인완료";
+                ButtonValue="조회";
+                ButtonColor="success";
+                buttonClassName="readReportReadOnlyButton";
+                break;
+            case '4':
                 statusValue="반려";
                 ButtonValue="조회";
                 ButtonColor="danger";
+                buttonClassName="readReportButton";
                 break;
             case '-1':
                 statusValue="비활성화";
                 ButtonValue="조회불가";
                 ButtonColor="danger";
+                buttonClassName="disabledButton";
                 break;
         }
 
@@ -66,7 +76,7 @@ const ReadActivityHistory=(props)=> {
                 <td>{historyArray.date}</td>
                 <td>{historyArray.startTime}</td>
                 <td>{historyArray.endTime}</td>
-                <td>{historyArray.report}<Button className="reportButton" color={ButtonColor} >{ButtonValue}</Button></td>
+                <td>{historyArray.report}<Button className={buttonClassName} color={ButtonColor} >{ButtonValue}</Button></td>
                 <td>{statusValue}</td>
             </tr>
         )
@@ -89,22 +99,48 @@ const ReadActivityHistory=(props)=> {
     
     // jquery 사용. 버튼 클릭시 해당 Row 값을 가져오기
     $(function() { 
-        // $(document).ready 에 해당하는부분. 업데이트되며 문법이 바뀐듯하다
-    $(".reportButton").on("click",function(){
-        
-        var str = "";
-        var tdArr = new Array();
-        var reportButton = $(this);
+            // $(document).ready 에 해당하는부분. 업데이트되며 문법이 바뀐듯하다
+        $(".createReportButton").on("click",function(){
+            var str = "";
+            var tdArr = new Array();
+            var reportButton = $(this);
 
-        var tr = reportButton.parent().parent();
-        var td = tr.children();
-        console.log("row데이터 : "+td.eq(0).text());
-        setModalInput(td.eq(0).text());
-        toggleCreateReport();
+            var tr = reportButton.parent().parent();
+            var td = tr.children();
+            console.log("row데이터 : "+td.eq(0).text());
+            setModalInput(td.eq(0).text());
+            toggleCreateReport();
+        }
+        )
+
+        $(".readReportButton").on("click",function(){
+            var str = "";
+            var tdArr = new Array();
+            var reportButton = $(this);
+
+            var tr = reportButton.parent().parent();
+            var td = tr.children();
+            console.log("row데이터 : "+td.eq(0).text());
+            setModalInput(td.eq(0).text());
+            toggleCreateReport();
+        }
+        )
+
+        $(".readReportReadOnlyButton").on("click",function(){
+            var str = "";
+            var tdArr = new Array();
+            var reportButton = $(this);
+
+            var tr = reportButton.parent().parent();
+            var td = tr.children();
+            console.log("row데이터 : "+td.eq(0).text());
+            setModalInput(td.eq(0).text());
+            toggleCreateReport();
+        }
+        )
     }
-
     )
-})
+
 
     return (
         <div className="container">
