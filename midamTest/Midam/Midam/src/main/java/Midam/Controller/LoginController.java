@@ -1,6 +1,6 @@
 package Midam.Controller;
 
-import Midam.DAO.user.UserDAO;
+import Midam.DAO.user.*;
 import Midam.model.token.Token;
 import Midam.model.user.User;
 import io.jsonwebtoken.Claims;
@@ -25,18 +25,30 @@ public class LoginController {
     private java.lang.Object Map;
 
     @PostMapping("login")
-    public String loginTest(@RequestParam("id") String id, @RequestParam("password") String password, @RequestParam("reqAuthority") int reqAuthority) throws SQLException, ClassNotFoundException{
+    public HashMap loginTest(@RequestParam("id") String id, @RequestParam("password") String password, @RequestParam("reqAuthority") int reqAuthority) throws SQLException, ClassNotFoundException{
+        HashMap result = new HashMap();
         String jwt = "";
-        if((id.equals("test1") && password.equals("1234") && reqAuthority == 1) ||
-                (id.equals("test2") && password.equals("1234") && reqAuthority == 2) ||
-                (id.equals("test3") && password.equals("1234") && reqAuthority == 3) ||
-                (id.equals("test4") && password.equals("1234") && reqAuthority == 4)){
-            UserToken userToken = new UserToken(id,password,reqAuthority);
-            jwt = tokenController.createToken(userToken);
-        } else{
-            jwt = "Login False";
-        }
-        return jwt;
+            UserDAO userDAO = new UserDAO();
+            int authority = userDAO.login(id, password, reqAuthority);
+            switch(authority) {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                UserToken userToken = new UserToken(id, password, authority);
+                jwt = tokenController.createToken(userToken);
+                result.put("result", 1);
+                result.put("userToken", jwt);
+                break;
+
+                case 0:
+                case -1:
+                case -2:
+                case -3:
+                    result.put("result",0);
+                    result.put("message" , "login fail");
+            }
+        return result;
     }
 
     @PostMapping("checkAuthority")

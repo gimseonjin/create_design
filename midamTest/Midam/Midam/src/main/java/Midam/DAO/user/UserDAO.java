@@ -47,6 +47,7 @@ public class UserDAO {
 //    로그인기능, id로 조회하여 password, 권한 일치여부 검사 후 권한반환
     public int login(String id, String password, int reqAuthority) {
         try {
+            getConnection();
             sql = "select password, authority from user where id=?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,id);
@@ -77,6 +78,8 @@ public class UserDAO {
     //회원정보조회. 사용자 권한에 따라 세부적인 부분 필요.
     public User getUserInfo(String id){
         try {
+            getConnection();
+            System.out.println(id);
             sql = "select * from user where id=?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,id);

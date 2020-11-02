@@ -94,7 +94,7 @@ const ReadActivityHistory=(props)=> {
 
     useEffect(()=>{
         var form=new FormData;
-        form.append("id",localStorage.getItem('id'));
+        form.append("userToken",localStorage.getItem('userToken'));
         getActivityHistory(form);
       },[]
     )
@@ -183,7 +183,7 @@ const ReadActivityHistory=(props)=> {
                         <Button className="float-right" color="primary" onClick={()=>{
                             /* axios.데이터요청->inputs에 넣음 */
                              var form=new FormData;
-                             form.append("id",localStorage.getItem('id'));
+                             form.append("userToken",localStorage.getItem('userToken'));
                              getActivityHistory(form);
                             console.log(historyArrays+"inButton");
                            

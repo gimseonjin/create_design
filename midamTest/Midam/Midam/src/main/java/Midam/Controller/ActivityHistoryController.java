@@ -4,6 +4,7 @@ import Midam.DAO.activity.MentoringHistoryDAO;
 import Midam.DAO.user.UserDAO;
 import Midam.model.activity.ActivityHistory;
 
+import Midam.model.token.Token;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.stereotype.Controller;
@@ -16,11 +17,12 @@ import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Map;
 
 
 @Controller
@@ -30,7 +32,12 @@ public class ActivityHistoryController {
 
     @ResponseBody
     @PostMapping(value="/read")
-    public ArrayList readActivityHistoryList(@RequestParam("id") String id) throws SQLException, ClassNotFoundException {
+    public ArrayList readActivityHistoryList(@RequestParam("userToken") String jwt) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
+        Object objectId = map.get("id");
+        String id = objectId.toString();
 
         MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
         ArrayList<HashMap> historyArrayList = mentoringHistoryDAO.getListMentor(id);
@@ -42,7 +49,12 @@ public class ActivityHistoryController {
     @PostMapping(value="/createReport")
     public HashMap createReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
-        String id = request.getParameter("id");
+        String jwt = request.getParameter("userToken");
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
+        Object objectId = map.get("id");
+        String id = objectId.toString();
+
         String content = request.getParameter("content");
         String note = request.getParameter("note");
         int activityHistoryCode = Integer.parseInt(request.getParameter("activityHistoryCode"));
@@ -58,7 +70,12 @@ public class ActivityHistoryController {
     @PostMapping(value="/updateReport")
     public HashMap updateReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
-        String id = request.getParameter("id");
+        String jwt = request.getParameter("userToken");
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
+        Object objectId = map.get("id");
+        String id = objectId.toString();
+
         String content = request.getParameter("content");
         String note = request.getParameter("note");
         int activityHistoryCode = Integer.parseInt(request.getParameter("activityHistoryCode"));
@@ -74,7 +91,12 @@ public class ActivityHistoryController {
     @PostMapping(value="/readReport")
     public HashMap readReport(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
-        String id = request.getParameter("id");
+        String jwt = request.getParameter("userToken");
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
+        Object objectId = map.get("id");
+        String id = objectId.toString();
+
         String content = request.getParameter("content");
         String note = request.getParameter("note");
         int activityHistoryCode = Integer.parseInt(request.getParameter("activityHistoryCode"));

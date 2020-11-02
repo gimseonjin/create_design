@@ -10,7 +10,7 @@ import axios from 'axios';
 const ReadUserInformation = (props) => {
 
   // id,권한 일단 저장
-    const [id, setId] = useState(localStorage.getItem("id"));
+    const [token, setToken] = useState(localStorage.getItem("userToken"));
     const [authority, setAuthority] = useState("1");
     const [userInfo, setUserInfo] = useState([]);
 
@@ -36,7 +36,7 @@ const ReadUserInformation = (props) => {
     }
     useEffect(() => {
       let form = new FormData();
-      form.append("id", id);
+      form.append("userToken", token);
       getUserInformation(form)
         },[]
       )
@@ -102,7 +102,7 @@ const ReadUserInformation = (props) => {
 
             <Button color="danger" onClick={()=>{
               let form = new FormData();
-              form.append("id", id);
+              form.append("userToken", token);
               getUserInformation(form)
             }}>조회</Button>
             <Button color="primary" onClick={toggleUpdateRegion}>지역본부 변경요청</Button>

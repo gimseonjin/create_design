@@ -55,7 +55,7 @@ function CreateReport(props) {
 
     const submitReport = () => {
         var form = new FormData;
-        form.append("id", localStorage.getItem('id'));
+        form.append("userToken", localStorage.getItem('userToken'));
         form.append("activityHistoryCode", activityHistoryCode);
         form.append("content",content);
         form.append("note",note);

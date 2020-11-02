@@ -36,9 +36,9 @@ const Login = ({props, history}) => {
        const loginTest = (form) => {
         axios.post("http://localhost:8080/login", form)
         .then((response)=>{
-            alert(response.data);
-            localStorage.setItem("userToken",response.data);
-            if(response.data !== "Login False"){
+            alert(response.data.userToken);
+            localStorage.setItem("userToken",response.data.userToken);
+            if(response.data.result !== 0){
                 if(rSelected === 1){
                     history.push("/Mentor");
                 }else if(rSelected === 2){
@@ -48,6 +48,8 @@ const Login = ({props, history}) => {
                 }else if(rSelected === 4){
                     history.push("/SystemManager");
                 }
+            }else{
+                alert(response.data.message);
             }
         })
     }
