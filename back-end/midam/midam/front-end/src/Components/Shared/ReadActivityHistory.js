@@ -91,13 +91,16 @@ const ReadActivityHistory=(props)=> {
             );
     }
 
-   /*  useEffect(()=>{
-        
+    useEffect(()=>{
+        var form=new FormData;
+        form.append("id",localStorage.getItem('id'));
+        getActivityHistory(form);
       },[]
-    ) */
+    )
     
     // jquery 사용. 버튼 클릭시 해당 Row 값을 가져오기
-    $(function() {
+    $(function() { 
+        // $(document).ready 에 해당하는부분. 업데이트되며 문법이 바뀐듯하다
     $(".reportButton").on("click",function(){
         
         var str = "";
@@ -113,15 +116,9 @@ const ReadActivityHistory=(props)=> {
 
     )
 })
-    /* function testFunction(){
-        console.log("test");
-        var reportButton = $(this);
-        var tr = reportButton.parent().parent();
-        var td = tr.children();
-        console.log("row데이터 : "+tr.text());
-         
-
-    } */
+/*
+ㅁㄴㅇㄻㄴㅇㄹ
+//*/
 
     return (
         <div className="container">
@@ -165,7 +162,7 @@ const ReadActivityHistory=(props)=> {
                              form.append("id",localStorage.getItem('id'));
                              getActivityHistory(form);
                             console.log(historyArrays+"inButton");
-                            setTableData(historyArrays.map(renderInput)) ;
+                           
                             }}>조회</Button>
                         {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
                         <Button color="primary" onClick={()=>setModalExportExcel(true)}>내보내기</Button>
