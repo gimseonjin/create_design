@@ -21,7 +21,7 @@ public class LoginController {
 
         HashMap result = new HashMap();
         UserDAO userDAO = new UserDAO();
-        int authority = userDAO.readLogin(id, password, reqAuthority);
+        int authority = userDAO.login(id, password, reqAuthority);
         
         result.put("authority", authority);
         switch(authority){
