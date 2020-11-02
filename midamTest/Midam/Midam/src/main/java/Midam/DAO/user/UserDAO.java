@@ -25,7 +25,7 @@ public class UserDAO {
     }
     
 //    로그인기능, id로 조회하여 password, 권한 일치여부 검사 후 권한반환
-    public int readLogin(String id, String password, int reqAuthority) {
+    public int login(String id, String password, int reqAuthority) {
         try {
             sql = "select password, authority from user where id=?";
             pstmt = conn.prepareStatement(sql);
@@ -78,7 +78,7 @@ public class UserDAO {
     }
 
     public String create(User user) { // 등록
-        sql = "insert into user(id, password, name, gender, authority) values(?, ?, ?, ?, ?)";
+        sql = "insert into user (id, password, name, gender, age, address, phoneNumber, authority) values(?, ?, ?, ?, ?, ?, ?, ?)";
         try {
            System.out.println(conn);
 
@@ -87,7 +87,12 @@ public class UserDAO {
             pstmt.setString(2, user.getPassword());
             pstmt.setString(3, user.getName());
             pstmt.setString(4, user.getGender());
-            pstmt.setInt(5, user.getAuthority());
+            pstmt.setInt(5, user.getAge());
+            pstmt.setString(6, user.getAddress());
+            pstmt.setString(7, user.getPhoneNumber());
+            pstmt.setInt(8, user.getAuthority());
+
+
             int r = pstmt.executeUpdate();
             return "true";
         } catch (SQLException e) {
@@ -110,4 +115,6 @@ public class UserDAO {
         }
         return "false";
     }
+
+
 }

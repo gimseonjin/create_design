@@ -25,7 +25,7 @@ public class PostDAO {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=utf8", "root", "1234");
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=utf8", "root", "root");
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -53,7 +53,7 @@ public class PostDAO {
 
         ArrayList<HashMap> list =new ArrayList<HashMap>();
 
-        String sql = "select postId,writerId,title,writedate,numberOfView,replynumber,replystep from post";
+        String sql = "select postId,groupId,writerId,title,writeDate,numberOfView,replyOrder,replyStep from post";
 
       //  int start= (page -1 )*10+1;
       //  int end =start+9;
@@ -63,20 +63,20 @@ public class PostDAO {
             pstmt = conn.prepareStatement(sql);
           //  pstmt.setInt(1, start);
           //  pstmt.setInt(2, end);
-            ResultSet rs= pstmt.executeQuery();
+            rs= pstmt.executeQuery();
 
 
             while(rs.next()) {
-                Post post =new Post();
                 HashMap postHashMap = new HashMap();
 
                 postHashMap.put("postId",rs.getInt("postId"));
                 postHashMap.put("groupId",rs.getInt("groupId"));
+                postHashMap.put("writerId",rs.getString("writerId"));
                 postHashMap.put("replyOrder",rs.getInt("replyOrder"));
                 postHashMap.put("replyStep",rs.getInt("replyStep"));
-                postHashMap.put("writerId",rs.getInt("writerId"));
-                postHashMap.put("title",rs.getInt("title"));
-                postHashMap.put("writeDate",rs.getInt("writeDate"));
+
+                postHashMap.put("title",rs.getString("title"));
+                postHashMap.put("writeDate",rs.getTimestamp("writeDate"));
                 postHashMap.put("numberOfView",rs.getInt("numberOfView"));
 
 

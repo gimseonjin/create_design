@@ -71,18 +71,7 @@ const ReadActivityHistory=(props)=> {
             </tr>
         )
     }
-    /* 보고서 버튼 값 출력 */
-
-    /* const pushToArray = () => {
-        setHistoryArrays(historyArrays=>[...historyArrays,{
-            "date" : "2020-10-10",
-            "startTime" : "15:00",
-            "endTime": "19:00",
-            "report" : "미작성",
-            "status" : "신규1"
-        }]);
-    } */
-
+   
     function getActivityHistory (form) {
         axios.post('http://localhost:8080/mentor/activityHistory/read',form).then((response)=>{
         setHistoryArrays(response.data); 
@@ -116,9 +105,6 @@ const ReadActivityHistory=(props)=> {
 
     )
 })
-/*
-ㅁㄴㅇㄻㄴㅇㄹ
-//*/
 
     return (
         <div className="container">

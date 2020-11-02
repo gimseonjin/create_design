@@ -29,22 +29,13 @@ import java.util.HashMap;
 
         @ResponseBody
         @PostMapping(value="/read")
-        public ArrayList readPostList() throws SQLException, ClassNotFoundException {
-            HashMap result = new HashMap();
+        public ArrayList readPostList()  {
 
             PostDAO postDAO = new PostDAO();
             ArrayList<HashMap> postArrayList = postDAO.getListPost();
-            int size = postArrayList.size();
-
-            for(int i = 0; i< size; i++){
-                result.put("list",postArrayList.get(i));
-            }
 
             return postArrayList;
         }
-
-
-
     }
 
 
