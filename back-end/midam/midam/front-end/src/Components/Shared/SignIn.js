@@ -104,10 +104,20 @@ const SignIn = ({props, history}) => {
                 }}>
                  <Form className="w-75">
                     <h3 style={{
-                            marginBottom: '5%'
-                            
+                            marginBottom: '5%'                            
                         }}>멘토</h3>
-
+                    <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
+                        <InputGroupAddon addonType="prepend">
+                            <InputGroupText className = "input-group-addon">권한</InputGroupText>
+                        </InputGroupAddon>
+                        <Col sm={4}>
+                            <Input type='select' name='authority'>
+                            {/* 여기에 option을 지역본부를 DB에서 select 해서 for문으로 추가하면 될듯! */}
+                                <option>선택</option>
+                                <option value='1'>멘토</option>                                
+                            </Input>
+                        </Col>
+                    </InputGroup> 
                     <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">이름</InputGroupText>

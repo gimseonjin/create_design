@@ -228,12 +228,6 @@ public class MentoringHistoryDAO {
         } finally {
             closeConnection(conn);
         }
-
-
-
-
-
-
         return result;
     }
 
