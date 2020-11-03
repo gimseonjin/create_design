@@ -2,6 +2,7 @@ package Midam.Controller;
 
 import Midam.DAO.user.UserDAO;
 import Midam.model.token.Token;
+import Midam.model.user.Mentor;
 import Midam.model.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -36,17 +37,19 @@ public class UserInfoController {
         String id = objectId.toString();
         System.out.println(id);
 
-        User user = userDAO.getUserInfo(id);
+        Mentor mentor = userDAO.getUserInfo(id);
 
 
 
-        result.put("id",user.getId());
-        result.put("name",user.getName());
-        result.put("gender",user.getGender());
-        result.put("age",user.getAge());
-        result.put("address",user.getAddress());
-        result.put("phoneNumber",user.getPhoneNumber());
-        result.put("authority",user.getAuthority());
+        result.put("id",mentor.getId());
+        result.put("name",mentor.getName());
+        result.put("gender",mentor.getGender());
+        result.put("age",mentor.getAge());
+        result.put("address",mentor.getAddress());
+        result.put("phoneNumber",mentor.getPhoneNumber());
+        result.put("authority",mentor.getAuthority());
+        result.put("volunteerId",mentor.getVolunteerId());
+        result.put("region", mentor.getRegionCode());
 
         System.out.println(result);
 
