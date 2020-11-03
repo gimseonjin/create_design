@@ -20,9 +20,6 @@ import usePost from './usePost';
 const Login = ({props, history}) => {
     
         const [rSelected, setRSelected] = useState(1);
-        const [activeTab, setActiveTab] = useState(null);
-
- 
         
         const [id, setId] = useState(null);
         const [password, setPassword] = useState(null);
@@ -36,30 +33,26 @@ const Login = ({props, history}) => {
             setPassword(e.target.value);
        }
 
-       const loginPost = (form) => {
-           axios.post("http://localhost:8080/reqLogin", form).then((response)=>{
-            console.log(response.data.authority);
-            switch(response.data.authority) {
-                case 0:
-                case -1:
-                case -2:
-                case -3:
-                    alert(response.data.message);
-                    // history.push("/");
-                    break;
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                    localStorage.setItem("id",id);
-                    localStorage.setItem("authority",response.data.authority);
-                    console.log("/"+response.data.authorityName)
-                    console.log("fromlocalstrorage: "+localStorage.getItem("id"));
-                    history.push("/"+response.data.authorityName);
-                    break;
+       const loginTest = (form) => {
+        axios.post("http://localhost:8080/login", form)
+        .then((response)=>{
+            alert(response.data.userToken);
+            localStorage.setItem("userToken",response.data.userToken);
+            if(response.data.result !== 0){
+                if(rSelected === 1){
+                    history.push("/Mentor");
+                }else if(rSelected === 2){
+                    history.push("/LinkAgencyManager");
+                }else if(rSelected === 3){
+                    history.push("/RegionManager");
+                }else if(rSelected === 4){
+                    history.push("/SystemManager");
+                }
+            }else{
+                alert(response.data.message);
             }
         })
-       }
+    }
 
         return (
             <div className = "login_container d-flex justify-content-center align-self-center" style = {{margin : "100px"}}>
@@ -101,14 +94,9 @@ const Login = ({props, history}) => {
                             form.append('id', id);
                             form.append('password', password);
                             form.append('reqAuthority', rSelected);
-                            loginPost(form);
+                            loginTest(form);
                             }}>로그인</Button>
-                            {id}
-                            <Button onClick={() => history.push("/")} >history.push("/") / HOME</Button>
-                            
-                        
-                        <Link to={`/${rSelected}`}><Button color = 'primary' className = "w-100" >바로가기-test용</Button></Link>
-                        
+
                         <hr class = "under_line"></hr>
     
                     </FormGroup>

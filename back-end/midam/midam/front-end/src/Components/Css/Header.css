@@ -8,9 +8,17 @@
   padding-left: 10px;
   padding-right: 10px;
 }
+.nav-bar{
+  margin-bottom: 1%;
+}
 .headerLogo {
   width: 60px;
   height: 40px;
+  margin: 0.5% 3% 0.5% 1%;
+}
+.establishment {
+  width: 100%;
+  height: auto;
   margin: 0.5% 3% 0.5% 1%;
 }
 .title {
@@ -52,7 +60,6 @@
 @media (max-width: 400px) {
   .top-header {
     display: inline;
-    margin-top: 10%;
   }
   .right {
     display: flex;

@@ -53,7 +53,7 @@ function ReadReport(props) {
 
     let $imagePreview = null;
 
-    const submitReport = () => {
+    const updateReport = () => {
         var form = new FormData;
         form.append("id", localStorage.getItem('id'));
         form.append("activityHistoryCode", activityHistoryCode);
@@ -122,11 +122,12 @@ function ReadReport(props) {
                             onChange={handleImageOnChange}>asdf</CustomInput>
                     </InputGroup>
                 </FormGroup>
-                <Button onClick={submitReport}>수정</Button>
+                {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
+                <Button onClick={updateReport}>수정</Button>
                 <Button type="hidden" color="danger" /* onClick={} */>완료</Button>
             </Form>
             <div className="mw-100">
-                {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
+                
             </div>
         </div>
     )

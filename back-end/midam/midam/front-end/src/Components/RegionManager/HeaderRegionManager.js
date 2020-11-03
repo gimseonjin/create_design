@@ -22,11 +22,12 @@ import {
     CardSubtitle
   } from 'reactstrap';
 import midamLogo from '../img/midam.png';
+//import './Header.css';
 import useModal from 'react-hooks-use-modal';
 import '../Css/Header.css';
+import QrScanner from '../Shared/QrScanner';
 
-const HeaderRegionManager = (props) => {
-
+const HeaderRegionManager = ({match, history}) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
     const [Modal, open, close, isOpenPop] = useModal('root', {
@@ -51,8 +52,8 @@ const HeaderRegionManager = (props) => {
                                     <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">커뮤니티</span></DropdownToggle>
                                             <DropdownMenu left>
-                                                <DropdownItem><span>게시판 보기</span></DropdownItem>
-                                                <DropdownItem><span>멘토링 모집</span></DropdownItem>
+                                                <DropdownItem ><span>게시판 보기</span></DropdownItem>
+                                                <DropdownItem ><span>멘토링 모집</span></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </NavItem>
@@ -60,10 +61,10 @@ const HeaderRegionManager = (props) => {
                                     <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">쪽지</span></DropdownToggle>
                                             <DropdownMenu left>
-                                                <DropdownItem><span>쪽지 조회</span></DropdownItem>
-                                                <DropdownItem><span>쪽지 보내기</span></DropdownItem>
-                                                <DropdownItem><span>멘토링 신청 내역 조회</span></DropdownItem>
-                                                <DropdownItem><span>QR코드 생성</span></DropdownItem>
+                                                <DropdownItem ><span>쪽지 조회</span></DropdownItem>
+                                                <DropdownItem ><span>쪽지 보내기</span></DropdownItem>
+                                                <DropdownItem ><span>멘토링 신청 내역 조회</span></DropdownItem>
+                                                <DropdownItem ><span>QR코드 생성</span></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </NavItem>
@@ -74,10 +75,15 @@ const HeaderRegionManager = (props) => {
                                         <div class = "right">
                                         <Button className = "header-bnt w-75" color="light" onClick={open}><span>QR 스캔</span></Button>
                                             <Modal>
-                                    
-                                                 <Button onClick={close}>CLOSE</Button>
+                                                <div className = "pop-up">
+                                                    <QrScanner/>
+                                                    <Button onClick={close}>CLOSE</Button>
+                                                </div>
                                             </Modal>
-                                            <Button className = "header-bnt w-75" color="light" onClick = {props.logOut}><span>Log out</span></Button>
+                                            <Button className = "header-bnt w-75" color="light" onClick = {
+                                                () => {localStorage.setItem("userToken", "null");
+                                                history.push("/")
+                                                }}><span>Log out</span></Button>
                                         </div>
                                     </NavItem>
                                 </Nav>

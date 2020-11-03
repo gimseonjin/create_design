@@ -55,7 +55,7 @@ function CreateReport(props) {
 
     const submitReport = () => {
         var form = new FormData;
-        form.append("id", localStorage.getItem('id'));
+        form.append("userToken", localStorage.getItem('userToken'));
         form.append("activityHistoryCode", activityHistoryCode);
         form.append("content",content);
         form.append("note",note);
@@ -71,7 +71,7 @@ function CreateReport(props) {
     return (
         <div className="container">
             <h1>props.activityHistoryCode : {activityHistoryCode}</h1>
-            <Form>
+            <Form onSubmit={submitReport}>
                 <FormGroup>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
@@ -122,10 +122,11 @@ function CreateReport(props) {
                             onChange={handleImageOnChange}>asdf</CustomInput>
                     </InputGroup>
                 </FormGroup>
-                <Button type="submit" onClick={submitReport}>제출</Button>
+                <Button type="submit">제출</Button>
+                {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
             </Form>
             <div className="mw-100">
-                {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
+                
             </div>
         </div>
     )
