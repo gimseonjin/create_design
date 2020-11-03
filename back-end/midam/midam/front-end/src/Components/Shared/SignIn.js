@@ -35,6 +35,9 @@ function SignIn(props,{history}) {
     const [phoneNumber, setPhoneNumber] = useState();
     const [authority, setAuthority] = useState();
 
+    const [regionCode, setRegionCode] = useState();
+    const [volunteerId, setVolunteerId] = useState();
+
     const handleSubmitId = (e) => {
         e.preventDefault();
         setId(e.target.value);
@@ -68,7 +71,14 @@ function SignIn(props,{history}) {
         e.preventDefault();
         setAuthority(e.target.value);
     }
-
+    const handleSubmitRegionCode = (e) => {
+        e.preventDefault();
+        setRegionCode(e.target.value);
+    }
+    const handleVolunteerId = (e) => {
+        e.preventDefault();
+        setVolunteerId(e.target.value);
+    }
 
     const toggle = tab => {
       if(activeTab !== tab) setActiveTab(tab);
@@ -83,8 +93,9 @@ function SignIn(props,{history}) {
         form.append('address', address);
         form.append('phoneNumber', phoneNumber);
         form.append('authority', authority);
-
-        axios.post("http://localhost:8080/user/createUser", form,{headers: {'content-type':'multipart/form-data'}}).then((response)=>{
+        form.append('regionCode', regionCode);
+        form.append('volunteerId', volunteerId);
+        axios.post("http://localhost:8080/user/createMentor", form,{headers: {'content-type':'multipart/form-data'}}).then((response)=>{
          console.log(response.data.authority);
          history.push("/");
          /*
@@ -189,7 +200,7 @@ function SignIn(props,{history}) {
                             <InputGroupText className = "input-group-addon">소속 지역 본부</InputGroupText>
                         </InputGroupAddon>
                         <Col sm={4}>
-                            <Input type='select' name='region' >
+                            <Input type='select' name='region' onChange={handleSubmitRegionCode} >
                             {/* 여기에 option을 지역본부를 DB에서 select 해서 for문으로 추가하면 될듯! */}
                                 <option>선택</option>
                                 <option value='1'>금오공과대학교</option>
@@ -215,11 +226,12 @@ function SignIn(props,{history}) {
                         <Input type='text'  name='address'onChange={handleSubmitAddress}/>
                     </InputGroup>
 
+                        
                     <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">1365 아이디</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text' name='1365Id'/>
+                        <Input type='text' name='volunteerId' onChange={handleVolunteerId}/>
                     </InputGroup>
 
                     <Button onClick={()=>history.push("/")} style={{float: 'right'}}>취소</Button>

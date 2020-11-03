@@ -98,9 +98,10 @@ public class UserDAO {
     }
     
     //회원가입
-    public int createUser(String id, String password, String name, String gender, int age, String address, String phoneNumber, int authority) { // 등록
+    public int createMentor(String id, String password, String name, String gender, int age, String address, String phoneNumber, int authority, String regionCode, String volunteerId) { // 등록
         int result =0;
         sql = "insert into user (id, password, name, gender, age, address, phoneNumber, authority) values(?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql2 = "insert into mentor (id, regionCode, 1365Id) values(?, ?, ?)";
         try {
 
             conn=getConnection();
@@ -114,7 +115,15 @@ public class UserDAO {
             pstmt.setString(7, phoneNumber);
             pstmt.setInt(8, authority);
 
-            result= pstmt.executeUpdate();
+            pstmt.executeUpdate();
+
+            pstmt = conn.prepareStatement(sql2);
+            pstmt.setString(1, id);
+            pstmt.setString(2, regionCode);
+            pstmt.setString(3, volunteerId);
+
+            result = pstmt.executeUpdate();
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
@@ -122,6 +131,7 @@ public class UserDAO {
         }
         return result;
     }
+
 
 
 }

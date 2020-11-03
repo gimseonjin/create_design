@@ -22,8 +22,8 @@ import java.util.HashMap;
 public class SignInController {
 
     @ResponseBody
-    @PostMapping(value="/createUser")
-    public HashMap createUser(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+    @PostMapping(value="/createMentor")
+    public HashMap createMentor(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
         HashMap result = new HashMap();
         String id = request.getParameter("id");
@@ -35,13 +35,15 @@ public class SignInController {
         String phoneNumber = request.getParameter("phoneNumber");
         int authority = Integer.parseInt(request.getParameter("authority"));
 
-        //String regionCode = request.getParameter("regionCode");
-        //volunteerId = request.getParameter("volunteerId");
+        String regionCode = request.getParameter("regionCode");
+        String volunteerId = request.getParameter("volunteerId");
 
         UserDAO userDAO = new UserDAO();
 
-        int createResult = userDAO.createUser(id,password,name,gender,age,address,phoneNumber,authority);
+        int createResult = userDAO.createMentor(id,password,name,gender,age,address,phoneNumber,authority, regionCode, volunteerId);
         result.put("responseMsg",createResult);
         return result;
     }
+
+
 }
