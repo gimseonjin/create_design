@@ -80,7 +80,7 @@ public class MentoringHistoryDAO {
 
             pstmt.setString(3, activityHistory.getActivityContent());
             pstmt.setString(4, activityHistory.getNote());
-            pstmt.setBytes(5, activityHistory.getActivityPicture());
+            pstmt.setBlob(5, activityHistory.getActivityPicture());
 
             int r = pstmt.executeUpdate();
             return true;
@@ -118,7 +118,7 @@ public class MentoringHistoryDAO {
 
                 activityHistory.setActivityContent(rs.getString("activityContent"));
                 activityHistory.setNote(rs.getString("note"));
-                activityHistory.setActivityPicture(rs.getBytes("activityPicture"));
+                activityHistory.setActivityPicture(rs.getBlob("activityPicture"));
                 activityHistory.setCreateDate(rs.getTimestamp("createDate"));
                 activityHistory.setApprovalDate(rs.getTimestamp("approvalDate"));
                 activityHistory.setApprovalStatus(rs.getInt("approvalStatus"));
@@ -231,6 +231,7 @@ public class MentoringHistoryDAO {
         }
         return result;
     }
+//    보고서 수정
     public int updateReport(int activityHistoryCode, String id, String content, String note, Blob imageBlob){
         int result = 0;
         sql = "UPDATE activity_history SET activityContent = ?, note = ? ,activityPicture=?  WHERE activityHistoryCode = ? AND mentorId= ?;";
@@ -251,6 +252,35 @@ public class MentoringHistoryDAO {
             closeConnection(conn);
         }
         return result;
+    }
+
+    //    보고서 조회
+    public ActivityHistory readReport(int activityHistoryCode){
+        ActivityHistory activityHistory = new ActivityHistory();
+        sql = "SELECT startTime, endTime, activityContent, note, activityPicture, createDate, approvalStatus FROM activity_history WHERE activityHistoryCode = ?;";
+
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setInt(1,activityHistoryCode);
+            rs= pstmt.executeQuery();
+            while(rs.next()){
+                activityHistory.setStartTime(rs.getTimestamp("startTime"));
+                activityHistory.setEndTime(rs.getTimestamp("endTime"));
+                activityHistory.setActivityContent(rs.getString("activityContent"));
+                activityHistory.setNote(rs.getString("note"));
+                activityHistory.setActivityPicture(rs.getBlob("activityPicture"));
+                activityHistory.setCreateDate(rs.getTimestamp("createDate"));
+                activityHistory.setApprovalStatus(rs.getInt("approvalStatus"));
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return activityHistory;
     }
 
 }

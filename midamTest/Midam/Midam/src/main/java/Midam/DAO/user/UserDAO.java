@@ -1,6 +1,7 @@
 package Midam.DAO.user;
 
 import Midam.model.linkAgency.LinkAgency;
+import Midam.model.user.Mentor;
 import Midam.model.user.User;
 
 import java.sql.Connection;
@@ -78,18 +79,18 @@ public class UserDAO {
     }
 
     //회원정보조회. 사용자 권한에 따라 세부적인 부분 필요.
-    public User getUserInfo(String id){
+    public Mentor getUserInfo(String id){
         try {
             getConnection();
             System.out.println(id);
-            sql = "select * from user where id=?";
+            sql = "SELECT * FROM mydb.user JOIN mentor ON user.id=mentor.id Join region on mentor.regionCode=region.regionCode WHERE user.id=?;";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,id);
             rs = pstmt.executeQuery();
-            User user;
+            Mentor mentor;
             if(rs.next()){
-                user = new User(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getString(6),rs.getString(7),rs.getInt(8));
-                return user;
+                mentor = new Mentor(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getString(6),rs.getString(7),rs.getInt(8), rs.getString(13), rs.getString(11));
+                return mentor;
             }
             else
                 return null;

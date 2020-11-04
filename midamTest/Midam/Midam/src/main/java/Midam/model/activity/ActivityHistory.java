@@ -1,5 +1,6 @@
 package Midam.model.activity;
 
+import java.sql.Blob;
 import java.sql.Timestamp;
 
 public class ActivityHistory {
@@ -13,7 +14,7 @@ public class ActivityHistory {
     private java.sql.Timestamp endTime;
     private String activityContent;
     private String note;
-    private byte[] activityPicture;
+    private Blob activityPicture;
     private java.sql.Timestamp createDate;
     private java.sql.Timestamp approvalDate;
     private int approvalStatus;
@@ -91,11 +92,11 @@ public class ActivityHistory {
         this.note = note;
     }
 
-    public byte[] getActivityPicture() {
+    public Blob getActivityPicture() {
         return activityPicture;
     }
 
-    public void setActivityPicture(byte[] activityPicture) {
+    public void setActivityPicture(Blob activityPicture) {
         this.activityPicture = activityPicture;
     }
 

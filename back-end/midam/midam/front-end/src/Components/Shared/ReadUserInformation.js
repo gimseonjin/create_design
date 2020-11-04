@@ -71,7 +71,7 @@ const ReadUserInformation = (props) => {
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>1365 ID</InputGroupText>
                 </InputGroupAddon>
-                <Input type="text" value="1365ID"></Input>
+                <Input type="text" value={userInfo.volunteerId}></Input>
             </InputGroup>
             <InputGroup>
                 <InputGroupAddon addonType="prepend">
@@ -83,7 +83,7 @@ const ReadUserInformation = (props) => {
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>소속 지역본부</InputGroupText>
                 </InputGroupAddon>
-                <Input type="text" value="소속 지역본부"></Input>
+                <Input type="text" value={userInfo.region}></Input>
             </InputGroup>
 
             <Modal isOpen={modalUpdateInfo}  backdrop={backdrop}>

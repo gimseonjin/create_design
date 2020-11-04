@@ -7,6 +7,7 @@ import useRequest from './useRequest';
 import axios from 'axios';
 import usePost from './usePost';
 import $ from 'jquery';
+import ReadReport from './ReadReport';
 
 //활동 내역 조회
 const ReadActivityHistory=(props)=> {
@@ -226,7 +227,7 @@ const ReadActivityHistory=(props)=> {
 
             <Modal isOpen={modalReadReport}>
                 <ModalHeader toggle={toggleReadReport}>활동보고서 조회</ModalHeader>
-                <CreateReport activityHistoryCode={modalInput}></CreateReport>
+                <ReadReport activityHistoryCode={modalInput}></ReadReport>
             </Modal>
 
             <Modal isOpen={modalCreateQR}>

@@ -97,12 +97,20 @@ public class ActivityHistoryController {
         Object objectId = map.get("id");
         String id = objectId.toString();
 
-        String content = request.getParameter("content");
-        String note = request.getParameter("note");
         int activityHistoryCode = Integer.parseInt(request.getParameter("activityHistoryCode"));
-        MultipartFile file;
 
         MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+        ActivityHistory resultHistory = mentoringHistoryDAO.readReport(activityHistoryCode);
+        result.put("startTime",resultHistory.getStartTime());
+        result.put("endTime",resultHistory.getEndTime());
+        result.put("activityContent", resultHistory.getActivityContent());
+        result.put("note", resultHistory.getNote());
+        result.put("activityPicture",resultHistory.getActivityPicture());
+        result.put("createDate",resultHistory.getCreateDate());
+        result.put("approvalStatus", resultHistory.getApprovalStatus());
+
+
+
         return result;
     }
 

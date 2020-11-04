@@ -55,7 +55,7 @@ function ReadReport(props) {
 
     const updateReport = () => {
         var form = new FormData;
-        form.append("id", localStorage.getItem('id'));
+        form.append("userToken", localStorage.getItem('userToken'));
         form.append("activityHistoryCode", activityHistoryCode);
         form.append("content",content);
         form.append("note",note);
@@ -66,6 +66,21 @@ function ReadReport(props) {
             .then((response) => {
                 alert(response.data.responseMsg);
             })
+    }
+    const readReport = () => {
+        var form = new FormData;
+        form.append("userToken ", localStorage.getItem('userToken'));
+        form.append("activityHistoryCode", activityHistoryCode);
+        axios.post('http://localhost:8080/mentor/activityHistory/readReport',form).then((response)=>{
+            setDayOfActivity(response.data.startTime);
+            setContent(response.data.activityContent);
+            setNote(response.data.note);
+            setFile(response.data.activityPicture);
+            console.log(response.data.activityContent);
+            
+
+        })
+
     }
 
     return (
