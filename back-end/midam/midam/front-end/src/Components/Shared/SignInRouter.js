@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Router, Switch, Route, Link, useLocation} from 'react-router-dom';
 import { Button, ButtonGroup } from 'reactstrap';
 import SignIn from '../Shared/SignIn';
-import SignInLinkAgencyManager from '../Shared/SignInLinAgencyManager';
+import SignInLinkAgencyManager from '../Shared/SignInLinkAgencyManager';
 
 const SignInRouter = ({match}, props) => {
 const [rSelected, setRSelected]  = useState("mentor");
