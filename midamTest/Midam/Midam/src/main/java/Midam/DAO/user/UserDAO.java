@@ -1,5 +1,6 @@
 package Midam.DAO.user;
 
+import Midam.model.linkAgency.LinkAgency;
 import Midam.model.user.User;
 
 import java.sql.Connection;
@@ -8,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class UserDAO {
 
@@ -134,7 +136,60 @@ public class UserDAO {
         }
         return result;
     }
+    public int createLinkAgencyManager(String id, String password, String name, String gender, int age, String address, String phoneNumber, int authority, String linkAgencyCode, String linkAgencyName, String linkAgencyAddress, String linkAgencyInfo) { // 등록
+        int result =0;
+        sql = "insert into user (id, password, name, gender, age, address, phoneNumber, authority) values(?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql2 = "insert into link_agency_manager (id, linkAgencyCode) values(?, ?)";
+//        String sql4= "SELECT linkAgencyCode FROM mydb.region order by regionCode desc LIMIT 1";
+//        String sql3 = "insert into link_agency (linkAgencyCode, linkAgencyName, linkAgencyAddress, linkAgencyInfo) values(?,?,?,?)";
+        try {
 
+            conn=getConnection();
+//            ArrayList<LinkAgency> list =new ArrayList<LinkAgency>();
+//            pstmt = conn.prepareStatement(sql4);
+//            rs= pstmt.executeQuery();
+
+
+//              String code  =rs.getString("linkAgencyCode");
+//              String code1=  code.substring(2);
+//              int code2 =Integer.parseInt(code1);
+//              int codeResult = code2 +1;
+//              String text1 = "LA";
+//              String newLinkCode = text1.concat(Integer.toString(codeResult));
+
+//            pstmt = conn.prepareStatement(sql3);  //연계기관 등록
+//            pstmt.setString(1, newLinkCode);
+//            pstmt.setString(2, linkAgencyName);
+//            pstmt.setString(3, linkAgencyAddress);
+//            pstmt.setString(4, linkAgencyInfo);
+//            pstmt.executeUpdate();
+//
+
+            pstmt = conn.prepareStatement(sql);  //회원테이블 회원가입
+            pstmt.setString(1, id);
+            pstmt.setString(2, password);
+            pstmt.setString(3, name);
+            pstmt.setString(4, gender);
+            pstmt.setInt(5, age);
+            pstmt.setString(6, address);
+            pstmt.setString(7, phoneNumber);
+            pstmt.setInt(8, authority);
+
+            pstmt.executeUpdate();
+
+            pstmt = conn.prepareStatement(sql2); //담당자 테이블 회원가입
+            pstmt.setString(1, id);
+            pstmt.setString(2, linkAgencyCode);
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
 
 
 }

@@ -1,18 +1,9 @@
 package Midam.Controller;
-import Midam.DAO.activity.MentoringHistoryDAO;
-import Midam.DAO.user.MentorDAO;
-import Midam.model.user.Mentor;
 import org.springframework.stereotype.Controller;
 import Midam.DAO.user.UserDAO;
-import Midam.model.user.User;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -45,5 +36,33 @@ public class SignInController {
         return result;
     }
 
+    @ResponseBody
+    @PostMapping(value="/createLinkAgencyManager")
+    public HashMap createLinkAgencyManager(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+
+        HashMap result = new HashMap();
+        String id = request.getParameter("id");
+        String password = request.getParameter("password");
+        String name = request.getParameter("name");
+        String gender = request.getParameter("gender");
+        int age = Integer.parseInt(request.getParameter("age"));
+        String address = request.getParameter("address");
+        String phoneNumber = request.getParameter("phoneNumber");
+        int authority = Integer.parseInt(request.getParameter("authority"));
+
+        String linkAgencyCode = request.getParameter("linkAgencyCode");
+    
+        
+        //수기 등록
+        String linkAgencyName = request.getParameter("linkAgencyName");
+        String linkAgencyAddress = request.getParameter("linkAgencyAddress");
+        String linkAgencyInfo = request.getParameter("linkAgencyInfo");
+        UserDAO userDAO = new UserDAO();
+
+        int createResult = userDAO.createLinkAgencyManager(id,password,name,gender,age,address,phoneNumber,
+                authority, linkAgencyCode ,linkAgencyName, linkAgencyAddress, linkAgencyInfo);
+        result.put("responseMsg",createResult);
+        return result;
+    }
 
 }
