@@ -16,6 +16,7 @@ import midamLogo from '../img/midam.png';
 import '../Css/Login.css'
 import axios from 'axios';
 import usePost from './usePost';
+import {useCookies} from 'react-cookies';
 
 const Login = ({props, history}) => {
     
@@ -23,6 +24,9 @@ const Login = ({props, history}) => {
         
         const [id, setId] = useState(null);
         const [password, setPassword] = useState(null);
+
+        const [cookies, setCookie, removeCookie] = useCookies();
+
         const handleSubmitId = (e) => {
              e.preventDefault();
             setId(e.target.value);
