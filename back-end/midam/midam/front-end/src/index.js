@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { CookiesProvider } from 'react-cookies';
 
 const props = {
   name: 'loginForm',
@@ -13,9 +14,11 @@ const props = {
 }
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <CookiesProvider>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </CookiesProvider>,
   document.getElementById('root')
 );
 

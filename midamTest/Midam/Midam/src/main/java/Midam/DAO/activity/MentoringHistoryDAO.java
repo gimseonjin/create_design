@@ -80,7 +80,7 @@ public class MentoringHistoryDAO {
 
             pstmt.setString(3, activityHistory.getActivityContent());
             pstmt.setString(4, activityHistory.getNote());
-            pstmt.setBlob(5, activityHistory.getActivityPicture());
+            pstmt.setBytes(5, activityHistory.getActivityPicture());
 
             int r = pstmt.executeUpdate();
             return true;
@@ -118,7 +118,7 @@ public class MentoringHistoryDAO {
 
                 activityHistory.setActivityContent(rs.getString("activityContent"));
                 activityHistory.setNote(rs.getString("note"));
-                activityHistory.setActivityPicture(rs.getBlob("activityPicture"));
+                activityHistory.setActivityPicture(rs.getBytes("activityPicture"));
                 activityHistory.setCreateDate(rs.getTimestamp("createDate"));
                 activityHistory.setApprovalDate(rs.getTimestamp("approvalDate"));
                 activityHistory.setApprovalStatus(rs.getInt("approvalStatus"));
@@ -270,7 +270,7 @@ public class MentoringHistoryDAO {
                 activityHistory.setEndTime(rs.getTimestamp("endTime"));
                 activityHistory.setActivityContent(rs.getString("activityContent"));
                 activityHistory.setNote(rs.getString("note"));
-                activityHistory.setActivityPicture(rs.getBlob("activityPicture"));
+                activityHistory.setActivityPicture(rs.getBytes("activityPicture"));
                 activityHistory.setCreateDate(rs.getTimestamp("createDate"));
                 activityHistory.setApprovalStatus(rs.getInt("approvalStatus"));
             }

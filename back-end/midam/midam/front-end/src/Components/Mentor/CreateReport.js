@@ -64,7 +64,6 @@ function CreateReport(props) {
         axios
             .post('http://localhost:8080/mentor/activityHistory/createReport', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
-                alert(response.data.responseMsg);
             })
     }
 

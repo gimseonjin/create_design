@@ -89,7 +89,7 @@ public class ActivityHistoryController {
 
     @ResponseBody
     @PostMapping(value="/readReport")
-    public HashMap readReport(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+    public HashMap readReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
         String jwt = request.getParameter("userToken");
         Token token = new Token();
@@ -105,7 +105,7 @@ public class ActivityHistoryController {
         result.put("endTime",resultHistory.getEndTime());
         result.put("activityContent", resultHistory.getActivityContent());
         result.put("note", resultHistory.getNote());
-        result.put("activityPicture",resultHistory.getActivityPicture());
+        result.put("activityPictureBASE64",resultHistory.getActivityPictureBASE64());
         result.put("createDate",resultHistory.getCreateDate());
         result.put("approvalStatus", resultHistory.getApprovalStatus());
 

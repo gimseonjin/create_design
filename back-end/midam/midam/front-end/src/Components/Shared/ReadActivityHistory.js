@@ -79,7 +79,7 @@ const ReadActivityHistory=(props)=> {
                 <td>{historyArray.date}</td>
                 <td>{historyArray.startTime}</td>
                 <td>{historyArray.endTime}</td>
-                <td>{historyArray.report}<Button className={buttonClassName} color={ButtonColor} >{ButtonValue}</Button></td>
+                <td><Button className={buttonClassName} color={ButtonColor} >{ButtonValue}</Button></td>
                 <td>{statusValue}</td>
             </tr>
         )

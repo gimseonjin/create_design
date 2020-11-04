@@ -2,6 +2,8 @@ package Midam.model.activity;
 
 import java.sql.Blob;
 import java.sql.Timestamp;
+import java.util.Base64;
+
 
 public class ActivityHistory {
 
@@ -14,7 +16,7 @@ public class ActivityHistory {
     private java.sql.Timestamp endTime;
     private String activityContent;
     private String note;
-    private Blob activityPicture;
+    private byte[] activityPicture;
     private java.sql.Timestamp createDate;
     private java.sql.Timestamp approvalDate;
     private int approvalStatus;
@@ -92,11 +94,11 @@ public class ActivityHistory {
         this.note = note;
     }
 
-    public Blob getActivityPicture() {
+    public byte[] getActivityPicture() {
         return activityPicture;
     }
 
-    public void setActivityPicture(Blob activityPicture) {
+    public void setActivityPicture(byte[] activityPicture) {
         this.activityPicture = activityPicture;
     }
 
@@ -131,4 +133,11 @@ public class ActivityHistory {
     public void setCompanionReason(String companionReason) {
         this.companionReason = companionReason;
     }
+
+//    BLOB을 JSON으로 보낼수가 없어. binary데이터는 담을 수 없는듯. 그래서 uri로 바꿔서 보낼수있게 바꾸려고함.
+
+    public String getActivityPictureBASE64(){
+        return "data:image/jpeg;base64,"+ new String(Base64.getEncoder().encode(activityPicture));
+    }
+
 }

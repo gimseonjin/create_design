@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Button,
     CustomInput,
@@ -71,17 +71,20 @@ function ReadReport(props) {
         var form = new FormData;
         form.append("userToken ", localStorage.getItem('userToken'));
         form.append("activityHistoryCode", activityHistoryCode);
-        axios.post('http://localhost:8080/mentor/activityHistory/readReport',form).then((response)=>{
+        axios.post('http://localhost:8080/mentor/activityHistory/readReport',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
             setDayOfActivity(response.data.startTime);
             setContent(response.data.activityContent);
             setNote(response.data.note);
-            setFile(response.data.activityPicture);
+            setImagePreviewUrl(response.data.activityPictureBASE64);
             console.log(response.data.activityContent);
             
 
         })
 
     }
+    useEffect(()=>{
+        readReport();
+    },[])
 
     return (
         <div className="container">
@@ -115,13 +118,13 @@ function ReadReport(props) {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동내용</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="content" placeholder="활동내용입력" onChange={handleContentOnChange}></Input>
+                        <Input type="textarea" name="content" placeholder="활동내용입력" onChange={handleContentOnChange} value={content}></Input>
                     </InputGroup>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>특이사항</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="note" placeholder="특이사항 입력" onChange={handleNoteOnChange}></Input>
+                        <Input type="textarea" name="note" placeholder="특이사항 입력" onChange={handleNoteOnChange} value={note}></Input>
                     </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -140,6 +143,8 @@ function ReadReport(props) {
                 {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
                 <Button onClick={updateReport}>수정</Button>
                 <Button type="hidden" color="danger" /* onClick={} */>완료</Button>
+                <Button onClick={readReport}>조회</Button>
+            
             </Form>
             <div className="mw-100">
                 
