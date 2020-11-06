@@ -48,7 +48,7 @@ function ReadPostInfo(props){
 
     const readPostInfo = () => {
         var form = new FormData;
-        form.append("postId", postId);
+        form.append("postId", postId[0]);
         axios.post('http://localhost:8080/community/readPostInfo',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
             setWriterId(response.data.writerId);
             setWriteDate(response.data.writeDate);    
@@ -67,7 +67,7 @@ function ReadPostInfo(props){
 
     return (
         <div className="container">
-            <h1> props.postId: {postId}</h1>
+            <h1> props.postId: {postId[0]}</h1>
             
             <Form>
                 <FormGroup>
