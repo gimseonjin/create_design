@@ -7,6 +7,8 @@ import Midam.model.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
@@ -26,13 +28,14 @@ public class UserInfoController {
 //    }
     @ResponseBody
     @PostMapping
-    public HashMap hello(@RequestParam("userToken") String jwt ) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+    public HashMap hello(@RequestParam(name="userToken") String userToken) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+
         HashMap result = new HashMap();
         UserDAO userDAO = new UserDAO();
 
-        System.out.println(jwt);
+        System.out.println(userToken);
         Token token = new Token();
-        Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
         Object objectId = map.get("id");
         String id = objectId.toString();
         System.out.println(id);
@@ -52,7 +55,6 @@ public class UserInfoController {
         result.put("region", mentor.getRegionCode());
 
         System.out.println(result);
-
         return result;
     }
 }
