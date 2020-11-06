@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
+import CreatePost from '../Shared/CreatePost';
+import '../Css/test.css';
 import {
     Button,
     Col,
@@ -15,77 +16,92 @@ import {
     Table
 } from 'reactstrap';
 import axios from 'axios';
-import useRequest from './useRequest';
-import usePost from './usePost';
-//게시글 조회
+import $ from 'jquery';
+
+import ReadPostInfo from './ReadPostInfo';
+
+
 const ReadPost = (props) => {
 
     const [tableData, setTableData] = useState();
-    // const [modalCreateReport, setModalCreateReport] = useState(false); const
-    // [modalCreateQR, setModalCreateQR] = useState(false);
+    const [modalCreatePost, setModalCreatePost] = useState(false); 
+    const [modalReadPostInfo, setModalReadPostInfo] = useState(false);
+
+
+    const toggleCreatePost = () => setModalCreatePost(!modalCreatePost);
+    const toggleReadPostInfo = () => setModalReadPostInfo(!modalReadPostInfo);
 
     let postArrays = [];
     const [modalInput, setModalInput] = useState("default");
-    function setPostArrays(newArrays) {
-        setPostArrays = newArrays;
-    }
+    function setPostArrays(newArrays) {postArrays = newArrays;}
     const renderInput = (postArray, index) => {
+        
         return (
-            <tr key={index}>
+            <tr key={index} >
                 <th>{postArray.postId}</th>
                 <td>{postArray.writerId}</td>
-                <td>{postArray.title}</td>
-                <td>{postArray.writeDate}</td>
+                <td className={"readPostInfo"} >{postArray.title}</td>
+                
+                <td onmouseover="this.style.background='white'" onmouseout="this.style.background='blue'">{postArray.writeDate}</td>
                 <td>{postArray.numberOfView}</td>
             </tr>
         )
     }
     function getPostHistory(form) {
-        axios
-            .post('http://localhost:8080/mentor/post/read', form)
-            .then((response) => {
-                console.log(response.data[0].writerId + "response");
+        axios.post('http://localhost:8080/community/readPost', form).then((response) => {
+          //console.log(response.data[0].writerId + "response");
                 
                 setPostArrays(response.data);
                 setTableData(postArrays.map(renderInput));
             });
     }
+   
 
     useEffect(() => {
         var form = new FormData;
         form.append("id", localStorage.getItem('id'));
         getPostHistory(form);
-    }, [])
-    /*   useEffect(()=>{
+        }, []
+    )
+ $(function() { 
+            
+        $(".createPostButton").on("click",function(){
+  
+            var postButton = $(this);
 
-    },[]
-    ) */
+            var tr = postButton.parent().parent();
+            var td = tr.children();
+            console.log("row데이터 : "+td.eq(0).text());
+            setModalInput(td.eq(0).text());
+            toggleCreatePost();
+        }
+        ) 
+        $(".readPostInfo").on("click",function(){
+            
+            var postButton = $(this);
+
+            var tr = postButton.parent().parent();
+            var td = tr.children();
+            console.log("row데이터 : "+td.eq(0).text());
+            setModalInput(td.eq(0).text());
+            toggleReadPostInfo();
+        }
+        )       
+    }
+    )
+
     return (
         <div className="container">
             <Row>
-                <Form className="mb-5">
-                    <Input type="date" name="startDate"></Input>~
-                    <Input type="date" name="endDate"></Input>
-                    <Input type="text" name="keyword" placeholder="검색어를 입력하세요"></Input>
-                    <Button
-                        className="float-right"
-                        color="primary"
-                        onClick={() => {
-                            /* axios.데이터요청->inputs에 넣음 */
-                            var form = new FormData;
-                            getPostHistory(form);
-                            console.log(postArrays + "inButton");
-
-                        }}>조회</Button>
-                </Form>
+                
                 {/*게시판 테이블*/}
                 <Col>
-                    <Table>
+                    <Table  >
                         {/* 문자 안끊기게 */}
                         <thead className="text-nowrap">
                             {/* 열 이름부분 */}
                             <tr>
-
+                           
                                 <th>게시글 번호</th>
                                 <th>작성자 ID</th>
                                 <th>제목</th>
@@ -94,14 +110,25 @@ const ReadPost = (props) => {
 
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody >
                             {/* 내용부분 여기에 서버에서 정보 받아와서 포문돌려서 넣으면 될듯!*/}
                             {tableData}
                         </tbody>
                     </Table>
+                    
                 </Col>
             </Row>
+            <Modal isOpen={modalCreatePost}>
+                         <ModalHeader toggle={toggleCreatePost}>게시글 작성</ModalHeader>
+                         <CreatePost postId={modalInput}></CreatePost>                         
+            </Modal>
+                   
+            <Modal isOpen={modalReadPostInfo}>
+                <ModalHeader toggle={toggleReadPostInfo}>게시글 상세조회</ModalHeader>
+                <ReadPostInfo postId={modalInput}></ReadPostInfo>
+            </Modal>
 
+            <Button className={"createPostButton"} color={"primary"} >{"작성"}</Button>
         </div>
     )
 }

@@ -1,40 +1,70 @@
 package Midam.Controller;
 
-
-
-
-//import Midam.DAO.activity.MentoringHistoryDAO;
 import Midam.DAO.community.PostDAO;
 import Midam.DAO.user.UserDAO;
-//import Midam.model.activity.ActivityHistory;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.http.converter.FormHttpMessageConverter;
+import Midam.model.community.Post;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-
     @Controller
-    @RequestMapping(value= "/mentor/post", method=RequestMethod.POST)
+    @RequestMapping(value= "/community", method=RequestMethod.POST)
     @CrossOrigin("http://localhost:3000")
     public class CommunityController {
 
         @ResponseBody
-        @PostMapping(value="/read")
+        @PostMapping(value="/readPost")
         public ArrayList readPostList()  {
 
             PostDAO postDAO = new PostDAO();
             ArrayList<HashMap> postArrayList = postDAO.getListPost();
 
             return postArrayList;
+        }
+        @ResponseBody
+        @PostMapping(value="/readPostInfo")
+        public HashMap readPostInfo(MultipartHttpServletRequest request)  {
+            HashMap result = new HashMap();
+
+
+            int postId = Integer.parseInt(request.getParameter("postId"));
+
+            PostDAO postDAO = new PostDAO();
+
+            Post readResult = postDAO.readPostInfo(postId);
+            result.put("responseMsg",readResult);
+           // Post resultHistory = postDAO.readPostInfo(postId);
+          //  result.put("writerId",resultHistory.getWriterId());
+          //  result.put("title",resultHistory.getTitle());
+          //  result.put("content",resultHistory.getContent());
+          //  result.put("writeDate",resultHistory.getWriteDate());
+
+            return result;
+        }
+
+
+
+        @ResponseBody
+        @PostMapping(value="/createPost")
+        public HashMap createPost(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+
+            HashMap result = new HashMap();
+
+            String writerId= request.getParameter("writerId");
+            String title=request.getParameter("title");
+            String content=request.getParameter("content");
+
+            PostDAO postDAO = new PostDAO();
+
+            int createResult = postDAO.createPost(writerId,title,content);
+            result.put("responseMsg",createResult);
+            return result;
         }
     }
 
