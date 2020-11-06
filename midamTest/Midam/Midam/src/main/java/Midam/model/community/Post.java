@@ -1,6 +1,7 @@
 package Midam.model.community;
 
-import java.sql.Timestamp;
+
+import java.util.Date;
 
 public class Post {
 
@@ -11,7 +12,7 @@ public class Post {
     private String writerId;
     private String title;
     private String content;
-    private java.sql.Timestamp writeDate;
+    private String writeDate;
     private int numberOfView;
 
     public int getPostId() {
@@ -70,11 +71,11 @@ public class Post {
         this.content = content;
     }
 
-    public Timestamp getWriteDate() {
+    public String getWriteDate() {
         return writeDate;
     }
 
-    public void setWriteDate(Timestamp writeDate) {
+    public void setWriteDate(String writeDate) {
         this.writeDate = writeDate;
     }
 

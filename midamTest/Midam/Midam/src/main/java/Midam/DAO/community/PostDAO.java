@@ -1,14 +1,18 @@
 package Midam.DAO.community;
 
+import Midam.model.activity.ActivityHistory;
 import Midam.model.community.Post;
+import com.mysql.cj.protocol.Resultset;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import java.util.Date;
 import java.util.HashMap;
 
 public class PostDAO {
@@ -17,9 +21,8 @@ public class PostDAO {
 
     private Connection conn=null;
     private PreparedStatement pstmt;
-    private Statement stmt;
-    private ResultSet rs;
-    private String sql;
+    SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Date now =new Date();
 
     private Connection getConnection(){
 
@@ -53,20 +56,21 @@ public class PostDAO {
 
         ArrayList<HashMap> list =new ArrayList<HashMap>();
 
-        String sql = "select postId,groupId,writerId,title,writeDate,numberOfView,replyOrder,replyStep from post";
+       String sql = "select @rownum:=@rownum+1 rnum, A.* from post A,(SELECT @ROWNUM :=0) R WHERE 1=1 ORDER BY groupId";
 
-      //  int start= (page -1 )*10+1;
-      //  int end =start+9;
+       // int start= (page -1 )*10+1;
+       // int end =start+9;
         try {
 
-            conn=getConnection();
-            pstmt = conn.prepareStatement(sql);
-          //  pstmt.setInt(1, start);
-          //  pstmt.setInt(2, end);
-            rs= pstmt.executeQuery();
+             conn=getConnection();
+             pstmt = conn.prepareStatement(sql);
+             //  pstmt.setInt(1, start);
+             //  pstmt.setInt(2, end);
+             ResultSet rs= pstmt.executeQuery();
 
 
             while(rs.next()) {
+                Post post = new Post();
                 HashMap postHashMap = new HashMap();
 
                 postHashMap.put("postId",rs.getInt("postId"));
@@ -76,7 +80,7 @@ public class PostDAO {
                 postHashMap.put("replyStep",rs.getInt("replyStep"));
 
                 postHashMap.put("title",rs.getString("title"));
-                postHashMap.put("writeDate",rs.getTimestamp("writeDate"));
+                postHashMap.put("writeDate",rs.getString("writeDate"));
                 postHashMap.put("numberOfView",rs.getInt("numberOfView"));
 
 
@@ -90,48 +94,62 @@ public class PostDAO {
             closeConnection(conn);
         }
         return list;
-    }      //전체 활동내역 목록
+    }      //게시글 목록 조회
 
-/*
-    public ArrayList<HashMap> getListMentor(String id){
+    public Post readPostInfo(int postId){
+        Post post = new Post();
+        String sql = "SELECT writerId, title, content, writeDate FROM post WHERE postId = ?;";
 
-        ArrayList<HashMap> list =new ArrayList<HashMap>();
-        String sql = "SELECT * FROM activity_history where mentorId=? ";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
 
+            pstmt.setInt(1, postId);
+            ResultSet rs= pstmt.executeQuery();
+            while(rs.next()){
+                post.setWriterId(rs.getString("writerId"));
+                post.setTitle(rs.getString("title"));
+                post.setContent(rs.getString("content"));
+                post.setWriteDate(rs.getString("writeDate"));
+
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return post;
+    }
+
+    public int createPost(String writerId, String title, String content) { // 등록
+        int result =0;
+        String writeDate = sdfDate.format(now);
+        String sql1 ="select max(postId) from post";
+        int postId =0;
+        String sql2 = "insert into post"+
+                "(groupId,writerId,title,content,writeDate,numberOfView, replyOrder, replyStep) values(?,?,?,?,?,0,0,0)";
         try {
 
             conn=getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, id);  //검색하기위해 입력한 아이디
+            pstmt = conn.prepareStatement(sql1);
             ResultSet rs= pstmt.executeQuery();
+            rs.next();
+            postId = rs.getInt(1)+1;    //자동증분 된 값
 
+            pstmt= conn.prepareStatement(sql2);
+            pstmt.setInt(1, postId);  //groupId에 postId 입력
+            pstmt.setString(2, writerId);
+            pstmt.setString(3, title);
+            pstmt.setString(4, content);
+            pstmt.setString(5, writeDate);
+            result = pstmt.executeUpdate();
 
-            while(rs.next()) {
-
-                ActivityHistory activityHistory =new ActivityHistory();
-
-                HashMap historyHashMap = new HashMap();
-                historyHashMap.put("activityHistoryCode",rs.getInt("activityHistoryCode"));
-                historyHashMap.put("mentoringActivityCode",rs.getString("mentoringActivityCode"));
-                historyHashMap.put("linkAgencyManagerId",rs.getString("linkAgencyManagerId"));
-                historyHashMap.put("regionManagerId",rs.getString("regionManagerId"));
-                historyHashMap.put("mentorId",rs.getString("mentorId"));
-                historyHashMap.put("startTime",rs.getTimestamp("startTime"));
-                historyHashMap.put("endTime",rs.getTimestamp("endTime"));
-                historyHashMap.put("date",rs.getString("createDate"));
-                historyHashMap.put("status",rs.getString("approvalStatus"));
-                historyHashMap.put("report",rs.getString("activityContent"));
-
-                list.add(historyHashMap);
-            }
-        }catch(Exception e) {
-            e.printStackTrace();
-
-        }finally {
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
             closeConnection(conn);
         }
-        return list;
-    }
-
- */
+        return result;
+    } //게시글 작성
 }

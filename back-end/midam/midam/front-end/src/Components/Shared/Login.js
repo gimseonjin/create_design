@@ -25,6 +25,7 @@ const Login = ({props, history}) => {
         const [id, setId] = useState(null);
         const [password, setPassword] = useState(null);
 
+     //   const [cookies, setCookie, removeCookie] = useCookies();
 
         const handleSubmitId = (e) => {
              e.preventDefault();

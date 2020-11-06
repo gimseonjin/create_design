@@ -21,7 +21,7 @@ public class ActivityDAO {
     private Connection getConnection(){
         String url= "jdbc:mysql://localhost:3306/mydb?useSSL=false";
         String admin ="root";
-        String password="emm05235";
+        String password="root";
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(url, admin, password);

@@ -89,6 +89,7 @@ const HeaderMentor = ({match, history}) => {
                                                 <DropdownItem>
                                                     <Link to={`${match.url}/readPost`}><span>게시판 보기</span></Link>
                                                 </DropdownItem>
+                                                <DropdownItem><Link to={`${match.url}/createPost`}><span>게시글 작성</span></Link></DropdownItem>
                                                 <DropdownItem><span>멘토링 모집</span></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
