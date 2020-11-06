@@ -38,12 +38,13 @@ import java.util.HashMap;
             PostDAO postDAO = new PostDAO();
 
             Post readResult = postDAO.readPostInfo(postId);
-            result.put("responseMsg",readResult);
-           // Post resultHistory = postDAO.readPostInfo(postId);
-          //  result.put("writerId",resultHistory.getWriterId());
-          //  result.put("title",resultHistory.getTitle());
-          //  result.put("content",resultHistory.getContent());
-          //  result.put("writeDate",resultHistory.getWriteDate());
+
+
+            result.put("writerId",readResult.getWriterId());
+            result.put("writeDate",readResult.getWriteDate());
+            result.put("title",readResult.getTitle());
+            result.put("content",readResult.getContent());
+
 
             return result;
         }
