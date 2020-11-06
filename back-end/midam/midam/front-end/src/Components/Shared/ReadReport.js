@@ -26,6 +26,10 @@ const ReadReport = (props) =>{
     const [file, setFile] = useState("");
     const [imagePreviewUrl, setImagePreviewUrl] = useState("");
     const [token, setToken] = useState(cookie.load("userToken"));
+    const [isReadOnly, setIsReadOnly] = useState(true);
+    const toggleIsReadOnly = () => {
+        setIsReadOnly(!isReadOnly);
+    }
 
     let imagePreview = null;
 
@@ -57,19 +61,19 @@ const ReadReport = (props) =>{
 
     const updateReport = () => {
         var form = new FormData;
+        console.log("update");
         form.append("userToken", token);
         form.append("activityHistoryCode", activityHistoryCode);
         form.append("content",content);
         form.append("note",note);
         form.append("file",file);
-        console.log(file);
         axios
             .post('/mentor/activityHistory/createReport', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
                 alert(response.data.responseMsg);
             })
     }
-    const readReport = () => {
+    function readReport () {
         var form = new FormData;
         form.append("userToken ", cookie.load("userToken"));
         form.append("activityHistoryCode", activityHistoryCode);
@@ -78,7 +82,7 @@ const ReadReport = (props) =>{
             setContent(response.data.activityContent);
             setNote(response.data.note);
             setImagePreviewUrl(response.data.activityPictureBASE64);
-            console.log(response.data.activityContent);
+            console.log("readReport");
             
 
         })
@@ -97,21 +101,21 @@ const ReadReport = (props) =>{
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동일자</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="dayOfActivity" placeholder="날짜" readOnly="readOnly"></Input>
+                        <Input type="text" name="dayOfActivity" placeholder="날짜" readOnly={true}></Input>
                     </InputGroup>
 
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>참여자</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="mentorName" placeholder="참여자 입력" readOnly="readOnly"></Input>
+                        <Input type="text" name="mentorName" placeholder="참여자 입력" readOnly={true}></Input>
                     </InputGroup>
 
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동 기관</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="place" placeholder="활동 장소 입력" readOnly="readOnly"></Input>
+                        <Input type="text" name="place" placeholder="활동 장소 입력" readOnly={true}></Input>
                     </InputGroup>
                 </FormGroup>
 
@@ -120,13 +124,13 @@ const ReadReport = (props) =>{
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동내용</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="content" placeholder="활동내용입력" onChange={handleContentOnChange} value={content}></Input>
+                        <Input type="textarea" name="content" placeholder="활동내용입력" onChange={handleContentOnChange} value={content} readOnly={isReadOnly}></Input>
                     </InputGroup>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>특이사항</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="note" placeholder="특이사항 입력" onChange={handleNoteOnChange} value={note}></Input>
+                        <Input type="textarea" name="note" placeholder="특이사항 입력" onChange={handleNoteOnChange} value={note} readOnly={isReadOnly}></Input>
                     </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -139,12 +143,12 @@ const ReadReport = (props) =>{
                             accept='image/jpg,impge/png,image/jpeg,image/gif'
                             name="file"
                             label="파일 선택"
-                            onChange={handleImageOnChange}>asdf</CustomInput>
+                            onChange={handleImageOnChange} readOnly={isReadOnly}>asdf</CustomInput>
                     </InputGroup>
                 </FormGroup>
                 {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
-                <Button onClick={updateReport}>수정</Button>
-                <Button type="hidden" color="danger" /* onClick={} */>완료</Button>
+                <Button onClick={toggleIsReadOnly}>수정</Button>
+                <Button type="hidden" color="danger" onClick={updateReport}>완료</Button>
                 <Button onClick={readReport}>조회</Button>
             
             </Form>

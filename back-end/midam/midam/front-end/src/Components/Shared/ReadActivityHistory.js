@@ -103,6 +103,7 @@ const ReadActivityHistory=(props)=> {
     
     // jquery 사용. 버튼 클릭시 해당 Row 값을 가져오기
     $(function() { 
+        $(".readReportButton").off("click")
             // $(document).ready 에 해당하는부분. 업데이트되며 문법이 바뀐듯하다
         $(".createReportButton").on("click",function(){
             var str = "";
@@ -111,16 +112,16 @@ const ReadActivityHistory=(props)=> {
 
             var tr = reportButton.parent().parent();
             var td = tr.children();
-            console.log("row데이터 : "+td.eq(0).text());
             setModalInput(td.eq(0).text());
             toggleCreateReport();
         }
         )
-
+        
         $(".readReportButton").on("click",function(){
             var str = "";
             var tdArr = new Array();
             var reportButton = $(this);
+
 
             var tr = reportButton.parent().parent();
             var td = tr.children();
@@ -185,9 +186,8 @@ const ReadActivityHistory=(props)=> {
                         <Button className="float-right" color="primary" onClick={()=>{
                             /* axios.데이터요청->inputs에 넣음 */
                              var form=new FormData;
-                             form.append("userToken",localStorage.getItem('userToken'));
+                             form.append("userToken",cookie.load('userToken'));
                              getActivityHistory(form);
-                            console.log(historyArrays+"inButton");
                            
                             }}>조회</Button>
                         {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
