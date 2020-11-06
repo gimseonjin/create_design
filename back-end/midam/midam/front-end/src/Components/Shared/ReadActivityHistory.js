@@ -8,6 +8,7 @@ import axios from 'axios';
 import usePost from './usePost';
 import $ from 'jquery';
 import ReadReport from './ReadReport';
+import cookie from 'react-cookies';
 
 //활동 내역 조회
 const ReadActivityHistory=(props)=> {
@@ -86,7 +87,7 @@ const ReadActivityHistory=(props)=> {
     }
    
     function getActivityHistory (form) {
-        axios.post('http://localhost:8080/mentor/activityHistory/read',form).then((response)=>{
+        axios.post('/mentor/activityHistory/read',form).then((response)=>{
         setHistoryArrays(response.data); 
         setTableData(historyArrays.map(renderInput))
         }
@@ -95,7 +96,7 @@ const ReadActivityHistory=(props)=> {
 
     useEffect(()=>{
         var form=new FormData;
-        form.append("userToken",localStorage.getItem('userToken'));
+        form.append("userToken",cookie.load('userToken'));
         getActivityHistory(form);
       },[]
     )

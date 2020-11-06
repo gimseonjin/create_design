@@ -16,7 +16,7 @@ import midamLogo from '../img/midam.png';
 import '../Css/Login.css'
 import axios from 'axios';
 import usePost from './usePost';
-import {useCookies} from 'react-cookies';
+import cookie from 'react-cookies';
 
 const Login = ({props, history}) => {
     
@@ -38,10 +38,10 @@ const Login = ({props, history}) => {
        }
 
        const loginTest = (form) => {
-        axios.post("http://localhost:8080/login", form)
+        axios.post("/login", form)
         .then((response)=>{
             alert(response.data.userToken);
-            localStorage.setItem("userToken",response.data.userToken);
+            cookie.save("userToken",response.data.userToken);
             if(response.data.result !== 0){
                 if(rSelected === 1){
                     history.push("/Mentor");

@@ -5,12 +5,13 @@ import '../Css/InputRightAlign.css';
 import ApplyChangeRegion from '../Mentor/ApplyChangeRegion';
 import UpdateUserInformation from './UpdateUserInformation';
 import axios from 'axios';
+import cookie from 'react-cookies';
 //회원 정보 조회
 
 const ReadUserInformation = (props) => {
 
   // id,권한 일단 저장
-    const [token, setToken] = useState(localStorage.getItem("userToken"));
+    const [token, setToken] = useState(cookie.load("userToken"));
     const [authority, setAuthority] = useState("1");
     const [userInfo, setUserInfo] = useState([]);
 
@@ -27,17 +28,18 @@ const ReadUserInformation = (props) => {
         this.setModal(false);
     }
     var lis = [];
-    const getUserInformation = (form) => {
+    const getUserInformation = () => {
+      console.log(token);
+      let form = new FormData();
+      form.append("userToken", token);
       axios.post('/reqUserInfo',form).then((response)=>{
         
         setUserInfo(response.data)
-        console.log(response.data.name);
+        
       })
     }
     useEffect(() => {
-      let form = new FormData();
-      form.append("userToken", token);
-      getUserInformation(form)
+      getUserInformation();
         },[]
       )
 // componentDidMount에 해당하는 useEffect. 두번째 매개변수로 [] 시 구성 요소가 마운트 될 때 코드 한번 실행.
@@ -101,9 +103,7 @@ const ReadUserInformation = (props) => {
             </Modal>
 
             <Button color="danger" onClick={()=>{
-              let form = new FormData();
-              form.append("userToken", token);
-              getUserInformation(form)
+              getUserInformation();
             }}>조회</Button>
             <Button color="primary" onClick={toggleUpdateRegion}>지역본부 변경요청</Button>
             <Button color="primary" onClick={toggleUpdateInfo}>수정</Button>

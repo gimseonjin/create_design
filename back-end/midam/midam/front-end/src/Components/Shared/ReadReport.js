@@ -11,9 +11,10 @@ import {
 } from 'reactstrap';
 import axios from 'axios';
 import {Image} from 'react-bootstrap';
+import cookie from 'react-cookies';
 
 //활동보고서 작성 활동 보고서 조회 페이지 필요할지. 여기서 함께할지 논의.
-function ReadReport(props) {
+const ReadReport = (props) =>{
     const [activityHistoryCode, setActivityHistoryCode] = useState(
         props.activityHistoryCode
     );
@@ -24,6 +25,7 @@ function ReadReport(props) {
     const [note, setNote] = useState();
     const [file, setFile] = useState("");
     const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+    const [token, setToken] = useState(cookie.load("userToken"));
 
     let imagePreview = null;
 
@@ -55,23 +57,23 @@ function ReadReport(props) {
 
     const updateReport = () => {
         var form = new FormData;
-        form.append("userToken", localStorage.getItem('userToken'));
+        form.append("userToken", token);
         form.append("activityHistoryCode", activityHistoryCode);
         form.append("content",content);
         form.append("note",note);
         form.append("file",file);
         console.log(file);
         axios
-            .post('http://localhost:8080/mentor/activityHistory/createReport', form,{headers: {'content-type':'multipart/form-data'}})
+            .post('/mentor/activityHistory/createReport', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
                 alert(response.data.responseMsg);
             })
     }
     const readReport = () => {
         var form = new FormData;
-        form.append("userToken ", localStorage.getItem('userToken'));
+        form.append("userToken ", cookie.load("userToken"));
         form.append("activityHistoryCode", activityHistoryCode);
-        axios.post('http://localhost:8080/mentor/activityHistory/readReport',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
+        axios.post('/mentor/activityHistory/readReport',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
             setDayOfActivity(response.data.startTime);
             setContent(response.data.activityContent);
             setNote(response.data.note);
