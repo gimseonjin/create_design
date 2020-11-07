@@ -41,11 +41,30 @@ import cookie from 'react-cookies';
 
 const HeaderMentor = ({match, history}) => {
     
+    let form = new FormData();
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
     const [Modal, open, close, isOpenPop] = useModal('root', {
         preventScroll: true
     });
+    useEffect(() => {
+        if(!localStorage.getItem("userToken") || localStorage.getItem("userToken") === "bearer: "){
+            alert("Pleas Login");
+            history.push("/");    
+        }else{
+        form.append('userToken', localStorage.getItem("userToken"));
+        form.append('authority', '1');
+        axios.post("http://localhost:8080/checkAuthority", form)
+        .then((response)=>{
+            if(response.data === "TRUE"){
+                alert("success")
+            }else{
+                alert("FALSE");
+                history.push("/");    
+            }
+        })
+        }
+      });
 
     return (
         <div>
