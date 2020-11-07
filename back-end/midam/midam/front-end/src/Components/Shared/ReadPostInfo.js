@@ -53,7 +53,8 @@ function ReadPostInfo(props){
                          
                 <td>{replyArray.writerId}</td>
                 <td>{replyArray.content}</td>                
-                <td>{replyArray.writeDate}</td>                
+                <td>{replyArray.writeDate}</td> 
+                <td><Button className={"deleteReplyButton"} color={"primary"} >{"삭제"}</Button></td>               
             </tr>
         ) //<h1>props.activityHistoryCode : {activityHistoryCode}</h1>
     }//댓글 목록 조회시 보일것 (댓글작성자, 댓글내용, 댓글 작성날짜)
@@ -107,7 +108,7 @@ function ReadPostInfo(props){
         form.append("id", localStorage.getItem('id'));
         readPostInfo();   //게시글 상세조회
         getReplyList(form); //댓글 목록조회
-        }, []
+        }
     )
     const updatePost = () => {
         var form = new FormData;
@@ -125,7 +126,7 @@ function ReadPostInfo(props){
     const createReply = () =>{
         var form = new FormData;      
         form.append('userToken', localStorage.getItem("userToken"));
-        form.append('id', postId);
+        form.append('postId', postId);
         form.append('reply',reply);
         axios.post("http://localhost:8080/community/createReply", form,{headers: {'content-type':'multipart/form-data'}})
         .then((response)=>{
@@ -232,9 +233,9 @@ function ReadPostInfo(props){
                         </InputGroupAddon>
                         <Input type="textarea" name="content" placeholder="댓글" onChange={handleReplyOnChange} value={reply}></Input>
             </InputGroup>
-            <Button  className="btn btn-primary btn-block w-25" style={{float: 'right'}} type="post" onClick={createReply}>댓글 등록</Button>
-
-         
+            
+            
+            <Button className="btn btn-primary btn-block w-25" color={"primary"} style={{float: 'right'}}   type="post" onClick={createReply}>{"댓글작성"}</Button>
             </div>
             
     )

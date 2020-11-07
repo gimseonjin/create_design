@@ -78,7 +78,7 @@ import java.util.Map;
 
         @ResponseBody
         @PostMapping(value="/createReply")
-        public HashMap createReply(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+        public HashMap createReply(@RequestParam(name="userToken") String userToken, MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
             HashMap result = new HashMap();
             Token token = new Token();
@@ -88,11 +88,11 @@ import java.util.Map;
 
             int postId = Integer.parseInt(request.getParameter("postId"));
 
-            String content=request.getParameter("content");
+            String content=request.getParameter("reply");
 
             PostDAO postDAO = new PostDAO();
-            System.out.println("확인"+id+postId);
-            int createResult = postDAO.createReply(id,content,postId);
+
+            int createResult = postDAO.createReply(id, content,postId);
             result.put("responseMsg",createResult);
             return result;
         }

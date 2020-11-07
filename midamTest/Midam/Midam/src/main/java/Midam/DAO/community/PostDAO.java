@@ -194,28 +194,30 @@ public class PostDAO {
         return list;
     }      //게시글 목록 조회
 
-    public int createReply(String id, String content, int postId) { // 등록
+    public int createReply(String id,String content, int postId) { // 등록
         int result =0;
         int groupId =postId;
         String writeDate = sdfDate.format(now);
         String sql1 ="select max(replyOrder) from post where groupId =?";
 
         String sql2 = "insert into post"+
-                "(writerId,content,writeDate,replyOrder,replyStep,groupId) values(?,?,?,?,1,?)";
+                "(writerId,title,content,writeDate,replyOrder,replyStep,groupId) values(?,?,?,?,?,1,?)";
         try {
 
             conn=getConnection();
             pstmt = conn.prepareStatement(sql1);
+            pstmt.setInt(1, groupId);
             ResultSet rs= pstmt.executeQuery();
             rs.next();
             int replyOrder = rs.getInt(1)+1;    //자동증분 된 값
-
+            String title="RE: 댓글";
             pstmt= conn.prepareStatement(sql2);
             pstmt.setString(1, id);  //groupId에 postId 입력
-            pstmt.setString(2, content);
-            pstmt.setString(3, writeDate);
-            pstmt.setInt(4, replyOrder);
-            pstmt.setInt(5, groupId);
+            pstmt.setString(2, title);
+            pstmt.setString(3, content);
+            pstmt.setString(4, writeDate);
+            pstmt.setInt(5, replyOrder);
+            pstmt.setInt(6, groupId);
             result = pstmt.executeUpdate();
 
         } catch (SQLException throwables) {
