@@ -3,6 +3,8 @@ package Midam.DAO.activity;
 import Midam.model.activity.ActivityHistory;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -47,7 +49,7 @@ public class MentoringHistoryDAO {
     }
 
     public boolean create(ActivityHistory activityHistory) { // 등록
-        sql = "insert into activity_history(activityHistoryCode, mentoringActivityCode," +
+        sql = "insert into activity_history(activityHistoryCode, MentorRecruitmentCode," +
                 "linkAgencyManagerId, regionManagerId,mentorId,startTime)"
                 + " values(?, ?, ?, ?, ?, ?)";
         try {
@@ -55,11 +57,11 @@ public class MentoringHistoryDAO {
             conn= getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, activityHistory.getActivityHistoryCode());
-            pstmt.setString(2, activityHistory.getMentoringActivityCode());
+            pstmt.setString(2, activityHistory.getMentorRecruitmentCode());
             pstmt.setString(3, activityHistory.getLinkAgencyManagerId());
             pstmt.setString(4, activityHistory.getRegionManagerId());
             pstmt.setString(5, activityHistory.getMentorId());
-            pstmt.setTimestamp(6, activityHistory.getStartTime());
+            pstmt.setString(6, activityHistory.getStartTime());
 
             int r = pstmt.executeUpdate();
             return true;
@@ -77,8 +79,8 @@ public class MentoringHistoryDAO {
             conn=getConnection();
             pstmt = conn.prepareStatement(sql);
 
-            pstmt.setTimestamp(1, activityHistory.getStartTime());
-            pstmt.setTimestamp(2, activityHistory.getEndTime());
+            pstmt.setString(1, activityHistory.getStartTime());
+            pstmt.setString(2, activityHistory.getEndTime());
 
             pstmt.setString(3, activityHistory.getActivityContent());
             pstmt.setString(4, activityHistory.getNote());
@@ -111,18 +113,19 @@ public class MentoringHistoryDAO {
                 
                 activityHistory =new ActivityHistory();
                 activityHistory.setActivityHistoryCode(rs.getInt("activityHistoryCode"));
-                activityHistory.setMentoringActivityCode(rs.getString("mentoringActivityCode"));
+                activityHistory.setMentorRecruitmentCode(rs.getString("MentorRecruitmentCode"));
                 activityHistory.setLinkAgencyManagerId(rs.getString("linkAgencyManagerId"));
                 activityHistory.setRegionManagerId(rs.getString("regionManagerId"));
                 activityHistory.setMentorId(rs.getString("mentorId"));
-                activityHistory.setStartTime(rs.getTimestamp("startTime"));
-                activityHistory.setEndTime(rs.getTimestamp("endTime"));
+                activityHistory.setStartTime(rs.getString("startTime"));
+
+                activityHistory.setEndTime(rs.getString("endTime"));
 
                 activityHistory.setActivityContent(rs.getString("activityContent"));
                 activityHistory.setNote(rs.getString("note"));
                 activityHistory.setActivityPicture(rs.getBytes("activityPicture"));
-                activityHistory.setCreateDate(rs.getTimestamp("createDate"));
-                activityHistory.setApprovalDate(rs.getTimestamp("approvalDate"));
+                activityHistory.setCreateDate(rs.getString("createDate"));
+                activityHistory.setApprovalDate(rs.getString("approvalDate"));
                 activityHistory.setApprovalStatus(rs.getInt("approvalStatus"));
                 activityHistory.setCompanionReason(rs.getString("companionReason"));
 
@@ -151,13 +154,13 @@ public class MentoringHistoryDAO {
             while(rs.next()) {
                 ActivityHistory activityHistory =new ActivityHistory();
                 activityHistory.setActivityHistoryCode(rs.getInt("activityHistoryCode"));
-                activityHistory.setMentoringActivityCode(rs.getString("mentoringActivityCode"));
+                activityHistory.setMentorRecruitmentCode(rs.getString("MentorRecruitmentCode"));
                 activityHistory.setLinkAgencyManagerId(rs.getString("linkAgencyManagerId"));
                 activityHistory.setRegionManagerId(rs.getString("regionManagerId"));
                 activityHistory.setMentorId(rs.getString("mentorId"));
-                activityHistory.setStartTime(rs.getTimestamp("startTime"));
-                activityHistory.setEndTime(rs.getTimestamp("endTime"));
-                
+                activityHistory.setStartTime(rs.getString("startTime"));
+                activityHistory.setEndTime(rs.getString("endTime"));
+
                 list.add(activityHistory);
             }
         }catch(Exception e) {
@@ -189,15 +192,14 @@ public class MentoringHistoryDAO {
 
                 HashMap historyHashMap = new HashMap();
                 historyHashMap.put("activityHistoryCode",rs.getInt("activityHistoryCode"));
-                historyHashMap.put("mentoringActivityCode",rs.getString("mentoringActivityCode"));
-                historyHashMap.put("linkAgencyManagerId",rs.getString("linkAgencyManagerId"));
-                historyHashMap.put("regionManagerId",rs.getString("regionManagerId"));
-                historyHashMap.put("mentorId",rs.getString("mentorId"));
-                historyHashMap.put("startTime",rs.getTimestamp("startTime"));
-                historyHashMap.put("endTime",rs.getTimestamp("endTime"));
+                historyHashMap.put("MentorRecruitmentCode",rs.getString("MentorRecruitmentCode"));
+                historyHashMap.put("startTime", rs.getString("startTime"));
+                historyHashMap.put("endTime", rs.getString("endTime"));
                 historyHashMap.put("date",rs.getString("createDate"));
                 historyHashMap.put("status",rs.getString("approvalStatus"));
                 historyHashMap.put("report",rs.getString("activityContent"));
+
+
 
                 list.add(historyHashMap);
             }
@@ -268,12 +270,12 @@ public class MentoringHistoryDAO {
             pstmt.setInt(1,activityHistoryCode);
             rs= pstmt.executeQuery();
             while(rs.next()){
-                activityHistory.setStartTime(rs.getTimestamp("startTime"));
-                activityHistory.setEndTime(rs.getTimestamp("endTime"));
+                activityHistory.setStartTime(rs.getString("startTime"));
+                activityHistory.setEndTime(rs.getString("endTime"));
                 activityHistory.setActivityContent(rs.getString("activityContent"));
                 activityHistory.setNote(rs.getString("note"));
                 activityHistory.setActivityPicture(rs.getBytes("activityPicture"));
-                activityHistory.setCreateDate(rs.getTimestamp("createDate"));
+                activityHistory.setCreateDate(rs.getString("createDate"));
                 activityHistory.setApprovalStatus(rs.getInt("approvalStatus"));
             }
 
