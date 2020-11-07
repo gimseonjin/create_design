@@ -49,6 +49,7 @@ const HeaderSystemManager = ({match, history}) => {
                 alert("success")
             }else{
                 alert("FALSE");
+                localStorage.removeItem("userToken");
                 history.push("/");    
             }
         })

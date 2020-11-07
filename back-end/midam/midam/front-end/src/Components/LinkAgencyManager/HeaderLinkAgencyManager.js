@@ -42,13 +42,14 @@ const HeaderLinkAgencyManager = ({match, history}) => {
             history.push("/");    
         }else{
         form.append('userToken', localStorage.getItem("userToken"));
-        form.append('authority', '1');
+        form.append('authority', '3');
         axios.post("http://localhost:8080/checkAuthority", form)
         .then((response)=>{
             if(response.data === "TRUE"){
                 alert("success")
             }else{
                 alert("FALSE");
+                localStorage.removeItem("userToken");
                 history.push("/");    
             }
         })
