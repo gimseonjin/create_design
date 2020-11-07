@@ -37,6 +37,7 @@ import QRCode from 'qrcode.react';
 import midamLogo from '../img/midam.png';
 import establishment from '../img/establishment.png';
 import axios from 'axios';
+import cookie from 'react-cookies';
 
 const HeaderMentor = ({match, history}) => {
     
@@ -125,9 +126,10 @@ const HeaderMentor = ({match, history}) => {
                                                 </div>
                                             </Modal>
                                             <Button className = "header-bnt w-75" color="light" onClick = {
-                                                () => {localStorage.setItem("userToken", " ");
+                                                () => {cookie.remove("userToken");
                                                 history.push("/")
-                                                }}><span>Log out</span></Button>
+                                                }}><span>로그아웃</span></Button>
+                                               
                                         </div>
                                     </NavItem>
                                 </Nav>

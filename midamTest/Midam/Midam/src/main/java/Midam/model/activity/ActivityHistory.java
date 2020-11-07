@@ -12,13 +12,13 @@ public class ActivityHistory {
     private String linkAgencyManagerId;
     private String regionManagerId;
     private String mentorId;
-    private java.sql.Timestamp startTime;
-    private java.sql.Timestamp endTime;
+    private String startTime;
+    private String endTime;
     private String activityContent;
     private String note;
     private byte[] activityPicture;
-    private java.sql.Timestamp createDate;
-    private java.sql.Timestamp approvalDate;
+    private String createDate;
+    private String approvalDate;
     private int approvalStatus;
     private String companionReason;
 
@@ -30,11 +30,11 @@ public class ActivityHistory {
         this.activityHistoryCode = activityHistoryCode;
     }
 
-    public String getMentoringActivityCode() {
+    public String getMentorRecruitmentCode() {
         return mentorRecruitmentCode;
     }
 
-    public void setMentoringActivityCode(String mentorRecruitmentCode) {
+    public void setMentorRecruitmentCode(String mentorRecruitmentCode) {
         this.mentorRecruitmentCode = mentorRecruitmentCode;
     }
 
@@ -62,19 +62,19 @@ public class ActivityHistory {
         this.mentorId = mentorId;
     }
 
-    public Timestamp getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Timestamp getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
@@ -102,19 +102,19 @@ public class ActivityHistory {
         this.activityPicture = activityPicture;
     }
 
-    public Timestamp getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Timestamp createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 
-    public Timestamp getApprovalDate() {
+    public String getApprovalDate() {
         return approvalDate;
     }
 
-    public void setApprovalDate(Timestamp approvalDate) {
+    public void setApprovalDate(String approvalDate) {
         this.approvalDate = approvalDate;
     }
 
@@ -134,7 +134,7 @@ public class ActivityHistory {
         this.companionReason = companionReason;
     }
 
-//    BLOB을 JSON으로 보낼수가 없어. binary데이터는 담을 수 없는듯. 그래서 uri로 바꿔서 보낼수있게 바꾸려고함.
+    //    BLOB을 JSON으로 보낼수가 없어. binary데이터는 담을 수 없는듯. 그래서 uri로 바꿔서 보낼수있게 바꾸려고함.
 
     public String getActivityPictureBASE64(){
         return "data:image/jpeg;base64,"+ new String(Base64.getEncoder().encode(activityPicture));

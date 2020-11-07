@@ -18,7 +18,6 @@ const ReadReport = (props) =>{
     const [activityHistoryCode, setActivityHistoryCode] = useState(
         props.activityHistoryCode
     );
-    const [dayOfActivity, setDayOfActivity] = useState();
     const [mentorName, setMentorName] = useState();
     const [place, setPlace] = useState();
     const [content, setContent] = useState();
@@ -27,6 +26,8 @@ const ReadReport = (props) =>{
     const [imagePreviewUrl, setImagePreviewUrl] = useState("");
     const [token, setToken] = useState(cookie.load("userToken"));
     const [isReadOnly, setIsReadOnly] = useState(true);
+    const [dateOfActivity, setDateOfActivity] = useState("");
+
     const toggleIsReadOnly = () => {
         setIsReadOnly(!isReadOnly);
     }
@@ -78,10 +79,11 @@ const ReadReport = (props) =>{
         form.append("userToken ", cookie.load("userToken"));
         form.append("activityHistoryCode", activityHistoryCode);
         axios.post('/mentor/activityHistory/readReport',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
-            setDayOfActivity(response.data.startTime);
+            
             setContent(response.data.activityContent);
             setNote(response.data.note);
             setImagePreviewUrl(response.data.activityPictureBASE64);
+            setDateOfActivity(response.data.startTime + " ~ " + response.data.endTime);
             console.log("readReport");
             
 
@@ -101,7 +103,7 @@ const ReadReport = (props) =>{
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동일자</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="dayOfActivity" placeholder="날짜" readOnly={true}></Input>
+                        <Input type="text" name="dayOfActivity" placeholder="날짜" readOnly={true} value = {dateOfActivity}></Input>
                     </InputGroup>
 
                     <InputGroup>
