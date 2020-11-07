@@ -40,10 +40,7 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 
 const HeaderMentor = ({match, history}) => {
-<<<<<<< Updated upstream
     
-=======
->>>>>>> Stashed changes
     let form = new FormData();
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
@@ -63,6 +60,7 @@ const HeaderMentor = ({match, history}) => {
                 alert("success")
             }else{
                 alert("FALSE");
+                localStorage.removeItem("userToken");
                 history.push("/");    
             }
         })
@@ -167,11 +165,7 @@ const HeaderMentor = ({match, history}) => {
                                                 </div>
                                             </Modal>
                                             <Button className = "header-bnt w-75" color="light" onClick = {
-<<<<<<< Updated upstream
-                                                () => {cookie.remove("userToken");
-=======
                                                 () => {localStorage.removeItem("userToken");
->>>>>>> Stashed changes
                                                 history.push("/")
                                                 }}><span>로그아웃</span></Button>
                                                
