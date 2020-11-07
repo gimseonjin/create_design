@@ -47,7 +47,7 @@ const ReadPost = (props) => {
     }
     function getPostHistory(form) {
         axios.post('http://localhost:8080/community/readPost', form).then((response) => {
-          //console.log(response.data[0].writerId + "response");
+         
                 
                 setPostArrays(response.data);
                 setTableData(postArrays.map(renderInput));
@@ -62,7 +62,7 @@ const ReadPost = (props) => {
         }, []
     )
  $(function() { 
-            
+    $(".readPostInfo").off("click")
         $(".createPostButton").on("click",function(){
   
             var postButton = $(this);
@@ -124,6 +124,7 @@ const ReadPost = (props) => {
             <Modal isOpen={modalReadPostInfo}>
                 <ModalHeader toggle={toggleReadPostInfo}>게시글 상세조회</ModalHeader>
                 <ReadPostInfo postId={modalInput}></ReadPostInfo>
+                
             </Modal>
 
             <Button className={"createPostButton"} color={"primary"} >{"작성"}</Button>

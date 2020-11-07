@@ -98,7 +98,7 @@ public class PostDAO {
 
     public Post readPostInfo(int postId){
         Post post = new Post();
-        String sql = "SELECT writerId, title, content, writeDate FROM post WHERE postId = ? ;";
+        String sql = "SELECT postId, writerId, title, content, writeDate FROM post WHERE postId = ? ;";
 
         try {
             conn=getConnection();
@@ -107,6 +107,7 @@ public class PostDAO {
             pstmt.setInt(1, postId);
             ResultSet rs= pstmt.executeQuery();
             while(rs.next()){
+                post.setPostId(rs.getInt("postId"));
                 post.setWriterId(rs.getString("writerId"));
                 post.setTitle(rs.getString("title"));
                 post.setContent(rs.getString("content"));
@@ -192,4 +193,37 @@ public class PostDAO {
         }
         return list;
     }      //게시글 목록 조회
+
+    public int createReply(String id, String content, int postId) { // 등록
+        int result =0;
+        int groupId =postId;
+        String writeDate = sdfDate.format(now);
+        String sql1 ="select max(replyOrder) from post where groupId =?";
+
+        String sql2 = "insert into post"+
+                "(writerId,content,writeDate,replyOrder,replyStep,groupId) values(?,?,?,?,1,?)";
+        try {
+
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql1);
+            ResultSet rs= pstmt.executeQuery();
+            rs.next();
+            int replyOrder = rs.getInt(1)+1;    //자동증분 된 값
+
+            pstmt= conn.prepareStatement(sql2);
+            pstmt.setString(1, id);  //groupId에 postId 입력
+            pstmt.setString(2, content);
+            pstmt.setString(3, writeDate);
+            pstmt.setInt(4, replyOrder);
+            pstmt.setInt(5, groupId);
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    } //게시글 작성
+
 }

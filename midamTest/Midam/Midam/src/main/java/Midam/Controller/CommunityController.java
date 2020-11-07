@@ -3,6 +3,7 @@ package Midam.Controller;
 import Midam.DAO.community.PostDAO;
 import Midam.DAO.user.UserDAO;
 import Midam.model.community.Post;
+import Midam.model.token.Token;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -12,8 +13,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
-    @Controller
+@Controller
     @RequestMapping(value= "/community", method=RequestMethod.POST)
     @CrossOrigin("http://localhost:3000")
     public class CommunityController {
@@ -37,6 +39,7 @@ import java.util.HashMap;
             PostDAO postDAO = new PostDAO();
 
             Post readResult = postDAO.readPostInfo(postId);
+            result.put("postId",readResult.getPostId());
             result.put("writerId",readResult.getWriterId());
             result.put("writeDate",readResult.getWriteDate());
             result.put("title",readResult.getTitle());
@@ -72,7 +75,28 @@ import java.util.HashMap;
 
            return replyArrayList;
         } //해당 게시글 댓글목록 조회
-    
+
+        @ResponseBody
+        @PostMapping(value="/createReply")
+        public HashMap createReply(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+
+            HashMap result = new HashMap();
+            Token token = new Token();
+            Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+            Object objectId = map.get("id");
+            String id = objectId.toString();
+
+            int postId = Integer.parseInt(request.getParameter("postId"));
+
+            String content=request.getParameter("content");
+
+            PostDAO postDAO = new PostDAO();
+            System.out.println("확인"+id+postId);
+            int createResult = postDAO.createReply(id,content,postId);
+            result.put("responseMsg",createResult);
+            return result;
+        }
+
     
     
     
