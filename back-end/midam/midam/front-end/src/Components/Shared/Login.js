@@ -25,11 +25,7 @@ const Login = ({props, history}) => {
         const [id, setId] = useState(null);
         const [password, setPassword] = useState(null);
 
-<<<<<<< Updated upstream
-     //   const [cookies, setCookie, removeCookie] = useCookies();
-=======
        // const [cookies, setCookie, removeCookie] = useCookies();
->>>>>>> Stashed changes
 
         const handleSubmitId = (e) => {
              e.preventDefault();
@@ -44,14 +40,8 @@ const Login = ({props, history}) => {
        const loginTest = (form) => {
         axios.post("/login", form)
         .then((response)=>{
-<<<<<<< Updated upstream
-            alert(response.data.userToken);
-            cookie.save("userToken",response.data.userToken);
+            localStorage.setItem("userToken",response.data.userToken);
             if(response.data.result !== 0){
-=======
-            if(response.data === "TRUE"){
-                localStorage.setItem("userToken", "TRUE");
->>>>>>> Stashed changes
                 if(rSelected === 1){
                     history.push("/Mentor");
                 }else if(rSelected === 2){
@@ -62,7 +52,7 @@ const Login = ({props, history}) => {
                     history.push("/SystemManager");
                 }
             }else{
-                alert(response.data);
+                alert(response.data.message);
             }
         })
     }
