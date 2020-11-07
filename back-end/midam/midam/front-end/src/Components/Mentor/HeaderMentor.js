@@ -67,24 +67,7 @@ const HeaderMentor = ({match, history}) => {
         }
       });
 
-    useEffect(() => {
-        if(!localStorage.getItem("userToken") || localStorage.getItem("userToken") === "bearer: "){
-            alert("Pleas Login");
-            history.push("/");    
-        }else{
-        form.append('userToken', localStorage.getItem("userToken"));
-        form.append('authority', '1');
-        axios.post("http://localhost:8080/checkAuthority", form)
-        .then((response)=>{
-            if(response.data === "TRUE"){
-                alert("success")
-            }else{
-                alert("FALSE");
-                history.push("/");    
-            }
-        })
-        }
-      });
+   
       
     return (
         <div>
