@@ -34,10 +34,13 @@ function ReadPostInfo(props){
     const [tableData, setTableData] = useState(); //댓글 목록 조회 
    // const [modalInput, setModalInput] = useState("default");    //?
     const [modalCreateReply, setModalCreateReply] = useState(false);  //댓글 등록
-    const [modalDeleteReply, setModalDeleteReply] = useState(false);
-      
-    const toggleReply = () => setModalReply(!modalReplyPost);
+    const [modalUpdateReply, setModalUpdateReply] = useState(false);
+   // const [modalDeleteReply, setModalDeleteReply] = useState(false);
+    
 
+    const toggleCreateReply = () => setModalCreateReply(!modalCreateReply);
+    const toggleUpdateReply = () => setModalUpdateReply(!modalUpdateReply);
+    
     let replyArrays = [];  //댓글 목록 테이블
     function setReplyArrays(newArrays) {replyArrays = newArrays;}
     const renderInput = (replyArray, index) => {
@@ -76,7 +79,7 @@ function ReadPostInfo(props){
             setContent(response.data.content);           
         })
     }
-    function getReplyHistory(form) {
+    function getReplyList(form) {
         axios.post('http://localhost:8080/community/replyPost', form).then((response) => {
          
                 setReplyArrays(response.data);
@@ -86,8 +89,8 @@ function ReadPostInfo(props){
     useEffect(() => {
         var form = new FormData;
         form.append("id", localStorage.getItem('id'));
-        readPostInfo();
-        getReplyHistory(form);
+        readPostInfo();   //게시글 상세조회
+        getReplyList(form); //댓글 목록조회
         }, []
     )
     const updatePost = () => {
@@ -127,8 +130,8 @@ function ReadPostInfo(props){
             var tr = postButton.parent();
             var td = tr.children();
             console.log("row데이터 : "+td.eq(0).text());
-            setModalInput(td.eq(0).text());
-            toggleReplyPost();
+            //setModalInput(td.eq(0).text());
+            //toggleReplyPost();
         }
         ) 
                
@@ -177,7 +180,7 @@ function ReadPostInfo(props){
 
             <Button onClick={updatePost}>수정</Button>
             <Button type="hidden" color="danger" /* onClick={} */>완료</Button>
-            <Button onClick={replyPost}>댓글 등록</Button>
+            <Button >댓글 등록</Button>
             
             <div>해당 게시글 댓글 목록들</div>
             <Row>
