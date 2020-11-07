@@ -17,9 +17,7 @@ import {
 } from 'reactstrap';
 import axios from 'axios';
 import $ from 'jquery';
-
 import ReadPostInfo from './ReadPostInfo';
-
 
 const ReadPost = (props) => {
 
@@ -69,7 +67,7 @@ const ReadPost = (props) => {
   
             var postButton = $(this);
 
-            var tr = postButton.parent().parent();
+            var tr = postButton.parent();
             var td = tr.children();
             console.log("row데이터 : "+td.eq(0).text());
             setModalInput(td.eq(0).text());
@@ -80,7 +78,7 @@ const ReadPost = (props) => {
             
             var postButton = $(this);
 
-            var tr = postButton.parent().parent();
+            var tr = postButton.parent();
             var td = tr.children();
             console.log("row데이터 : "+td.eq(0).text());
             setModalInput(td.eq(0).text());

@@ -67,6 +67,20 @@ import java.util.HashMap;
             result.put("responseMsg",createResult);
             return result;
         }
+
+        @ResponseBody
+        @PostMapping(value="/readReplyPost")
+        public ArrayList replyPostList()  {
+
+            PostDAO postDAO = new PostDAO();
+            ArrayList<HashMap> replyPostArrayList = postDAO.getListReplyPost();
+
+            return replyPostArrayList;
+        } //해당 게시글 댓글목록 조회
+    
+    
+    
+    
     }
 
 

@@ -56,7 +56,7 @@ public class PostDAO {
 
         ArrayList<HashMap> list =new ArrayList<HashMap>();
 
-       String sql = "select @rownum:=@rownum+1 rnum, A.* from post A,(SELECT @ROWNUM :=0) R WHERE 1=1 ORDER BY groupId";
+       String sql = "select @rownum:=@rownum+1 rnum, A.* from post A,(SELECT @ROWNUM :=0) R WHERE 1=1 and replyStep=0 ORDER BY groupId";
 
        // int start= (page -1 )*10+1;
        // int end =start+9;
@@ -98,7 +98,7 @@ public class PostDAO {
 
     public Post readPostInfo(int postId){
         Post post = new Post();
-        String sql = "SELECT writerId, title, content, writeDate FROM post WHERE postId = ?;";
+        String sql = "SELECT writerId, title, content, writeDate FROM post WHERE postId = ? ;";
 
         try {
             conn=getConnection();
