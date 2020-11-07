@@ -41,12 +41,34 @@ import cookie from 'react-cookies';
 
 const HeaderMentor = ({match, history}) => {
     
+    let form = new FormData();
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
     const [Modal, open, close, isOpenPop] = useModal('root', {
         preventScroll: true
     });
+    useEffect(() => {
+        if(!localStorage.getItem("userToken") || localStorage.getItem("userToken") === "bearer: "){
+            alert("Pleas Login");
+            history.push("/");    
+        }else{
+        form.append('userToken', localStorage.getItem("userToken"));
+        form.append('authority', '1');
+        axios.post("http://localhost:8080/checkAuthority", form)
+        .then((response)=>{
+            if(response.data === "TRUE"){
+                alert("success")
+            }else{
+                alert("FALSE");
+                localStorage.removeItem("userToken");
+                history.push("/");    
+            }
+        })
+        }
+      });
 
+   
+      
     return (
         <div>
             <div>
@@ -126,7 +148,7 @@ const HeaderMentor = ({match, history}) => {
                                                 </div>
                                             </Modal>
                                             <Button className = "header-bnt w-75" color="light" onClick = {
-                                                () => {cookie.remove("userToken");
+                                                () => {localStorage.removeItem("userToken");
                                                 history.push("/")
                                                 }}><span>로그아웃</span></Button>
                                                

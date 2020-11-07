@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Router, Route, Link} from 'react-router-dom';
 import {
     ButtonToggle,
@@ -19,13 +19,17 @@ import usePost from './usePost';
 import cookie from 'react-cookies';
 
 const Login = ({props, history}) => {
+
+    useEffect(() => {
+        if(!localStorage.getItem("userToken")){
+            localStorage.setItem("userToken", "bearer: ");
+        }
+      });
     
         const [rSelected, setRSelected] = useState(1);
         
         const [id, setId] = useState(null);
         const [password, setPassword] = useState(null);
-
-     //   const [cookies, setCookie, removeCookie] = useCookies();
 
         const handleSubmitId = (e) => {
              e.preventDefault();
@@ -40,8 +44,7 @@ const Login = ({props, history}) => {
        const loginTest = (form) => {
         axios.post("/login", form)
         .then((response)=>{
-            alert(response.data.userToken);
-            cookie.save("userToken",response.data.userToken);
+            localStorage.setItem("userToken",response.data.userToken);
             if(response.data.result !== 0){
                 if(rSelected === 1){
                     history.push("/Mentor");

@@ -11,7 +11,9 @@ import PageNotFound from './PageNotFound';
 
 function PageRouter() {
     useEffect(() => {
-        localStorage.setItem("userToken", " ");
+        if(!localStorage.getItem("userToken")){
+            localStorage.setItem("userToken", "bearer: ");
+        }
       });
     return(
         <div >

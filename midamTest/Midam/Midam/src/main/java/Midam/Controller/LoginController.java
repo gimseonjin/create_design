@@ -25,90 +25,56 @@ public class LoginController {
     private java.lang.Object Map;
 
     @PostMapping("login")
-    public HashMap loginTest(@RequestParam("id") String id, @RequestParam("password") String password, @RequestParam("reqAuthority") int reqAuthority) throws SQLException, ClassNotFoundException{
+    public HashMap loginTest(@RequestParam("id") String id, @RequestParam("password") String password, @RequestParam("reqAuthority") int reqAuthority) throws SQLException, ClassNotFoundException {
+
         HashMap result = new HashMap();
         String jwt = "";
-            UserDAO userDAO = new UserDAO();
-            int authority = userDAO.login(id, password, reqAuthority);
-            switch(authority) {
-                case 1:
-                case 2:
-                case 3:
-                case 4:
+        UserDAO userDAO = new UserDAO();
+        int authority = userDAO.login(id, password, reqAuthority);
+        switch (authority) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
                 UserToken userToken = new UserToken(id, password, authority);
                 jwt = tokenController.createToken(userToken);
                 result.put("result", 1);
                 result.put("userToken", jwt);
                 break;
 
-                case 0:
-                case -1:
-                case -2:
-                case -3:
-                    result.put("result",0);
-                    result.put("message" , "login fail");
-            }
+            case 0:
+            case -1:
+            case -2:
+            case -3:
+                result.put("result", 0);
+                result.put("message", "login fail");
+        }
         return result;
     }
 
     @PostMapping("checkAuthority")
-    public String chekcAuthority(@RequestParam("userToken") String jwt) throws UnsupportedEncodingException {
+    public String chekcAuthority(@RequestParam("userToken") String jwt, @RequestParam("authority") String Aut) throws UnsupportedEncodingException {
 
         System.out.println(jwt);
-        Map<String, Object> claimMa = tokenController.verifyJWT(jwt);
+        Map<String, Object> claimMa = tokenController.verifyJWTAll(jwt).get("data", HashMap.class);
         String result = "";
-        Object id = claimMa.get("id");
-        Object password = claimMa.get("password");
-        Object reqAuthority = claimMa.get("authority");
+        String id = claimMa.get("id").toString();
+        String password = claimMa.get("password").toString();
+        int reqAuthority = Integer.parseInt(claimMa.get("authority").toString());
+
+        UserDAO userDAO = new UserDAO();
+        int authority = userDAO.login(id, password, reqAuthority);
         System.out.println("success");
 
-        if((id.equals("test1") && password.equals("1234") && reqAuthority.equals(1)) ||
-                (id.equals("test2") && password.equals("1234") && reqAuthority.equals(2)) ||
-                (id.equals("test3") && password.equals("1234") && reqAuthority.equals(3)) ||
-                (id.equals("test4") && password.equals("1234") && reqAuthority.equals(4))){
+        if (reqAuthority == Integer.parseInt(Aut)) {
             result = "TRUE";
-        } else{
-            jwt = "FALSE";
+        } else {
+            result = "FALSE";
         }
-        return jwt;
-
-    }
-
-    @RequestMapping("test")
-    public String test(@RequestBody t T) throws UnsupportedEncodingException {
-//
-
-       if(T.equals(" "))
-           return "FALSE";
-
-        Claims claims = tokenController.verifyJWTAll(T.getUserToken());
-
-        Map<String, Object> data = claims.get("data", HashMap.class);
-        Object id = data.get("id");
-        Object password = data.get("password");
-        Object authority = data.get("authority");
-
-//
-        if(id.equals("test1") && password.equals("1234") && authority.equals(1))
-            return "TRUE";
-//
-
-            return "FALSE";
-
+        return result;
     }
 }
 
-class t {
-    String userToken;
-
-    public String getUserToken() {
-        return userToken;
-    }
-
-    public void setUserToken(String userToken) {
-        this.userToken = userToken;
-    }
-}
 
 class UserToken {
     String id;
