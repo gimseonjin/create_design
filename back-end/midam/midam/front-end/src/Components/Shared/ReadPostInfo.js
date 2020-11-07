@@ -32,10 +32,8 @@ function ReadPostInfo(props){
     
        
     const [tableData, setTableData] = useState(); //댓글 목록 조회 
-   // const [modalInput, setModalInput] = useState("default");    //?
     const [modalCreateReply, setModalCreateReply] = useState(false);  //댓글 등록
-    const [modalUpdateReply, setModalUpdateReply] = useState(false);
-   // const [modalDeleteReply, setModalDeleteReply] = useState(false);
+    const [modalUpdateReply, setModalUpdateReply] = useState(false); //댓글수정 
     
 
     const toggleCreateReply = () => setModalCreateReply(!modalCreateReply);
@@ -53,6 +51,7 @@ function ReadPostInfo(props){
             </tr>
         )
     }//댓글 목록 조회시 보일것 (댓글작성자, 댓글내용, 댓글 작성날짜)
+   
     const handleWriterIdOnChange = (e) => {
         e.preventDefault();
         setWriterId(e.target.value);
@@ -69,9 +68,9 @@ function ReadPostInfo(props){
         e.preventDefault();
         setContent(e.target.value);
     }
-    const readPostInfo = () => {
+    const readPostInfo = () => { 
         var form = new FormData;
-        form.append("postId", postId[0]);
+        form.append("postId", postId);
         axios.post('http://localhost:8080/community/readPostInfo',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
             setWriterId(response.data.writerId);
             setWriteDate(response.data.writeDate);    
@@ -80,7 +79,9 @@ function ReadPostInfo(props){
         })
     }
     function getReplyList(form) {
-        axios.post('http://localhost:8080/community/replyPost', form).then((response) => {
+        var form = new FormData;
+        form.append("postId", postId);
+        axios.post('http://localhost:8080/community/readReply', form).then((response) => {
          
                 setReplyArrays(response.data);
                 setTableData(replyArrays.map(renderInput));
@@ -106,19 +107,20 @@ function ReadPostInfo(props){
                 alert(response.data.responseMsg);
             })
     }
-    const readReplyPost = () => {
+    const createReply = () => {
         var form = new FormData;
         
-        form.append("postId", postId[0]); //해당 게시글 번호 
+        form.append("postId", postId); //해당 게시글 번호 
         form.append("title",title);
         form.append("content",content);       
 
         axios
-            .post('http://localhost:8080/community/replyPost', form,{headers: {'content-type':'multipart/form-data'}})
+            .post('http://localhost:8080/community/createReply', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
                 alert(response.data.responseMsg);
             })
     }
+
    
  
     $(function() { 
@@ -139,7 +141,7 @@ function ReadPostInfo(props){
     )
     return (
         <div className="container">
-            <h1> props.postId: {postId}</h1>
+           
             
             <Form>
                 <FormGroup>
@@ -182,16 +184,16 @@ function ReadPostInfo(props){
             <Button type="hidden" color="danger" /* onClick={} */>완료</Button>
             <Button >댓글 등록</Button>
             
-            <div>해당 게시글 댓글 목록들</div>
+ 
             <Row>
                 
                 {/*댓글 목록 테이블*/}
                 <Col>
                     <Table  >
-                        {/* 문자 안끊기게 */}
+                    
                         <thead className="text-nowrap">
-                            {/* 열 이름부분 */}
-                            <tr>                          
+                           
+                            <tr>                        
                                
                                 <th>작성자 ID</th>
                                 <th>내용</th>
@@ -199,8 +201,7 @@ function ReadPostInfo(props){
 
                             </tr>
                         </thead>
-                        <tbody >
-                            {/* 내용부분 여기에 서버에서 정보 받아와서 포문돌려서 넣으면 될듯!*/}
+                        <tbody >                        
                             {tableData}
                         </tbody>
                     </Table>

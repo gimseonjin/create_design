@@ -56,7 +56,7 @@ public class PostDAO {
 
         ArrayList<HashMap> list =new ArrayList<HashMap>();
 
-       String sql = "select @rownum:=@rownum+1 rnum, A.* from post A,(SELECT @ROWNUM :=0) R WHERE 1=1 and replyStep=0 ORDER BY groupId";
+       String sql = "select * from post where replyStep =0";
 
        // int start= (page -1 )*10+1;
        // int end =start+9;
@@ -152,4 +152,44 @@ public class PostDAO {
         }
         return result;
     } //게시글 작성
+
+    public ArrayList<HashMap> getListReply(int postId){
+        int groupId =postId;
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+
+        String sql = "select * from post where replyStep >0 and groupId = ?";
+
+
+        try {
+
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, groupId);
+            ResultSet rs= pstmt.executeQuery();
+
+
+            while(rs.next()) {
+                Post post = new Post();
+                HashMap postHashMap = new HashMap();
+
+                postHashMap.put("postId",rs.getInt("postId"));
+                postHashMap.put("groupId",rs.getInt("groupId"));
+                postHashMap.put("writerId",rs.getString("writerId"));
+                postHashMap.put("replyOrder",rs.getInt("replyOrder"));
+                postHashMap.put("replyStep",rs.getInt("replyStep"));
+                postHashMap.put("title",rs.getString("title"));
+                postHashMap.put("content",rs.getString("content"));
+                postHashMap.put("writeDate",rs.getString("writeDate"));
+                postHashMap.put("numberOfView",rs.getInt("numberOfView"));
+
+                list.add(postHashMap);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return list;
+    }      //게시글 목록 조회
 }
