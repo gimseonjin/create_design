@@ -73,9 +73,9 @@ import java.util.HashMap;
         public ArrayList replyPostList()  {
 
             PostDAO postDAO = new PostDAO();
-            ArrayList<HashMap> replyPostArrayList = postDAO.getListReplyPost();
+            ArrayList<HashMap> replyPostArrayList = postDAO.getListPost();
 
-            return replyPostArrayList;
+           return replyPostArrayList;
         } //해당 게시글 댓글목록 조회
     
     
