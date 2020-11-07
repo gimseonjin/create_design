@@ -24,7 +24,6 @@ import java.util.HashMap;
 
             PostDAO postDAO = new PostDAO();
             ArrayList<HashMap> postArrayList = postDAO.getListPost();
-
             return postArrayList;
         }
         @ResponseBody
@@ -38,18 +37,12 @@ import java.util.HashMap;
             PostDAO postDAO = new PostDAO();
 
             Post readResult = postDAO.readPostInfo(postId);
-
-
             result.put("writerId",readResult.getWriterId());
             result.put("writeDate",readResult.getWriteDate());
             result.put("title",readResult.getTitle());
             result.put("content",readResult.getContent());
-
-
             return result;
         }
-
-
 
         @ResponseBody
         @PostMapping(value="/createPost")
@@ -69,13 +62,15 @@ import java.util.HashMap;
         }
 
         @ResponseBody
-        @PostMapping(value="/readReplyPost")
-        public ArrayList replyPostList()  {
+        @PostMapping(value="/readReply")
+        public ArrayList readReply(MultipartHttpServletRequest request)  {
 
+            int postId = Integer.parseInt(request.getParameter("postId"));
             PostDAO postDAO = new PostDAO();
-            ArrayList<HashMap> replyPostArrayList = postDAO.getListPost();
 
-           return replyPostArrayList;
+            ArrayList<HashMap> replyArrayList = postDAO.getListReply(postId);
+
+           return replyArrayList;
         } //해당 게시글 댓글목록 조회
     
     
