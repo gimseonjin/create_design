@@ -45,6 +45,7 @@ const Login = ({props, history}) => {
         axios.post("/login", form)
         .then((response)=>{
             localStorage.setItem("userToken",response.data.userToken);
+            cookie.save("userToken",response.data.userToken);
             if(response.data.result !== 0){
                 if(rSelected === 1){
                     history.push("/Mentor");
