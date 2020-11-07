@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {BrowserRouter, Router, Route, Switch, Link, HashRouter} from 'react-router-dom';
 import {
     Collapse,
@@ -25,14 +25,35 @@ import midamLogo from '../img/midam.png';
 import useModal from 'react-hooks-use-modal';
 import '../Css/Header.css';
 import QrScanner from '../Shared/QrScanner';
+import axios from 'axios';
 
 const HeaderSystemManager = ({match, history}) => {
 
+    let form = new FormData();
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
     const [Modal, open, close, isOpenPop] = useModal('root', {
         preventScroll: true
     });
+
+    useEffect(() => {
+        if(!localStorage.getItem("userToken") || localStorage.getItem("userToken") === "bearer: "){
+            alert("Pleas Login");
+            history.push("/");    
+        }else{
+        form.append('userToken', localStorage.getItem("userToken"));
+        form.append('authority', '1');
+        axios.post("http://localhost:8080/checkAuthority", form)
+        .then((response)=>{
+            if(response.data === "TRUE"){
+                alert("success")
+            }else{
+                alert("FALSE");
+                history.push("/");    
+            }
+        })
+        }
+      });
 
     return (
         <div>
@@ -82,7 +103,7 @@ const HeaderSystemManager = ({match, history}) => {
                                                 </div>
                                             </Modal>
                                             <Button className = "header-bnt w-75" color="light" onClick = {
-                                                () => {localStorage.setItem("userToken", "null");
+                                                () => {localStorage.removeItem("userToken");
                                                 history.push("/")
                                                 }}><span>Log out</span></Button>
 

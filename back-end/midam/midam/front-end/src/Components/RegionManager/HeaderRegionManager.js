@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import {BrowserRouter, Router, Route, Switch, Link, HashRouter} from 'react-router-dom';
 import {
     Collapse,
@@ -33,6 +33,12 @@ const HeaderRegionManager = ({match, history}) => {
     const [Modal, open, close, isOpenPop] = useModal('root', {
         preventScroll: true
     });
+    useEffect(() => {
+        if(!localStorage.getItem("userToken") || localStorage.getItem("userToken") === "bearer: "){
+            alert("Pleas Login");
+            history.push("/");
+        }
+      });
 
     return (
         <div>
@@ -81,7 +87,7 @@ const HeaderRegionManager = ({match, history}) => {
                                                 </div>
                                             </Modal>
                                             <Button className = "header-bnt w-75" color="light" onClick = {
-                                                () => {localStorage.setItem("userToken", "null");
+                                                () => {localStorage.removeItem("userToken");
                                                 history.push("/")
                                                 }}><span>Log out</span></Button>
                                         </div>
