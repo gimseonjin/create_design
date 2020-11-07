@@ -56,7 +56,7 @@ public class LoginController {
     public String chekcAuthority(@RequestParam("userToken") String jwt, @RequestParam("authority") String Aut) throws UnsupportedEncodingException {
 
         System.out.println(jwt);
-        Map<String, Object> claimMa = tokenController.verifyJWT(jwt);
+        Map<String, Object> claimMa = tokenController.verifyJWTAll(jwt).get("data", HashMap.class);
         String result = "";
         String id = claimMa.get("id").toString();
         String password = claimMa.get("password").toString();

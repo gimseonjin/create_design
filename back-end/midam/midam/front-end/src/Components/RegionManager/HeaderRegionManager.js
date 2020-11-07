@@ -26,8 +26,11 @@ import midamLogo from '../img/midam.png';
 import useModal from 'react-hooks-use-modal';
 import '../Css/Header.css';
 import QrScanner from '../Shared/QrScanner';
+import axios from 'axios';
 
 const HeaderRegionManager = ({match, history}) => {
+    
+    let form = new FormData();
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
     const [Modal, open, close, isOpenPop] = useModal('root', {
@@ -36,7 +39,20 @@ const HeaderRegionManager = ({match, history}) => {
     useEffect(() => {
         if(!localStorage.getItem("userToken") || localStorage.getItem("userToken") === "bearer: "){
             alert("Pleas Login");
-            history.push("/");
+            history.push("/");    
+        }else{
+        form.append('userToken', localStorage.getItem("userToken"));
+        form.append('authority', '2');
+        axios.post("http://localhost:8080/checkAuthority", form)
+        .then((response)=>{
+            if(response.data === "TRUE"){
+                alert("success")
+            }else{
+                alert("FALSE");
+                localStorage.removeItem("userToken");
+                history.push("/");    
+            }
+        })
         }
       });
 

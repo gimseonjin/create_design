@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Router, Route, Link} from 'react-router-dom';
 import {
     ButtonToggle,
@@ -19,6 +19,12 @@ import usePost from './usePost';
 import cookie from 'react-cookies';
 
 const Login = ({props, history}) => {
+
+    useEffect(() => {
+        if(!localStorage.getItem("userToken")){
+            localStorage.setItem("userToken", "bearer: ");
+        }
+      });
     
         const [rSelected, setRSelected] = useState(1);
         
