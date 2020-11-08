@@ -40,7 +40,7 @@ function DeleteReply(props){
     }
    
     return (
-        <div class="modal-content" >        
+        <div class="modal-content">      
        
         
             
