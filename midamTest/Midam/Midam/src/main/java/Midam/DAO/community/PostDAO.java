@@ -247,6 +247,30 @@ public class PostDAO {
             closeConnection(conn);
         }
         return result;
-    } //게시글 작성
+    } //댓글 등록
+
+
+    public int deleteReply(int postId) {
+        int result =0;
+
+
+
+
+        String sql = "delete from post where postId =?";
+        try {
+
+            conn=getConnection();
+            pstmt= conn.prepareStatement(sql);
+            pstmt.setInt(1, postId);  //groupId에 postId 입력
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    } //댓글 삭제
 
 }

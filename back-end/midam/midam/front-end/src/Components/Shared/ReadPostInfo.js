@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Router, Route, Link} from 'react-router-dom';
 import '../Css/test.css';
+import DeleteReply from './DeleteReply.js';
+import $ from 'jquery';
 import {
     Button,
     Col,
@@ -28,16 +29,15 @@ function ReadPostInfo(props){
     const [writerId, setWriterId] = useState();
     const [writeDate, setWriteDate] =useState();    
     const [title, setTitle] = useState();
-    const [content, setContent] = useState();  //게시글 상세조회
-    
+    const [content, setContent] = useState();  //게시글 상세조회    
     const [reply, setReply] = useState();  //댓글작성내용
-
-    const [modalInput, setModalInput] = useState("default");
-    
-       
+    const [modalInput, setModalInput] = useState("default");  
     const [tableData, setTableData] = useState(); //댓글 목록 조회 
     const [isReadOnly, setIsReadOnly] = useState(true); //댓글 수정활성화
-
+   
+    const [modalDeleteReply, setModalDeleteReply] = useState(false);     
+    const toggleDeleteReply = () => setModalDeleteReply(!modalDeleteReply);
+    
     let replyArrays = [];  //댓글 목록 테이블
     function setReplyArrays(newArrays) {replyArrays = newArrays;}
     const renderInput = (replyArray, index) => {
@@ -45,7 +45,8 @@ function ReadPostInfo(props){
         return (
             
             <tr key={index} >
-                         
+                <Input type="hidden" value={replyArray.postId}></Input>
+                 
                 <td>{replyArray.writerId}</td>
                 <td>{replyArray.content}</td>                    
                 <td className="text-nowrap">
@@ -86,6 +87,7 @@ function ReadPostInfo(props){
     const toggleIsReadOnly = () => {
         setIsReadOnly(!isReadOnly);
     }
+
     const readPostInfo = () => { 
         var form = new FormData;
         form.append("postId", postId);
@@ -105,8 +107,7 @@ function ReadPostInfo(props){
                 setReplyArrays(response.data);
                 setTableData(replyArrays.map(renderInput));
             });
-    }
-  
+    }  
     const updatePost = () => {
         var form = new FormData;
       
@@ -119,8 +120,7 @@ function ReadPostInfo(props){
             .then((response) => {
                 window.location.reload();
             })
-    }
-    
+    }    
     const createReply = () =>{
         var form = new FormData;      
         form.append('userToken', localStorage.getItem("userToken"));
@@ -133,19 +133,22 @@ function ReadPostInfo(props){
      
      })
     }
-    const deleteReply = () =>{
-        var form = new FormData;      
-        form.append('userToken', localStorage.getItem("userToken"));
-        form.append('postId', postId);
-
-        axios.post("http://localhost:8080/community/deleteReply", form,{headers: {'content-type':'multipart/form-data'}})
-        .then((response)=>{
-        
-            window.location.reload();
-     
-     })
-    }
-
+  
+    $(function() { 
+        $(".deleteReply").off("click")
+            $(".deleteReplyButton").on("click",function(){
+      
+                var postButton = $(this);
+    
+                var tr = postButton.parent().parent();
+                var td = tr.children();
+                console.log("row데이터 : "+tr.eq(0).text());
+                setModalInput(td.eq(0).val());
+                toggleDeleteReply();
+            }
+            )                  
+        }
+    )
     useEffect(() => {
         var form = new FormData;
         form.append("id", localStorage.getItem('id'));
@@ -154,9 +157,7 @@ function ReadPostInfo(props){
         },[]
     )
     return (
-        <div className="container">
-           
-            
+        <div className="container">        
             <Form>
                 <FormGroup>
                     <InputGroup type="hidden">
@@ -199,41 +200,36 @@ function ReadPostInfo(props){
             
             <hr></hr>
  
-            <Row>
-                
+            <Row>                
                 {/*댓글 목록 테이블*/}
                 <Col>
-                    <Table>
-                    
-                        <thead className="text-nowrap">
-                           
-                            <tr>                        
-                               
+                    <Table>                    
+                        <thead className="text-nowrap">                           
+                            <tr>       
+                                              
                                 <th>작성자</th>
-                                <th>댓글</th>
-                                                             
-
+                                <th>댓글</th>                                                        
                             </tr>
                         </thead>
                         <tbody >                        
-                            {tableData}
-                            
+                            {tableData}                            
                         </tbody>
-                    </Table>
-                    
+                    </Table>                    
                 </Col>
             </Row>
+            <Modal isOpen={modalDeleteReply}>
+                        <ModalHeader toggle={toggleDeleteReply}>댓글 삭제</ModalHeader>
+                       
+                         <DeleteReply postId={modalInput}></DeleteReply>                         
+            </Modal>
             <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>댓글</InputGroupText>
                         </InputGroupAddon>
                         <Input type="textarea" name="content" placeholder="댓글" onChange={handleReplyOnChange} value={reply}></Input>
-            </InputGroup>
-            
-            
+            </InputGroup>                        
             <Button className="btn btn-primary btn-block w-25" color={"primary"} style={{float: 'right'}}   type="post" onClick={createReply}>{"댓글작성"}</Button>
-            </div>
-            
+            </div>            
     )
 }
 export default ReadPostInfo;

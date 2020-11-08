@@ -111,10 +111,27 @@ import java.util.Map;
             result.put("responseMsg",createResult);
             return result;
         }
+    @ResponseBody
+    @PostMapping(value="/deleteReply")
+    public HashMap deleteReply(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
-    
-    
-    
+        HashMap result = new HashMap();
+
+
+
+        int postId = Integer.parseInt(request.getParameter("postId"));
+
+
+
+        PostDAO postDAO = new PostDAO();
+
+        int createResult = postDAO.deleteReply(postId);
+        result.put("responseMsg",createResult);
+        return result;
+    }
+
+
+
     }
 
 
