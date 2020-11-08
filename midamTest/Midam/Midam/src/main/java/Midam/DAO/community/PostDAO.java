@@ -152,7 +152,29 @@ public class PostDAO {
         }
         return result;
     } //게시글 작성
+    public int updatePost(int postId, String title, String content) { // 수정
+        int result =0;
 
+
+        String sql = "update post set title= ? , content= ? where postId =?";
+        try {
+
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, title);
+            pstmt.setString(2, content);
+            pstmt.setInt(3, postId);
+
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    } //게시글 작성
     public ArrayList<HashMap> getListReply(int postId){
         int groupId =postId;
         ArrayList<HashMap> list =new ArrayList<HashMap>();
@@ -225,6 +247,30 @@ public class PostDAO {
             closeConnection(conn);
         }
         return result;
-    } //게시글 작성
+    } //댓글 등록
+
+
+    public int deleteReply(int postId) {
+        int result =0;
+
+
+
+
+        String sql = "delete from post where postId =?";
+        try {
+
+            conn=getConnection();
+            pstmt= conn.prepareStatement(sql);
+            pstmt.setInt(1, postId);  //groupId에 postId 입력
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    } //댓글 삭제
 
 }

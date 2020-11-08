@@ -72,6 +72,8 @@ const ReadReport = (props) =>{
             .post('/activityHistory/createReport/mentor', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
                 alert(response.data.responseMsg);
+               
+
             })
     }
     function readReport () {

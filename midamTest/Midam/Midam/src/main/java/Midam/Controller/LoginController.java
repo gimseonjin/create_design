@@ -53,7 +53,7 @@ public class LoginController {
     }
 
     @PostMapping("checkAuthority")
-    public String chekcAuthority(@RequestParam("userToken") String jwt, @RequestParam("authority") String Aut) throws UnsupportedEncodingException {
+    public String checkAuthority(@RequestParam("userToken") String jwt, @RequestParam("authority") String Aut) throws UnsupportedEncodingException {
 
         Map<String, Object> claimMa = tokenController.verifyJWTAll(jwt).get("data", HashMap.class);
         String result = "";

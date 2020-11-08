@@ -63,7 +63,22 @@ import java.util.Map;
             result.put("responseMsg",createResult);
             return result;
         }
+    @ResponseBody
+    @PostMapping(value="/updatePost")
+    public HashMap updatePost(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
+        HashMap result = new HashMap();
+
+        int postId = Integer.parseInt(request.getParameter("postId"));
+        String title=request.getParameter("title");
+        String content=request.getParameter("content");
+
+        PostDAO postDAO = new PostDAO();
+
+        int createResult = postDAO.updatePost(postId,title,content);
+        result.put("responseMsg",createResult);
+        return result;
+    }
         @ResponseBody
         @PostMapping(value="/readReply")
         public ArrayList readReply(MultipartHttpServletRequest request)  {
@@ -96,10 +111,27 @@ import java.util.Map;
             result.put("responseMsg",createResult);
             return result;
         }
+    @ResponseBody
+    @PostMapping(value="/deleteReply")
+    public HashMap deleteReply(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
-    
-    
-    
+        HashMap result = new HashMap();
+
+
+
+        int postId = Integer.parseInt(request.getParameter("postId"));
+
+
+
+        PostDAO postDAO = new PostDAO();
+
+        int createResult = postDAO.deleteReply(postId);
+        result.put("responseMsg",createResult);
+        return result;
+    }
+
+
+
     }
 
 
