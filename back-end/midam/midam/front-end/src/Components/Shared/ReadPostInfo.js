@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-
+import {Router, Route, Link} from 'react-router-dom';
 import '../Css/test.css';
 import {
     Button,
@@ -17,8 +17,8 @@ import {
     Table
 } from 'reactstrap';
 import axios from 'axios';
-import $ from 'jquery';
-//readReply : 해당게시글 댓글목록 조회  createReply : 해당 게시글 댓글 작성 
+
+
 function ReadPostInfo(props){
 
     const [postId, setPostId] = useState(
@@ -36,13 +36,8 @@ function ReadPostInfo(props){
     
        
     const [tableData, setTableData] = useState(); //댓글 목록 조회 
-  //  const [modalCreateReply, setModalCreateReply] = useState(false);  //댓글 등록
-  //  const [modalUpdateReply, setModalUpdateReply] = useState(false); //댓글수정 
-    
+    const [isReadOnly, setIsReadOnly] = useState(true); //댓글 수정활성화
 
-  //  const toggleCreateReply = () => setModalCreateReply(!modalCreateReply);
-  //  const toggleUpdateReply = () => setModalUpdateReply(!modalUpdateReply);
-    
     let replyArrays = [];  //댓글 목록 테이블
     function setReplyArrays(newArrays) {replyArrays = newArrays;}
     const renderInput = (replyArray, index) => {
@@ -52,11 +47,14 @@ function ReadPostInfo(props){
             <tr key={index} >
                          
                 <td>{replyArray.writerId}</td>
-                <td>{replyArray.content}</td>                
-                <td>{replyArray.writeDate}</td> 
-                <td className="text-nowrap"><Button className={"deleteReplyButton"} color={"primary"} >{"삭제"}</Button></td> 
-                <td className="text-nowrap"><Button className={"deleteReplyButton"} color={"primary"} >{"수정"}</Button></td>               
+                <td>{replyArray.content}</td>                    
+                <td className="text-nowrap">
+                    <Button className={""}  >{"댓글"}</Button> 
+                    <Button className={"deleteReplyButton"}  >{"삭제"}</Button>
+                </td>          
             </tr>
+            
+            //<td className="text-nowrap"><Button className={"deleteReplyButton"} color={"primary"} >{"수정"}</Button></td>  
         ) //<h1>props.activityHistoryCode : {activityHistoryCode}</h1>
     }//댓글 목록 조회시 보일것 (댓글작성자, 댓글내용, 댓글 작성날짜)
    
@@ -84,6 +82,10 @@ function ReadPostInfo(props){
         e.preventDefault();
         setContent(e.target.value);
     }
+
+    const toggleIsReadOnly = () => {
+        setIsReadOnly(!isReadOnly);
+    }
     const readPostInfo = () => { 
         var form = new FormData;
         form.append("postId", postId);
@@ -104,13 +106,7 @@ function ReadPostInfo(props){
                 setTableData(replyArrays.map(renderInput));
             });
     }
-    useEffect(() => {
-        var form = new FormData;
-        form.append("id", localStorage.getItem('id'));
-        readPostInfo();   //게시글 상세조회
-        getReplyList(form); //댓글 목록조회
-        }
-    )
+  
     const updatePost = () => {
         var form = new FormData;
       
@@ -121,9 +117,10 @@ function ReadPostInfo(props){
         axios
             .post('http://localhost:8080/community/updatePost', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
-                alert(response.data.responseMsg);
+                window.location.reload();
             })
     }
+    
     const createReply = () =>{
         var form = new FormData;      
         form.append('userToken', localStorage.getItem("userToken"));
@@ -132,13 +129,30 @@ function ReadPostInfo(props){
         axios.post("http://localhost:8080/community/createReply", form,{headers: {'content-type':'multipart/form-data'}})
         .then((response)=>{
         
-         
+            window.location.reload();
      
      })
     }
-    
+    const deleteReply = () =>{
+        var form = new FormData;      
+        form.append('userToken', localStorage.getItem("userToken"));
+        form.append('postId', postId);
 
+        axios.post("http://localhost:8080/community/deleteReply", form,{headers: {'content-type':'multipart/form-data'}})
+        .then((response)=>{
+        
+            window.location.reload();
+     
+     })
+    }
 
+    useEffect(() => {
+        var form = new FormData;
+        form.append("id", localStorage.getItem('id'));
+        readPostInfo();   //게시글 상세조회
+        getReplyList(form); //댓글 목록조회
+        },[]
+    )
     return (
         <div className="container">
            
@@ -147,42 +161,41 @@ function ReadPostInfo(props){
                 <FormGroup>
                     <InputGroup type="hidden">
                        
-                        <Input type="textarea" name="postId" type="hidden" onChange={handlePostIdOnChange} value={postId}></Input>
+                        <Input type="textarea" name="postId" type="hidden" onChange={handlePostIdOnChange} value={postId} readOnly={isReadOnly}></Input>
                     </InputGroup>
                     <InputGroup>
-                        <InputGroupAddon addonType="prepend">
+                        <InputGroupAddon addonType="prepend"  >
                             <InputGroupText>작성자ID</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="writerId" placeholder="작성자id" onChange={handleWriterIdOnChange} value={writerId}></Input>
+                        <Input type="textarea" name="writerId" placeholder="작성자id" onChange={handleWriterIdOnChange} value={writerId} readOnly={true} ></Input>
                     </InputGroup>
 
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>작성날짜</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="writeDate" placeholder="작성날짜" onChange={handleWriteDateOnChange} value={writeDate}></Input>
+                        <Input type="textarea" name="writeDate" placeholder="작성날짜" onChange={handleWriteDateOnChange} value={writeDate} readOnly={true}></Input>
                     </InputGroup>
 
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>제목</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="title" placeholder="제목" onChange={handleTitleOnChange} value={title}></Input>
+                        <Input type="textarea" name="title" placeholder="제목" onChange={handleTitleOnChange} value={title} readOnly={isReadOnly}></Input>
                     </InputGroup>
 
-                    <InputGroup>
-                        <InputGroupAddon addonType="prepend">
-                            <InputGroupText>내용</InputGroupText>
+                    <InputGroup >
+                        <InputGroupAddon addonType="prepend"  >
+                            <InputGroupText >내용</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="content" placeholder="내용" onChange={handleContentOnChange} value={content}></Input>
+                        <Input type="textarea" name="content" placeholder="내용" onChange={handleContentOnChange} value={content} readOnly={isReadOnly}></Input>
                     </InputGroup>          
                 </FormGroup>
             </Form>
 
-      
+            <Button onClick={toggleIsReadOnly}>수정</Button>
+            <Button type="hidden" color="primary" onClick={updatePost} >완료</Button>
 
-            <Button onClick={updatePost}>수정</Button>
-            <Button type="hidden" color="primary" /* onClick={} */>완료</Button>
             
             <hr></hr>
  
@@ -190,15 +203,15 @@ function ReadPostInfo(props){
                 
                 {/*댓글 목록 테이블*/}
                 <Col>
-                    <Table  >
+                    <Table>
                     
                         <thead className="text-nowrap">
                            
                             <tr>                        
                                
-                                <th>작성자 ID</th>
-                                <th>내용</th>
-                                <th>작성날짜</th>                                
+                                <th>작성자</th>
+                                <th>댓글</th>
+                                                             
 
                             </tr>
                         </thead>
