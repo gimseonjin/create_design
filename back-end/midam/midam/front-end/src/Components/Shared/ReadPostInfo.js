@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+
 import '../Css/test.css';
 import {
     Button,
@@ -29,29 +30,44 @@ function ReadPostInfo(props){
     const [title, setTitle] = useState();
     const [content, setContent] = useState();  //게시글 상세조회
     
+    const [reply, setReply] = useState();  //댓글작성내용
+
+    const [modalInput, setModalInput] = useState("default");
     
        
     const [tableData, setTableData] = useState(); //댓글 목록 조회 
-    const [modalCreateReply, setModalCreateReply] = useState(false);  //댓글 등록
-    const [modalUpdateReply, setModalUpdateReply] = useState(false); //댓글수정 
+  //  const [modalCreateReply, setModalCreateReply] = useState(false);  //댓글 등록
+  //  const [modalUpdateReply, setModalUpdateReply] = useState(false); //댓글수정 
     
 
-    const toggleCreateReply = () => setModalCreateReply(!modalCreateReply);
-    const toggleUpdateReply = () => setModalUpdateReply(!modalUpdateReply);
+  //  const toggleCreateReply = () => setModalCreateReply(!modalCreateReply);
+  //  const toggleUpdateReply = () => setModalUpdateReply(!modalUpdateReply);
     
     let replyArrays = [];  //댓글 목록 테이블
     function setReplyArrays(newArrays) {replyArrays = newArrays;}
     const renderInput = (replyArray, index) => {
         
         return (
-            <tr key={index} >                
+            
+            <tr key={index} >
+                         
                 <td>{replyArray.writerId}</td>
                 <td>{replyArray.content}</td>                
-                <td>{replyArray.writeDate}</td>                
+                <td>{replyArray.writeDate}</td> 
+                <td className="text-nowrap"><Button className={"deleteReplyButton"} color={"primary"} >{"삭제"}</Button></td> 
+                <td className="text-nowrap"><Button className={"deleteReplyButton"} color={"primary"} >{"수정"}</Button></td>               
             </tr>
-        )
+        ) //<h1>props.activityHistoryCode : {activityHistoryCode}</h1>
     }//댓글 목록 조회시 보일것 (댓글작성자, 댓글내용, 댓글 작성날짜)
    
+    const handlePostIdOnChange = (e) => {
+        e.preventDefault();
+        setPostId(e.target.value);
+    }
+    const handleReplyOnChange = (e) => {
+        e.preventDefault();
+        setReply(e.target.value);
+    }
     const handleWriterIdOnChange = (e) => {
         e.preventDefault();
         setWriterId(e.target.value);
@@ -80,6 +96,7 @@ function ReadPostInfo(props){
     }
     function getReplyList(form) {
         var form = new FormData;
+        
         form.append("postId", postId);
         axios.post('http://localhost:8080/community/readReply', form).then((response) => {
          
@@ -92,7 +109,7 @@ function ReadPostInfo(props){
         form.append("id", localStorage.getItem('id'));
         readPostInfo();   //게시글 상세조회
         getReplyList(form); //댓글 목록조회
-        }, []
+        }
     )
     const updatePost = () => {
         var form = new FormData;
@@ -107,44 +124,31 @@ function ReadPostInfo(props){
                 alert(response.data.responseMsg);
             })
     }
-    const createReply = () => {
-        var form = new FormData;
+    const createReply = () =>{
+        var form = new FormData;      
+        form.append('userToken', localStorage.getItem("userToken"));
+        form.append('postId', postId);
+        form.append('reply',reply);
+        axios.post("http://localhost:8080/community/createReply", form,{headers: {'content-type':'multipart/form-data'}})
+        .then((response)=>{
         
-        form.append("postId", postId); //해당 게시글 번호 
-        form.append("title",title);
-        form.append("content",content);       
-
-        axios
-            .post('http://localhost:8080/community/createReply', form,{headers: {'content-type':'multipart/form-data'}})
-            .then((response) => {
-                alert(response.data.responseMsg);
-            })
+         
+     
+     })
     }
+    
 
-   
- 
-    $(function() { 
-            
-        $(".replyPostButton").on("click",function(){
-  
-            var postButton = $(this);
 
-            var tr = postButton.parent();
-            var td = tr.children();
-            console.log("row데이터 : "+td.eq(0).text());
-            //setModalInput(td.eq(0).text());
-            //toggleReplyPost();
-        }
-        ) 
-               
-    }
-    )
     return (
         <div className="container">
            
             
             <Form>
                 <FormGroup>
+                    <InputGroup type="hidden">
+                       
+                        <Input type="textarea" name="postId" type="hidden" onChange={handlePostIdOnChange} value={postId}></Input>
+                    </InputGroup>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>작성자ID</InputGroupText>
@@ -171,19 +175,16 @@ function ReadPostInfo(props){
                             <InputGroupText>내용</InputGroupText>
                         </InputGroupAddon>
                         <Input type="textarea" name="content" placeholder="내용" onChange={handleContentOnChange} value={content}></Input>
-                    </InputGroup>
-
-                    
+                    </InputGroup>          
                 </FormGroup>
-
             </Form>
 
-            <hr></hr>
+      
 
             <Button onClick={updatePost}>수정</Button>
-            <Button type="hidden" color="danger" /* onClick={} */>완료</Button>
-            <Button >댓글 등록</Button>
+            <Button type="hidden" color="primary" /* onClick={} */>완료</Button>
             
+            <hr></hr>
  
             <Row>
                 
@@ -203,11 +204,21 @@ function ReadPostInfo(props){
                         </thead>
                         <tbody >                        
                             {tableData}
+                            
                         </tbody>
                     </Table>
                     
                 </Col>
             </Row>
+            <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                            <InputGroupText>댓글</InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="textarea" name="content" placeholder="댓글" onChange={handleReplyOnChange} value={reply}></Input>
+            </InputGroup>
+            
+            
+            <Button className="btn btn-primary btn-block w-25" color={"primary"} style={{float: 'right'}}   type="post" onClick={createReply}>{"댓글작성"}</Button>
             </div>
             
     )

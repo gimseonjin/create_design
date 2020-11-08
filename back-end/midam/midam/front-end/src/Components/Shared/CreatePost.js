@@ -11,17 +11,13 @@ import {
 } from 'reactstrap';
 import axios from 'axios';
 
-function CreatePost({
-    history
-}, props) {
+function CreatePost(props) {
 
-    //const [writerId, setWriterId] = useState(props.writerId);
-    // const [groupId, setGroupId] = useState();  const [replyOrder, setReplyOrder]
-    // = useState();   const [replyStep, setReplyStep] = useState();  const
+  
     const [writerId, setWriterId] = useState();
     const [title, setTitle] = useState();
     const [content, setContent] = useState();
-    //   const [writeDate, setWriteDate] = useState();
+
 
     const handleWriterIdOnChange = (e) => {
         e.preventDefault();
@@ -96,11 +92,7 @@ function CreatePost({
                     }}
                     type="post"
                     onClick={createPost}>작성</Button>
-                <Button
-                    onClick={() => history.push("/")}
-                    style={{
-                        float: 'left'
-                    }}>취소</Button>
+               
 
             </Form>
 
