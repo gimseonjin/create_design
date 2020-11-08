@@ -62,7 +62,7 @@ function CreateReport(props) {
         form.append("file",file);
         console.log(file);
         axios
-            .post('http://localhost:8080/mentor/activityHistory/createReport', form,{headers: {'content-type':'multipart/form-data'}})
+            .post('/activityHistory/createReport/mentor', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
             })
     }

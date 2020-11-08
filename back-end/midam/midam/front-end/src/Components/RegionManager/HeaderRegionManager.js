@@ -54,7 +54,7 @@ const HeaderRegionManager = ({match, history}) => {
             }
         })
         }
-      });
+      },[]);
 
     return (
         <div>

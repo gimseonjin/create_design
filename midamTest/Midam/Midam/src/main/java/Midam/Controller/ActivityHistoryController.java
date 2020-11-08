@@ -26,27 +26,31 @@ import java.util.Map;
 
 
 @Controller
-@RequestMapping(value= "/mentor/activityHistory", method=RequestMethod.POST)
+@RequestMapping(value= "/activityHistory", method=RequestMethod.POST)
 @CrossOrigin("http://localhost:3000")
 public class ActivityHistoryController {
 
     @ResponseBody
-    @PostMapping(value="/read")
-    public ArrayList readActivityHistoryList(@RequestParam("userToken") String jwt) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+    @PostMapping(value="/readHistory/mentor")
+    public ArrayList readActivityHistoryList(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
 
+        String jwt = request.getParameter("userToken") ;
         Token token = new Token();
         Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
         Object objectId = map.get("id");
         String id = objectId.toString();
+        int option = Integer.parseInt(request.getParameter("option"));
 
-        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
-        ArrayList<HashMap> historyArrayList = mentoringHistoryDAO.getListMentor(id);
+
+            MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+            ArrayList<HashMap> historyArrayList = mentoringHistoryDAO.getListMentor(id);
+        
 
         return historyArrayList;
     }
 
     @ResponseBody
-    @PostMapping(value="/createReport")
+    @PostMapping(value="/createReport/mentor")
     public HashMap createReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
         String jwt = request.getParameter("userToken");
@@ -62,12 +66,13 @@ public class ActivityHistoryController {
         Blob imageBlob = multipartFileToBlob(file);
         MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
         int updateResult = mentoringHistoryDAO.createReport(activityHistoryCode, id, content, note, imageBlob);
+
         result.put("responseMsg",updateResult);
         return result;
     }
 
     @ResponseBody
-    @PostMapping(value="/updateReport")
+    @PostMapping(value="/updateReport/mentor")
     public HashMap updateReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
         String jwt = request.getParameter("userToken");
@@ -88,7 +93,7 @@ public class ActivityHistoryController {
     }
 
     @ResponseBody
-    @PostMapping(value="/readReport")
+    @PostMapping(value="/readReport/mentor")
     public HashMap readReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
         String jwt = request.getParameter("userToken");

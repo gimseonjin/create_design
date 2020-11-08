@@ -39,7 +39,7 @@ const HeaderLinkAgencyManager = ({match, history}) => {
     useEffect(() => {
         if(!localStorage.getItem("userToken") || localStorage.getItem("userToken") === "bearer: "){
             alert("Pleas Login");
-            history.push("/");    
+            history.push("/");
         }else{
         form.append('userToken', localStorage.getItem("userToken"));
         form.append('authority', '3');
@@ -50,11 +50,11 @@ const HeaderLinkAgencyManager = ({match, history}) => {
             }else{
                 alert("FALSE");
                 localStorage.removeItem("userToken");
-                history.push("/");    
+                history.push("/");
             }
         })
         }
-      });
+      },[]);
 
     return (
         <div>

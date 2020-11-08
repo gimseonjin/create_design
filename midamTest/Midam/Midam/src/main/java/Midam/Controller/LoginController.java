@@ -55,7 +55,6 @@ public class LoginController {
     @PostMapping("checkAuthority")
     public String chekcAuthority(@RequestParam("userToken") String jwt, @RequestParam("authority") String Aut) throws UnsupportedEncodingException {
 
-        System.out.println(jwt);
         Map<String, Object> claimMa = tokenController.verifyJWTAll(jwt).get("data", HashMap.class);
         String result = "";
         String id = claimMa.get("id").toString();
@@ -64,7 +63,6 @@ public class LoginController {
 
         UserDAO userDAO = new UserDAO();
         int authority = userDAO.login(id, password, reqAuthority);
-        System.out.println("success");
 
         if (reqAuthority == Integer.parseInt(Aut)) {
             result = "TRUE";

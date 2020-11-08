@@ -54,7 +54,7 @@ const HeaderSystemManager = ({match, history}) => {
             }
         })
         }
-      });
+      },[]);
 
     return (
         <div>

@@ -212,6 +212,45 @@ public class MentoringHistoryDAO {
         return list;
     }      //전체 활동내역 목록
 
+    public ArrayList<HashMap> getListMentorWithOption(String id){
+
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+        sql = "SELECT * FROM activity_history where mentorId=? ";
+
+        try {
+
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);  //검색하기위해 입력한 아이디
+            ResultSet rs= pstmt.executeQuery();
+
+
+            while(rs.next()) {
+
+                ActivityHistory activityHistory =new ActivityHistory();
+
+                HashMap historyHashMap = new HashMap();
+                historyHashMap.put("activityHistoryCode",rs.getInt("activityHistoryCode"));
+                historyHashMap.put("MentorRecruitmentCode",rs.getString("MentorRecruitmentCode"));
+                historyHashMap.put("startTime", rs.getString("startTime"));
+                historyHashMap.put("endTime", rs.getString("endTime"));
+                historyHashMap.put("date",rs.getString("createDate"));
+                historyHashMap.put("status",rs.getString("approvalStatus"));
+                historyHashMap.put("report",rs.getString("activityContent"));
+
+
+
+                list.add(historyHashMap);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return list;
+    }      //전체 활동내역 목록
+
     // 보고서 최초작성 createReport. content, note, image DB상에 업데이트
     public int createReport(int activityHistoryCode, String id, String content, String note, Blob imageBlob){
         int result = 0;

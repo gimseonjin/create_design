@@ -28,7 +28,7 @@ public class UserInfoController {
 //    }
     @ResponseBody
     @PostMapping
-    public HashMap hello(@RequestParam(name="userToken") String userToken) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+    public HashMap getUserInfo(@RequestParam(name="userToken") String userToken) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
 
         HashMap result = new HashMap();
         UserDAO userDAO = new UserDAO();

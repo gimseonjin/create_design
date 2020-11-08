@@ -69,7 +69,7 @@ const ReadReport = (props) =>{
         form.append("note",note);
         form.append("file",file);
         axios
-            .post('/mentor/activityHistory/createReport', form,{headers: {'content-type':'multipart/form-data'}})
+            .post('/activityHistory/createReport/mentor', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
                 alert(response.data.responseMsg);
             })
@@ -78,7 +78,7 @@ const ReadReport = (props) =>{
         var form = new FormData;
         form.append("userToken ", cookie.load("userToken"));
         form.append("activityHistoryCode", activityHistoryCode);
-        axios.post('/mentor/activityHistory/readReport',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
+        axios.post('/activityHistory/readReport/mentor',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
             
             setContent(response.data.activityContent);
             setNote(response.data.note);

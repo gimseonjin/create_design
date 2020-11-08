@@ -57,7 +57,7 @@ const HeaderMentor = ({match, history}) => {
         axios.post("http://localhost:8080/checkAuthority", form)
         .then((response)=>{
             if(response.data === "TRUE"){
-                alert("success")
+                //성공
             }else{
                 alert("FALSE");
                 localStorage.removeItem("userToken");
@@ -65,7 +65,7 @@ const HeaderMentor = ({match, history}) => {
             }
         })
         }
-      });
+      },[]);
 
    
       

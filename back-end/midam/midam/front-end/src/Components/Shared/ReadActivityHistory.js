@@ -13,11 +13,16 @@ import cookie from 'react-cookies';
 //활동 내역 조회
 const ReadActivityHistory=(props)=> {
     
-    const [tableData, setTableData] = useState();
+    const [activityHistoryList, setActivityHistoryList] = useState();
+    const [linkAgencyList, setLinkAgencyList] = useState();
+    const [activityList, setActivityList] = useState();
+
     const [modalCreateReport, setModalCreateReport] = useState(false); 
     const [modalReadReport, setModalReadReport] = useState(false);
     const [modalCreateQR, setModalCreateQR] = useState(false); 
     const [modalExportExcel, setModalExportExcel] = useState(false); 
+    const [linAgency, setLinkAgency] = useState();
+    const [activity, setActivity] = useState();
 
     const toggleReadReport = () => setModalReadReport(!modalReadReport);
     const toggleCreateReport = () => setModalCreateReport(!modalCreateReport);
@@ -27,9 +32,11 @@ const ReadActivityHistory=(props)=> {
      /* setState가 비동기적이라 setHistoryArrays 한 이후 그것을 tableData로 출력할 시 받아온
      값이아닌 기존 값이 출력되어 빈칸나옴. 그래서 state안쓰고 변수로 선언해서씀 */
     let historyArrays = [];
+    let linkAgencyArrays = [];
+    let activityArrays = [];
     const [modalInput,setModalInput] = useState("default");
     function setHistoryArrays(newArrays){ historyArrays = newArrays; }
-    const renderInput = (historyArray, index)=>{
+    const renderHistoryArrays = (historyArray, index)=>{
         
         var statusValue="default";
         var ButtonValue="default";
@@ -71,9 +78,6 @@ const ReadActivityHistory=(props)=> {
                 buttonClassName="disabledButton";
                 break;
         }
-
-        
-        
         return(
             <tr key={index}>
                 <th>{historyArray.activityHistoryCode}</th>
@@ -85,19 +89,50 @@ const ReadActivityHistory=(props)=> {
             </tr>
         )
     }
-   
-    function getActivityHistory (form) {
-        axios.post('/mentor/activityHistory/read',form).then((response)=>{
-        setHistoryArrays(response.data); 
-        setTableData(historyArrays.map(renderInput))
+    
+
+   // 아이디만으로 그냥 조회해오기
+    function getActivityHistory () {
+
+        var form=new FormData;
+        form.append("userToken",localStorage.getItem('userToken'));
+        form.append("option", false);
+        axios.post('/activityHistory/readHistory/mentor',form).then((response)=>{
+                //setHistoryArrays(response.data); 
+                historyArrays = response.data;
+              setActivityHistoryList(historyArrays.map(renderHistoryArrays));
+        }
+            );
+    }
+    // 옵션을 걸어서 조회하기.
+    function getActivityHistoryWithOption () {
+
+        var form=new FormData;
+        form.append("userToken",localStorage.getItem('userToken'));
+        form.append("option", true);
+      /*   form.append();
+        form.append(); */
+        axios.post('/activityHistory/readHistory/mentor',form).then((response)=>{
+        //setHistoryArrays(response.data); 
+        historyArrays = response.data;
+        setActivityHistoryList(historyArrays.map(renderHistoryArrays));
         }
             );
     }
 
-    useEffect(()=>{
+
+    // 연계기관 리스트 선택 시 해당 연계기관의 활동 받아오기
+    function getActivityList(){
         var form=new FormData;
-        form.append("userToken",cookie.load('userToken'));
-        getActivityHistory(form);
+        form.append("userToken",localStorage.getItem('userToken'));
+        axios.post('/activityHistory/getActivityList/mentor', form);
+    }
+
+    
+
+    useEffect(()=>{
+
+        getActivityHistory();
       },[]
     )
     
@@ -106,6 +141,7 @@ const ReadActivityHistory=(props)=> {
         $(".readReportButton").off("click")
             // $(document).ready 에 해당하는부분. 업데이트되며 문법이 바뀐듯하다
         $(".createReportButton").on("click",function(){
+
             var str = "";
             var tdArr = new Array();
             var reportButton = $(this);
@@ -146,6 +182,7 @@ const ReadActivityHistory=(props)=> {
     }
     )
 
+   
 
     return (
         <div className="container">
@@ -159,6 +196,7 @@ const ReadActivityHistory=(props)=> {
                             <InputGroupText>소속 연계기관</InputGroupText>
                         </InputGroupAddon>
                         <Input type="select">
+                            {linkAgencyList}
                             <option>연계기관 선택</option>
                             <option>연계기관1</option>
                             <option>연계기관2</option>
@@ -170,6 +208,7 @@ const ReadActivityHistory=(props)=> {
                             <InputGroupText>활동명</InputGroupText>
                         </InputGroupAddon>
                         <Input type="select">
+                            {activityList}
                             <option>활동 선택</option>
                             <option>활동1</option>
                             <option>활동2</option>
@@ -185,10 +224,8 @@ const ReadActivityHistory=(props)=> {
                         </InputGroup>
                         <Button className="float-right" color="primary" onClick={()=>{
                             /* axios.데이터요청->inputs에 넣음 */
-                             var form=new FormData;
-                             form.append("userToken",cookie.load('userToken'));
-                             getActivityHistory(form);
-                           
+                             getActivityHistory();
+                            console.log();
                             }}>조회</Button>
                         {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
                         <Button color="primary" onClick={()=>setModalExportExcel(true)}>내보내기</Button>
@@ -215,7 +252,7 @@ const ReadActivityHistory=(props)=> {
                         </thead>
                         <tbody>
                             {/* 내용부분. 서버에서 정보 받아와서 반복문 사용!*/}
-                            {tableData}
+                            {activityHistoryList}
                         </tbody>
                     </Table>
                 </Col>
