@@ -1,8 +1,7 @@
 package Midam.DAO.community;
 
-import Midam.model.activity.ActivityHistory;
+
 import Midam.model.community.Post;
-import com.mysql.cj.protocol.Resultset;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

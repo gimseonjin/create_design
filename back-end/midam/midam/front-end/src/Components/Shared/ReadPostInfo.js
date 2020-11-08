@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import CreateReply from '../Shared/CreateReply';
+
 import '../Css/test.css';
 import {
     Button,
@@ -54,7 +54,8 @@ function ReadPostInfo(props){
                 <td>{replyArray.writerId}</td>
                 <td>{replyArray.content}</td>                
                 <td>{replyArray.writeDate}</td> 
-                <td><Button className={"deleteReplyButton"} color={"primary"} >{"삭제"}</Button></td>               
+                <td className="text-nowrap"><Button className={"deleteReplyButton"} color={"primary"} >{"삭제"}</Button></td> 
+                <td className="text-nowrap"><Button className={"deleteReplyButton"} color={"primary"} >{"수정"}</Button></td>               
             </tr>
         ) //<h1>props.activityHistoryCode : {activityHistoryCode}</h1>
     }//댓글 목록 조회시 보일것 (댓글작성자, 댓글내용, 댓글 작성날짜)
@@ -137,25 +138,7 @@ function ReadPostInfo(props){
     }
     
 
-   
- /*
-    $(function() { 
-            
-        $(".createReplyButton").on("click",function(){
-            var postButton = $(this);
 
-            var tr = postButton.parent();
-            var td = tr.children();
-            console.log("row데이터 : "+td.eq(0).text());
-            setModalInput(td.eq(0).text());
-            toggleCreateReply();
-    
-        }
-        ) 
-               
-    }
-    )
-     */
     return (
         <div className="container">
            
