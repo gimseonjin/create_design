@@ -173,35 +173,41 @@ public class MentoringHistoryDAO {
     }      //전체 활동내역 목록
 
 //    지훈.11.01 추가 - 멘토가 자신의 id를 통해 자기 활동 내역만 조회
-    public ArrayList<HashMap> getListMentor(String id){
+    public ArrayList<HashMap> getHistoryListMentor(String id, int option, String optionLinkAgency, String optionActivity, String optionStartDate, String optionEndDate){
 
         ArrayList<HashMap> list =new ArrayList<HashMap>();
-        sql = "SELECT * FROM activity_history where mentorId=? ";
+
 
         try {
 
-            conn=getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, id);  //검색하기위해 입력한 아이디
-            ResultSet rs= pstmt.executeQuery();
+            if(option==0){ //아무것도 안할때, 옵션 0
+                sql = "SELECT * FROM activity_history where mentorId=? ";
+                conn=getConnection();
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, id);  //검색하기위해 입력한 아이디
+                ResultSet rs= pstmt.executeQuery();
+
+                while(rs.next()) {
+                    ActivityHistory activityHistory =new ActivityHistory();
+
+                    HashMap historyHashMap = new HashMap();
+                    historyHashMap.put("activityHistoryCode",rs.getInt("activityHistoryCode"));
+                    historyHashMap.put("MentorRecruitmentCode",rs.getString("MentorRecruitmentCode"));
+                    historyHashMap.put("startTime", rs.getString("startTime"));
+                    historyHashMap.put("endTime", rs.getString("endTime"));
+                    historyHashMap.put("date",rs.getString("createDate"));
+                    historyHashMap.put("status",rs.getString("approvalStatus"));
+                    historyHashMap.put("report",rs.getString("activityContent"));
+
+                    list.add(historyHashMap);
+                    }
+            }else if(option == 1){
 
 
-            while(rs.next()) {
+            }else if(option == 2){
 
-                ActivityHistory activityHistory =new ActivityHistory();
+            }else if(option == 3){
 
-                HashMap historyHashMap = new HashMap();
-                historyHashMap.put("activityHistoryCode",rs.getInt("activityHistoryCode"));
-                historyHashMap.put("MentorRecruitmentCode",rs.getString("MentorRecruitmentCode"));
-                historyHashMap.put("startTime", rs.getString("startTime"));
-                historyHashMap.put("endTime", rs.getString("endTime"));
-                historyHashMap.put("date",rs.getString("createDate"));
-                historyHashMap.put("status",rs.getString("approvalStatus"));
-                historyHashMap.put("report",rs.getString("activityContent"));
-
-
-
-                list.add(historyHashMap);
             }
         }catch(Exception e) {
             e.printStackTrace();
@@ -325,5 +331,8 @@ public class MentoringHistoryDAO {
         }
         return activityHistory;
     }
+    // user가 소속되어있는 지역본부에 소속되어있는 연계기관 조회
+
+    // 연계기관에 소속되어있는 활동 조회
 
 }

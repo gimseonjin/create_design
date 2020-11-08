@@ -21,8 +21,50 @@ const ReadActivityHistory=(props)=> {
     const [modalReadReport, setModalReadReport] = useState(false);
     const [modalCreateQR, setModalCreateQR] = useState(false); 
     const [modalExportExcel, setModalExportExcel] = useState(false); 
-    const [linAgency, setLinkAgency] = useState();
-    const [activity, setActivity] = useState();
+    
+    //*검색 옵션들. option 0:
+    const [option, setOption] = useState(0);
+    const [linkAgency, setLinkAgency] = useState("선택안함");
+    const [activity, setActivity] = useState("선택안함");
+    const [startDate, setStartDate] = useState();
+    const [endDate, setEndDate] = useState();
+
+    const handleLinkAgencyOnChange = (e) => { // 옵션- 연계기관 선택
+        e.preventDefault();
+        setLinkAgency(e.target.value);
+        //선택안함 이면 옵션 0으로, 다른 옵션도 선택안함으로
+        if(e.target.value === "선택안함")
+        {
+            setActivity("선택안함");
+            setOption(0);
+        }else{
+            //선택시 getActivityList로 해당 연계기관의 활동 받아옴
+            getActivityList();
+            setActivityList(<option>선택안함</option>);
+            setOption(1);
+        }
+        
+    }
+    const handleActivityOnChange = (e) => {
+        e.preventDefault();
+        setActivity(e.target.value);
+        if(e.target.value === "선택안함")
+        {
+            setOption(1);
+        }else{
+            setOption(2);
+        }
+
+    }
+    const handleStartDateOnChange = (e) => {
+        e.preventDefault();
+        setStartDate(e.target.value);
+    }
+    const handleEndDateOnChange = (e) => {
+        e.preventDefault();
+        setEndDate(e.target.value);
+    }
+    //*/
 
     const toggleReadReport = () => setModalReadReport(!modalReadReport);
     const toggleCreateReport = () => setModalCreateReport(!modalCreateReport);
@@ -31,13 +73,28 @@ const ReadActivityHistory=(props)=> {
     /* const [historyArrays, setHistoryArrays] = useState([]); */
      /* setState가 비동기적이라 setHistoryArrays 한 이후 그것을 tableData로 출력할 시 받아온
      값이아닌 기존 값이 출력되어 빈칸나옴. 그래서 state안쓰고 변수로 선언해서씀 */
+   
+    function setDefualtdate(){ //한달전~오늘날짜까지로 input date 값 설정
+        let today = new Date();
+        let date = ("0"+(today.getDate())).slice(-2);
+        let month = ("0"+(today.getMonth()+1)).slice(-2);
+        let year = today.getFullYear();
+        setEndDate(year+"-"+month+"-"+date);
+
+        today.setDate(today.getDate()-7);
+        date = ("0"+(today.getDate())).slice(-2);
+        month = ("0"+(today.getMonth()+1)).slice(-2);
+        year = today.getFullYear();
+        setStartDate(year+"-"+month+"-"+date);
+        
+    }
+   
     let historyArrays = [];
     let linkAgencyArrays = [];
     let activityArrays = [];
     const [modalInput,setModalInput] = useState("default");
     function setHistoryArrays(newArrays){ historyArrays = newArrays; }
     const renderHistoryArrays = (historyArray, index)=>{
-        
         var statusValue="default";
         var ButtonValue="default";
         var ButtonColor="secondary";
@@ -96,7 +153,7 @@ const ReadActivityHistory=(props)=> {
 
         var form=new FormData;
         form.append("userToken",localStorage.getItem('userToken'));
-        form.append("option", false);
+        form.append("option", option);
         axios.post('/activityHistory/readHistory/mentor',form).then((response)=>{
                 //setHistoryArrays(response.data); 
                 historyArrays = response.data;
@@ -109,7 +166,7 @@ const ReadActivityHistory=(props)=> {
 
         var form=new FormData;
         form.append("userToken",localStorage.getItem('userToken'));
-        form.append("option", true);
+        form.append("option", option);
       /*   form.append();
         form.append(); */
         axios.post('/activityHistory/readHistory/mentor',form).then((response)=>{
@@ -119,19 +176,25 @@ const ReadActivityHistory=(props)=> {
         }
             );
     }
+    // 연계기관 리스트 받아오기
+    function getLinkAgencyList(){
+        var form = new FormData;
+        
+    };
 
 
     // 연계기관 리스트 선택 시 해당 연계기관의 활동 받아오기
     function getActivityList(){
         var form=new FormData;
         form.append("userToken",localStorage.getItem('userToken'));
+        form.append("linkAgency", linkAgency);
         axios.post('/activityHistory/getActivityList/mentor', form);
     }
 
     
 
     useEffect(()=>{
-
+        setDefualtdate();
         getActivityHistory();
       },[]
     )
@@ -142,8 +205,6 @@ const ReadActivityHistory=(props)=> {
             // $(document).ready 에 해당하는부분. 업데이트되며 문법이 바뀐듯하다
         $(".createReportButton").on("click",function(){
 
-            var str = "";
-            var tdArr = new Array();
             var reportButton = $(this);
 
             var tr = reportButton.parent().parent();
@@ -154,8 +215,7 @@ const ReadActivityHistory=(props)=> {
         )
         
         $(".readReportButton").on("click",function(){
-            var str = "";
-            var tdArr = new Array();
+
             var reportButton = $(this);
 
 
@@ -168,8 +228,7 @@ const ReadActivityHistory=(props)=> {
         )
 
         $(".readReportReadOnlyButton").on("click",function(){
-            var str = "";
-            var tdArr = new Array();
+
             var reportButton = $(this);
 
             var tr = reportButton.parent().parent();
@@ -195,9 +254,9 @@ const ReadActivityHistory=(props)=> {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>소속 연계기관</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="select">
+                        <Input type="select" onChange={handleLinkAgencyOnChange}>
                             {linkAgencyList}
-                            <option>연계기관 선택</option>
+                            <option onSelect={()=>alert("test")}>선택안함</option>
                             <option>연계기관1</option>
                             <option>연계기관2</option>
                         </Input>
@@ -207,9 +266,9 @@ const ReadActivityHistory=(props)=> {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동명</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="select">
+                        <Input type="select" onChange={handleActivityOnChange}>
                             {activityList}
-                            <option>활동 선택</option>
+                            <option>선택안함</option>
                             <option>활동1</option>
                             <option>활동2</option>
                         </Input>
@@ -219,8 +278,8 @@ const ReadActivityHistory=(props)=> {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>기간</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="date" name="startDate"></Input>~
-                        <Input type="date" name="endDate"></Input>
+                        <Input type="date" name="startDate" value={startDate} onChange={handleStartDateOnChange}></Input>~
+                        <Input type="date" name="endDate" value={endDate} onChange={handleEndDateOnChange}></Input>
                         </InputGroup>
                         <Button className="float-right" color="primary" onClick={()=>{
                             /* axios.데이터요청->inputs에 넣음 */
@@ -230,7 +289,7 @@ const ReadActivityHistory=(props)=> {
                         {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
                         <Button color="primary" onClick={()=>setModalExportExcel(true)}>내보내기</Button>
                         <Button className="float-left" color="primary" onClick={()=>setModalCreateQR(true)}>QR 생성</Button>
-
+                        <Button onClick={()=>alert(linkAgency + activity + startDate + endDate)}>InputTest</Button>
                     </Form>
                 </Col>
                 <br></br>

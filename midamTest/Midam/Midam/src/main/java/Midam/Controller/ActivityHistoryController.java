@@ -40,11 +40,15 @@ public class ActivityHistoryController {
         Object objectId = map.get("id");
         String id = objectId.toString();
         int option = Integer.parseInt(request.getParameter("option"));
+        String optionLinkAgency = request.getParameter("linkAgency");
+        String optionActivity = request.getParameter("activity");
+        String optionStartDate = request.getParameter("startDate");
+        String optionEndDate = request.getParameter("endDate");
 
 
             MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
-            ArrayList<HashMap> historyArrayList = mentoringHistoryDAO.getListMentor(id);
-        
+            ArrayList<HashMap> historyArrayList = mentoringHistoryDAO.getHistoryListMentor(id, option, optionLinkAgency, optionActivity, optionStartDate, optionEndDate);
+
 
         return historyArrayList;
     }
@@ -114,12 +118,21 @@ public class ActivityHistoryController {
         result.put("createDate",resultHistory.getCreateDate());
         result.put("approvalStatus", resultHistory.getApprovalStatus());
 
-
-
         return result;
     }
 
+    @ResponseBody
+    @PostMapping(value="/getActivityList/mentor")
+    public HashMap getActivityList(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+        HashMap result = new HashMap();
+        String jwt = request.getParameter("userToken");
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
+        Object objectId = map.get("id");
+        String id = objectId.toString();
 
+        return result;
+    }
 
     public Blob multipartFileToBlob(MultipartFile file) throws IOException, SQLException {
         Blob resultBlob;
