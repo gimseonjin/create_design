@@ -54,7 +54,7 @@ function ReadPostInfo(props){
             
             <tr key={index} >
                 <Input type="hidden" value={replyArray.postId}></Input>
-                <td>{replyArray.bundleId}</td>
+                <td>{replyArray.title}</td>
                 <td>{replyArray.writerId}</td>
                 <td>{replyArray.content}</td>                    
                 <td className="text-nowrap">
@@ -243,9 +243,9 @@ function ReadPostInfo(props){
                     <Table>                    
                         <thead className="text-nowrap">                           
                             <tr>       
-                                <th>번호</th>             
+                                <th>댓글</th>             
                                 <th>작성자</th>
-                                <th>댓글</th>                                                        
+                                <th>내용</th>                                                        
                             </tr>
                         </thead>
                         <tbody >                        

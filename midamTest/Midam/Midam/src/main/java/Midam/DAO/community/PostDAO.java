@@ -245,12 +245,13 @@ public class PostDAO {
         int result =0;
         String sql_group= "select groupId from post where postId =?";
         String sql_order= "select replyOrder from post where postId =?";
-       // String sql_order2="select max(replyOrder) from post where bundleId =? and groupId=?";
+        String sql_maxOrder="select max(replyOrder) from post where bundleId =? and replyStep= ? and groupId= ?";
         String sql_step= "select replyStep from post where postId =?";
         String sql_bundle= "select bundleId from post where postId= ?";
         String sql_bundle2;
-        String sql_update ="update post set replyOrder = replyOrder +1 where bundleId=? and replyOrder > ?";
+        String sql_update ="update post set replyOrder = replyOrder +1 where bundleId=? and replyOrder >= ?";
         String writeDate = sdfDate.format(now);
+        String sql_title="select title from post where postId =?";
 
         String sql = "insert into post"+
                 "(writerId,title,content,writeDate,replyOrder,replyStep,groupId,bundleId) values(?,?,?,?,?,?,?,?)";
@@ -270,12 +271,34 @@ public class PostDAO {
             rs.next();
             int bundleId =rs.getInt(1); //대댓글 등록시
             int replyOrder;
+            String replyTitle="";
+
+            pstmt=conn.prepareStatement(sql_step);
+            pstmt.setInt(1,postId);
+            rs= pstmt.executeQuery();
+            rs.next();
+            int replyStep =rs.getInt(1);
 
             pstmt=conn.prepareStatement(sql_order);
             pstmt.setInt(1,postId);
             rs= pstmt.executeQuery();
             rs.next();
-            replyOrder =rs.getInt(1); //댓글 replyOrder 1으로 설정
+            int order =rs.getInt(1)+1;
+
+
+            pstmt=conn.prepareStatement(sql_maxOrder);
+            pstmt.setInt(1,bundleId);
+            pstmt.setInt(2,replyStep+1);
+            pstmt.setInt(3,groupId);
+            rs= pstmt.executeQuery();
+            rs.next();
+            int maxOrder =rs.getInt(1)+1;
+
+            if(order>=maxOrder){
+                    replyOrder = order;
+            }else{
+                    replyOrder =maxOrder;
+            }
 
             if(bundleId ==0){ //게시글에 댓글등록시
                 sql_bundle2= "select max(bundleId) from post where groupId =?";
@@ -286,7 +309,9 @@ public class PostDAO {
                 bundleId = rs.getInt(1)+1; //댓글 bundleId 설정
 
 
+
             }else{ //게시글 대댓글 작성시
+
 
 
 
@@ -294,27 +319,24 @@ public class PostDAO {
                 pstmt.setInt(1,bundleId);
                 pstmt.setInt(2,replyOrder);
                 pstmt.executeUpdate();
+
+
+                pstmt=conn.prepareStatement(sql_title);
+                pstmt.setInt(1,postId);
+                rs= pstmt.executeQuery();
+                rs.next();
+                String title =rs.getString(1);
+                String add="RE:";
+                replyTitle =  add.concat(title);
             }
 
 
-
-            pstmt=conn.prepareStatement(sql_step);
-            pstmt.setInt(1,postId);
-            rs= pstmt.executeQuery();
-            rs.next();
-            int replyStep =rs.getInt(1);
-
-
-
-
-
-            String title="RE:";
             pstmt= conn.prepareStatement(sql);
             pstmt.setString(1, id);  //groupId에 postId 입력
-            pstmt.setString(2, title);
+            pstmt.setString(2, replyTitle);
             pstmt.setString(3, content);
             pstmt.setString(4, writeDate);
-            pstmt.setInt(5, replyOrder+1);
+            pstmt.setInt(5, replyOrder);
             pstmt.setInt(6, replyStep+1);
             pstmt.setInt(7, groupId);
             pstmt.setInt(8, bundleId);
