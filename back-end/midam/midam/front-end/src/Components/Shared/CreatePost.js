@@ -14,16 +14,12 @@ import axios from 'axios';
 function CreatePost(props) {
 
   
-    const [writerId, setWriterId] = useState();
+   
     const [title, setTitle] = useState();
     const [content, setContent] = useState();
 
 
-    const handleWriterIdOnChange = (e) => {
-        e.preventDefault();
-        setWriterId(e.target.value);
-    }
-
+  
     const handleTitleOnChange = (e) => {
         e.preventDefault();
         setTitle(e.target.value);
@@ -35,7 +31,8 @@ function CreatePost(props) {
 
     const createPost = () => {
         var form = new FormData;
-        form.append("writerId",writerId);
+        form.append('userToken', localStorage.getItem("userToken"));
+        
         form.append("title", title);
         form.append("content", content);
         axios
@@ -52,17 +49,7 @@ function CreatePost(props) {
 
             <Form >
                 <FormGroup>
-                <InputGroup
-                        style={{
-                            marginTop: "1%",
-                            marginBottom: "1%"
-                        }}>
-
-                        <InputGroupAddon addonType="prepend">
-                            <InputGroupText>작성자ID</InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="text" name="writerId" onChange={handleWriterIdOnChange}></Input>
-                    </InputGroup>
+                
                     <InputGroup
                         style={{
                             marginTop: "1%",

@@ -1,7 +1,7 @@
 package Midam.Controller;
 
 import Midam.DAO.community.PostDAO;
-import Midam.DAO.user.UserDAO;
+
 import Midam.model.community.Post;
 import Midam.model.token.Token;
 import org.springframework.stereotype.Controller;
@@ -44,22 +44,27 @@ import java.util.Map;
             result.put("writeDate",readResult.getWriteDate());
             result.put("title",readResult.getTitle());
             result.put("content",readResult.getContent());
+            result.put("bundleId",readResult.getBundleId());
             return result;
         }
 
         @ResponseBody
         @PostMapping(value="/createPost")
-        public HashMap createPost(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+        public HashMap createPost(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
             HashMap result = new HashMap();
 
-            String writerId= request.getParameter("writerId");
+            Token token = new Token();
+            Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+            Object objectId = map.get("id");
+            String id = objectId.toString();
+
             String title=request.getParameter("title");
             String content=request.getParameter("content");
 
             PostDAO postDAO = new PostDAO();
 
-            int createResult = postDAO.createPost(writerId,title,content);
+            int createResult = postDAO.createPost(id,title,content);
             result.put("responseMsg",createResult);
             return result;
         }
@@ -75,8 +80,24 @@ import java.util.Map;
 
         PostDAO postDAO = new PostDAO();
 
-        int createResult = postDAO.updatePost(postId,title,content);
-        result.put("responseMsg",createResult);
+        int updateResult = postDAO.updatePost(postId,title,content);
+        result.put("responseMsg",updateResult);
+        return result;
+    }
+
+    @ResponseBody
+    @PostMapping(value="/deletePost")
+    public HashMap deletePost(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+
+        HashMap result = new HashMap();
+
+        int postId = Integer.parseInt(request.getParameter("postId"));
+
+
+        PostDAO postDAO = new PostDAO();
+
+        int deleteResult = postDAO.deletePost(postId);
+        result.put("responseMsg",deleteResult);
         return result;
     }
         @ResponseBody

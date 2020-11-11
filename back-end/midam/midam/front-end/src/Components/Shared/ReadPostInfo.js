@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import '../Css/test.css';
 import DeleteReply from './DeleteReply.js';
+
+import CreateReply from './CreateReply.js';
 import $ from 'jquery';
 import {
     Button,
@@ -29,13 +31,19 @@ function ReadPostInfo(props){
     const [writerId, setWriterId] = useState();
     const [writeDate, setWriteDate] =useState();    
     const [title, setTitle] = useState();
+
     const [content, setContent] = useState();  //게시글 상세조회    
     const [reply, setReply] = useState();  //댓글작성내용
     const [modalInput, setModalInput] = useState("default");  
     const [tableData, setTableData] = useState(); //댓글 목록 조회 
     const [isReadOnly, setIsReadOnly] = useState(true); //댓글 수정활성화
-   
-    const [modalDeleteReply, setModalDeleteReply] = useState(false);     
+    
+    
+    const [modalCreateReply, setModalCreateReply] =useState(false);    
+    const [modalDeleteReply, setModalDeleteReply] = useState(false);  
+
+    
+    const toggleCreateReply = () => setModalCreateReply(!modalCreateReply);
     const toggleDeleteReply = () => setModalDeleteReply(!modalDeleteReply);
     
     let replyArrays = [];  //댓글 목록 테이블
@@ -46,11 +54,11 @@ function ReadPostInfo(props){
             
             <tr key={index} >
                 <Input type="hidden" value={replyArray.postId}></Input>
-                 
+                <td>{replyArray.bundleId}</td>
                 <td>{replyArray.writerId}</td>
                 <td>{replyArray.content}</td>                    
                 <td className="text-nowrap">
-                    <Button className={""}  >{"댓글"}</Button> 
+                    <Button className={"createReplyButton"}  >{"댓글"}</Button> 
                     <Button className={"deleteReplyButton"}  >{"삭제"}</Button>
                 </td>          
             </tr>
@@ -133,8 +141,23 @@ function ReadPostInfo(props){
      
      })
     }
+
+    const deletePost = () =>{
+        var form = new FormData;      
+       
+        form.append('postId', postId);
+       
+        axios.post("http://localhost:8080/community/deletePost", form,{headers: {'content-type':'multipart/form-data'}})
+        .then((response)=>{
+        
+            window.location.reload();
+     
+     })
+    }
   
     $(function() { 
+
+        
         $(".deleteReply").off("click")
             $(".deleteReplyButton").on("click",function(){
       
@@ -146,8 +169,22 @@ function ReadPostInfo(props){
                 setModalInput(td.eq(0).val());
                 toggleDeleteReply();
             }
-            )                  
+            )
+            
+            $(".createReply").off("click")
+            $(".createReplyButton").on("click",function(){
+      
+                var postButton = $(this);
+    
+                var tr = postButton.parent().parent();
+                var td = tr.children();
+                console.log("row데이터 : "+tr.eq(0).text());
+                setModalInput(td.eq(0).val());
+                toggleCreateReply();
+            }
+            )  
         }
+        
     )
     useEffect(() => {
         var form = new FormData;
@@ -165,7 +202,7 @@ function ReadPostInfo(props){
                         <Input type="textarea" name="postId" type="hidden" onChange={handlePostIdOnChange} value={postId} readOnly={isReadOnly}></Input>
                     </InputGroup>
                     <InputGroup>
-                        <InputGroupAddon addonType="prepend"  >
+                        <InputGroupAddon addonType="prepend">
                             <InputGroupText>작성자ID</InputGroupText>
                         </InputGroupAddon>
                         <Input type="textarea" name="writerId" placeholder="작성자id" onChange={handleWriterIdOnChange} value={writerId} readOnly={true} ></Input>
@@ -196,7 +233,7 @@ function ReadPostInfo(props){
 
             <Button onClick={toggleIsReadOnly}>수정</Button>
             <Button type="hidden" color="primary" onClick={updatePost} >완료</Button>
-
+            <Button color="primary" onClick={deletePost}  style={{float: 'right'}}>삭제</Button>
             
             <hr></hr>
  
@@ -206,7 +243,7 @@ function ReadPostInfo(props){
                     <Table>                    
                         <thead className="text-nowrap">                           
                             <tr>       
-                                              
+                                <th>번호</th>             
                                 <th>작성자</th>
                                 <th>댓글</th>                                                        
                             </tr>
@@ -217,6 +254,11 @@ function ReadPostInfo(props){
                     </Table>                    
                 </Col>
             </Row>
+            <Modal isOpen={modalCreateReply}>
+                        <ModalHeader toggle={toggleCreateReply}>댓글 등록</ModalHeader>
+                       
+                         <CreateReply postId={modalInput}></CreateReply>                         
+            </Modal>
             <Modal isOpen={modalDeleteReply}>
                         <ModalHeader toggle={toggleDeleteReply}>댓글 삭제</ModalHeader>
                        
@@ -229,6 +271,7 @@ function ReadPostInfo(props){
                         <Input type="textarea" name="content" placeholder="댓글" onChange={handleReplyOnChange} value={reply}></Input>
             </InputGroup>                        
             <Button className="btn btn-primary btn-block w-25" color={"primary"} style={{float: 'right'}}   type="post" onClick={createReply}>{"댓글작성"}</Button>
+            
             </div>            
     )
 }
