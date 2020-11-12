@@ -31,7 +31,8 @@ import CreateReport from './CreateReport';
 import ReadMentoringApplication from './ReadMentoringApplication';
 import ReadPost from '../Shared/ReadPost';
 import UserListComponent from './showUser';
-import Post from '../Shared/Post';
+import ReadRecruitment from '../Shared/ReadRecruitment';
+import CreatePost from '../Shared/CreatePost';
 import useModal from 'react-hooks-use-modal';
 import QRCode from 'qrcode.react';
 import midamLogo from '../img/midam.png';
@@ -113,7 +114,7 @@ const HeaderMentor = ({match, history}) => {
                                                     <Link to={`${match.url}/readPost`}><span>게시판 보기</span></Link>
                                                 </DropdownItem>
                                                 <DropdownItem><Link to={`${match.url}/createPost`}><span>게시글 작성</span></Link></DropdownItem>
-                                                <DropdownItem><span>멘토링 모집</span></DropdownItem>
+                                                <DropdownItem><Link to={`${match.url}/readRecruitment`}><span>멘토링 모집</span></Link></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </NavItem>
@@ -165,14 +166,15 @@ const HeaderMentor = ({match, history}) => {
                 <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
                 <Route exact path={`${match.path}/withdraw`} component={Withdraw}></Route>
                 <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistory}></Route>
-                <Route exact path={`${match.path}/createReport`} component={CreateReport}></Route>
+               
                 <Route exact path={`${match.path}/readMentoringApplication`} component={ReadMentoringApplication}></Route>
                 {/* 활동 */}
                 <Route exact path={`${match.path}/readActivityHistory`} component = {ReadActivityHistory}></Route>
                 <Route exact path={`${match.path}/readMentoringApplication`} component = {ReadMentoringApplication}></Route>
                 {/* 커뮤니티 */}
                 <Route exact path={`${match.path}/readPost`} component = {ReadPost}></Route>
-                <Route exact path={`${match.path}/axiosTest`} component = {Post}></Route>
+                <Route exact path={`${match.path}/createPost`} component = {CreatePost}></Route>
+                <Route exact path={`${match.path}/readRecruitment`} component = {ReadRecruitment}></Route>
             </Switch>
         </div>
     )
