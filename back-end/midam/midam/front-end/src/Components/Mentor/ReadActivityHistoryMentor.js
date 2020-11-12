@@ -1,17 +1,17 @@
 import React,{useEffect, useState} from 'react';
 import { Button, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Modal, ModalHeader, Row, Table } from 'reactstrap';
-import CreateReport from '../Mentor/CreateReport';
-import CreateQR from '../Mentor/CreateQR';
+import CreateReport from './CreateReport';
+import CreateQR from './CreateQR';
 import ExportMentoringActivity from '../LinkAgencyManager/ExportMentoringActivity';
-import useRequest from './useRequest';
+import useRequest from '../Shared/useRequest';
 import axios from 'axios';
-import usePost from './usePost';
+import usePost from '../Shared/usePost';
 import $ from 'jquery';
-import ReadReport from './ReadReport';
+import ReadReport from '../Shared/ReadReport';
 import cookie from 'react-cookies';
 
 //활동 내역 조회
-const ReadActivityHistory=(props)=> {
+const ReadActivityHistoryMentor=(props)=> {
     
     const [activityHistoryList, setActivityHistoryList] = useState();
     const [linkAgencyList, setLinkAgencyList] = useState();
@@ -26,8 +26,8 @@ const ReadActivityHistory=(props)=> {
     const [option, setOption] = useState(0);
     const [linkAgency, setLinkAgency] = useState("선택안함");
     const [activity, setActivity] = useState("선택안함");
-    const [startDate, setStartDate] = useState();
-    const [endDate, setEndDate] = useState();
+    const [startDate, setStartDate] = useState(setDefualtStartdate());
+    const [endDate, setEndDate] = useState(setDefualtEnddate());
 
     const handleLinkAgencyOnChange = (e) => { // 옵션- 연계기관 선택
         e.preventDefault();
@@ -35,16 +35,16 @@ const ReadActivityHistory=(props)=> {
         //선택안함 이면 옵션 0으로, 다른 옵션도 선택안함으로
         if(e.target.value === "선택안함")
         {
-            setActivity("선택안함");
+            // setActivity("선택안함");
+            setActivityList("선택안함");
             setOption(0);
         }else{
             //선택시 getActivityList로 해당 연계기관의 활동 받아옴
-            getActivityList();
-            setActivityList(<option>선택안함</option>);
+            getActivityList(e.target.value);
             setOption(1);
         }
-        
     }
+
     const handleActivityOnChange = (e) => {
         e.preventDefault();
         setActivity(e.target.value);
@@ -54,8 +54,8 @@ const ReadActivityHistory=(props)=> {
         }else{
             setOption(2);
         }
-
     }
+
     const handleStartDateOnChange = (e) => {
         e.preventDefault();
         setStartDate(e.target.value);
@@ -74,20 +74,22 @@ const ReadActivityHistory=(props)=> {
      /* setState가 비동기적이라 setHistoryArrays 한 이후 그것을 tableData로 출력할 시 받아온
      값이아닌 기존 값이 출력되어 빈칸나옴. 그래서 state안쓰고 변수로 선언해서씀 */
    
-    function setDefualtdate(){ //한달전~오늘날짜까지로 input date 값 설정
+     function setDefualtEnddate(){ //한달전~오늘날짜까지로 input date 값 설정
         let today = new Date();
         let date = ("0"+(today.getDate())).slice(-2);
         let month = ("0"+(today.getMonth()+1)).slice(-2);
         let year = today.getFullYear();
-        setEndDate(year+"-"+month+"-"+date);
-
+        return (year+"-"+month+"-"+date);
+     }
+     function setDefualtStartdate(){ //한달전~오늘날짜까지로 input date 값 설정
+        let today = new Date();
         today.setDate(today.getDate()-7);
-        date = ("0"+(today.getDate())).slice(-2);
-        month = ("0"+(today.getMonth()+1)).slice(-2);
-        year = today.getFullYear();
-        setStartDate(year+"-"+month+"-"+date);
-        
-    }
+        let date = ("0"+(today.getDate())).slice(-2);
+        let month = ("0"+(today.getMonth()+1)).slice(-2);
+        let year = today.getFullYear();
+        return (year+"-"+month+"-"+date);
+     }
+
    
     let historyArrays = [];
     let linkAgencyArrays = [];
@@ -138,12 +140,22 @@ const ReadActivityHistory=(props)=> {
         return(
             <tr key={index}>
                 <th>{historyArray.activityHistoryCode}</th>
-                <td>{historyArray.date}</td>
                 <td>{historyArray.startTime}</td>
                 <td>{historyArray.endTime}</td>
                 <td><Button className={buttonClassName} color={ButtonColor} >{ButtonValue}</Button></td>
+                <td>{historyArray.date}</td>
                 <td>{statusValue}</td>
             </tr>
+        )
+    }
+    function renderLinkAgencyList(linkAgencyArray, index){
+        return(
+         <option key={index} value={linkAgencyArray.linkAgencyCode}>{ linkAgencyArray.linkAgencyName }</option>
+        )
+    }
+    function renderActivityList(activityArray, index){
+        return(
+         <option key={index} value={activityArray.activityCode}>{ activityArray.activityName }</option>
         )
     }
     
@@ -154,47 +166,61 @@ const ReadActivityHistory=(props)=> {
         var form=new FormData;
         form.append("userToken",localStorage.getItem('userToken'));
         form.append("option", option);
+        form.append("startDate", startDate);
+        form.append("endDate", endDate);
         axios.post('/activityHistory/readHistory/mentor',form).then((response)=>{
                 //setHistoryArrays(response.data); 
-                historyArrays = response.data;
+                historyArrays = response.data[0];
+                linkAgencyArrays = response.data[1];
               setActivityHistoryList(historyArrays.map(renderHistoryArrays));
+            setLinkAgencyList(linkAgencyArrays.map(renderLinkAgencyList));
         }
             );
     }
+
     // 옵션을 걸어서 조회하기.
     function getActivityHistoryWithOption () {
 
         var form=new FormData;
         form.append("userToken",localStorage.getItem('userToken'));
         form.append("option", option);
-      /*   form.append();
-        form.append(); */
+        form.append("linkAgency", linkAgency);
+        form.append("activity", activity);
+        form.append("startDate", startDate);
+        form.append("endDate", endDate);
+
         axios.post('/activityHistory/readHistory/mentor',form).then((response)=>{
         //setHistoryArrays(response.data); 
-        historyArrays = response.data;
+        historyArrays = response.data[0];
         setActivityHistoryList(historyArrays.map(renderHistoryArrays));
+        
         }
             );
     }
-    // 연계기관 리스트 받아오기
-    function getLinkAgencyList(){
+    // 연계기관 리스트 받아오기, 디폴트로 하는 조회에서 같이받아와서 안쓰는중.
+    /* function getLinkAgencyList(){
         var form = new FormData;
-        
-    };
+        form.append("userToken", localStorage.getItem('userToken'));
+        axios.post('/activityHistory/getLinkAgencyList/mentor').then((response)=>{
+            console.log(response.data);
+        });
+
+    }; */
 
 
     // 연계기관 리스트 선택 시 해당 연계기관의 활동 받아오기
-    function getActivityList(){
+    function getActivityList(linkAgencyCode){
         var form=new FormData;
         form.append("userToken",localStorage.getItem('userToken'));
-        form.append("linkAgency", linkAgency);
-        axios.post('/activityHistory/getActivityList/mentor', form);
+        form.append("linkAgencyCode", linkAgencyCode);
+        axios.post('/activityHistory/getActivityList/mentor', form).then((response)=>{
+            activityArrays=response.data;
+            setActivityList(activityArrays.map(renderActivityList));
+        });
     }
 
-    
 
     useEffect(()=>{
-        setDefualtdate();
         getActivityHistory();
       },[]
     )
@@ -255,10 +281,8 @@ const ReadActivityHistory=(props)=> {
                             <InputGroupText>소속 연계기관</InputGroupText>
                         </InputGroupAddon>
                         <Input type="select" onChange={handleLinkAgencyOnChange}>
+                            <option>선택안함</option>
                             {linkAgencyList}
-                            <option onSelect={()=>alert("test")}>선택안함</option>
-                            <option>연계기관1</option>
-                            <option>연계기관2</option>
                         </Input>
                         </InputGroup>
 
@@ -267,10 +291,8 @@ const ReadActivityHistory=(props)=> {
                             <InputGroupText>활동명</InputGroupText>
                         </InputGroupAddon>
                         <Input type="select" onChange={handleActivityOnChange}>
-                            {activityList}
                             <option>선택안함</option>
-                            <option>활동1</option>
-                            <option>활동2</option>
+                            {activityList}
                         </Input>
                         </InputGroup>
 
@@ -283,17 +305,13 @@ const ReadActivityHistory=(props)=> {
                         </InputGroup>
                         <Button className="float-right" color="primary" onClick={()=>{
                             /* axios.데이터요청->inputs에 넣음 */
-                             getActivityHistory();
-                            console.log();
+                            getActivityHistoryWithOption ();
                             }}>조회</Button>
                         {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
                         <Button color="primary" onClick={()=>setModalExportExcel(true)}>내보내기</Button>
-                        <Button className="float-left" color="primary" onClick={()=>setModalCreateQR(true)}>QR 생성</Button>
-                        <Button onClick={()=>alert(linkAgency + activity + startDate + endDate)}>InputTest</Button>
+                        <Button onClick={()=>alert(option+linkAgency + activity + startDate + endDate)}>InputTest</Button>
                     </Form>
                 </Col>
-                <br></br>
-
                 {/* 활동 내역 테이블 */}
                 <Col>
                     <Table>
@@ -302,10 +320,10 @@ const ReadActivityHistory=(props)=> {
                             {/* 열 이름부분 */}
                             <tr>
                                 <th>#</th>
-                                <th>활동날짜</th>
                                 <th>시작 시간</th>
                                 <th>종료 시간</th>
                                 <th>활동 보고서</th>
+                                <th>보고서 작성일</th>
                                 <th>승인 여부</th>
                             </tr>
                         </thead>
@@ -339,4 +357,4 @@ const ReadActivityHistory=(props)=> {
         </div>
     )
 }
-export default ReadActivityHistory;
+export default ReadActivityHistoryMentor;

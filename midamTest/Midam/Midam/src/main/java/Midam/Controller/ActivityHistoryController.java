@@ -32,25 +32,53 @@ public class ActivityHistoryController {
 
     @ResponseBody
     @PostMapping(value="/readHistory/mentor")
-    public ArrayList readActivityHistoryList(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
-
+    public ArrayList readActivityHistoryListMentor(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+        ArrayList result = new ArrayList();
         String jwt = request.getParameter("userToken") ;
         Token token = new Token();
         Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
         Object objectId = map.get("id");
         String id = objectId.toString();
         int option = Integer.parseInt(request.getParameter("option"));
-        String optionLinkAgency = request.getParameter("linkAgency");
-        String optionActivity = request.getParameter("activity");
-        String optionStartDate = request.getParameter("startDate");
-        String optionEndDate = request.getParameter("endDate");
-
+        String linkAgency = request.getParameter("linkAgency");
+        String activity = request.getParameter("activity");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
 
             MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
-            ArrayList<HashMap> historyArrayList = mentoringHistoryDAO.getHistoryListMentor(id, option, optionLinkAgency, optionActivity, optionStartDate, optionEndDate);
+                ArrayList<HashMap> historyArrayList = mentoringHistoryDAO.getHistoryListMentor(id, option, linkAgency, activity, startDate, endDate);
+                result.add(historyArrayList);
 
+                if(option==0) {
+                    ArrayList<HashMap> linkAgencyArrayList = mentoringHistoryDAO.getLinkAgencyList(id);
+                    result.add(linkAgencyArrayList);
+                }
+            return result;
+    }
+    @ResponseBody
+    @PostMapping(value="/readHistory/regionManager")
+    public ArrayList readActivityHistoryListRegionManager(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+        ArrayList result = new ArrayList();
+        String jwt = request.getParameter("userToken");
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
+        Object objectId = map.get("id");
+        String id = objectId.toString();
+        int option = Integer.parseInt(request.getParameter("option"));
+        String linkAgency = request.getParameter("linkAgency");
+        String activity = request.getParameter("activity");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
 
-        return historyArrayList;
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+        ArrayList<HashMap> historyArrayList = mentoringHistoryDAO.getHistoryListRegionManager(id, option, linkAgency, activity, startDate, endDate);
+        result.add(historyArrayList);
+
+        if(option==0) {
+            ArrayList<HashMap> linkAgencyArrayList = mentoringHistoryDAO.getLinkAgencyList(id);
+            result.add(linkAgencyArrayList);
+        }
+        return result;
     }
 
     @ResponseBody
@@ -117,22 +145,30 @@ public class ActivityHistoryController {
         result.put("activityPictureBASE64",resultHistory.getActivityPictureBASE64());
         result.put("createDate",resultHistory.getCreateDate());
         result.put("approvalStatus", resultHistory.getApprovalStatus());
+        result.put("mentorName",resultHistory.getMentorName());
+        result.put("linkAgencyName",resultHistory.getLinkAgencyName());
+        result.put("activityName",resultHistory.getActivityName());
+        result.put("approvalDate",resultHistory.getApprovalDate());
+        result.put("companionReason",resultHistory.getCompanionReason());
+        result.put("approvalDate",resultHistory.getApprovalDate());
+
+
 
         return result;
     }
 
     @ResponseBody
     @PostMapping(value="/getActivityList/mentor")
-    public HashMap getActivityList(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+    public ArrayList<HashMap> getActivityListMentor(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
-        String jwt = request.getParameter("userToken");
-        Token token = new Token();
-        Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
-        Object objectId = map.get("id");
-        String id = objectId.toString();
+        String linkAgencyCode = request.getParameter("linkAgencyCode");
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+        ArrayList<HashMap> activityList = mentoringHistoryDAO.getActivityList(linkAgencyCode);
 
-        return result;
+        return activityList;
     }
+
+
 
     public Blob multipartFileToBlob(MultipartFile file) throws IOException, SQLException {
         Blob resultBlob;
@@ -143,4 +179,5 @@ public class ActivityHistoryController {
         return resultBlob;
     }
 
+//    /getActivityList/mentor
 }

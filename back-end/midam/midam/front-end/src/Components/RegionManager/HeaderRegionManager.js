@@ -27,6 +27,7 @@ import useModal from 'react-hooks-use-modal';
 import '../Css/Header.css';
 import QrScanner from '../Shared/QrScanner';
 import axios from 'axios';
+import ReadActivityHistoryMentor from '../Mentor/ReadActivityHistoryMentor';
 
 const HeaderRegionManager = ({match, history}) => {
     
@@ -46,7 +47,7 @@ const HeaderRegionManager = ({match, history}) => {
         axios.post("http://localhost:8080/checkAuthority", form)
         .then((response)=>{
             if(response.data === "TRUE"){
-                alert("success")
+                //성공
             }else{
                 alert("FALSE");
                 localStorage.removeItem("userToken");
@@ -70,6 +71,15 @@ const HeaderRegionManager = ({match, history}) => {
                     <NavbarToggler onClick={toggle} />
                         <Collapse isOpen={isOpen} navbar>
                             <Nav className="mr-auto" navbar>
+                            <NavItem>
+                                    <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle nav caret><span class = "nav-title">활동 관리</span></DropdownToggle>
+                                            <DropdownMenu left>
+                                                <DropdownItem >  <Link to={`${match.url}/readActivityHistory`}><span>활동 내역 조회</span></Link></DropdownItem>
+                                                <DropdownItem ><span>~~</span></DropdownItem>
+                                            </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </NavItem>
                                 <NavItem>
                                     <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">커뮤니티</span></DropdownToggle>
@@ -112,6 +122,11 @@ const HeaderRegionManager = ({match, history}) => {
                             </Collapse>
                     </Navbar>
             </div>
+
+            <Switch>
+                <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryMentor}></Route>
+
+            </Switch>
         </div>
     )
 }

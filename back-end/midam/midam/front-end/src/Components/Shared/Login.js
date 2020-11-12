@@ -44,15 +44,15 @@ const Login = ({props, history}) => {
        const loginTest = (form) => {
         axios.post("/login", form)
         .then((response)=>{
+            localStorage.removeItem("userToken");
             localStorage.setItem("userToken",response.data.userToken);
-            cookie.save("userToken",response.data.userToken);
             if(response.data.result !== 0){
                 if(rSelected === 1){
                     history.push("/Mentor");
                 }else if(rSelected === 2){
-                    history.push("/LinkAgencyManager");
-                }else if(rSelected === 3){
                     history.push("/RegionManager");
+                }else if(rSelected === 3){
+                    history.push("/LinkAgencyManager");
                 }else if(rSelected === 4){
                     history.push("/SystemManager");
                 }
