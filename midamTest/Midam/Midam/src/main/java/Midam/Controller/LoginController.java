@@ -2,16 +2,13 @@ package Midam.Controller;
 
 import Midam.DAO.user.*;
 import Midam.model.token.Token;
-import Midam.model.user.User;
-import io.jsonwebtoken.Claims;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+
 import java.util.Map;
 
 @RestController

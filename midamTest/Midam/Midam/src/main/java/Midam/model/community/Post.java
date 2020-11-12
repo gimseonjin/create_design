@@ -14,6 +14,7 @@ public class Post {
     private String content;
     private String writeDate;
     private int numberOfView;
+    private int bundleId;
 
     public int getPostId() {
         return postId;
@@ -85,5 +86,13 @@ public class Post {
 
     public void setNumberOfView(int numberOfView) {
         this.numberOfView = numberOfView;
+    }
+
+    public int getBundleId() {
+        return bundleId;
+    }
+
+    public void setBundleId(int bundleId) {
+        this.bundleId = bundleId;
     }
 }
