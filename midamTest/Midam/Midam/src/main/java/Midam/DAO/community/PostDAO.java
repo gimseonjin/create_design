@@ -357,13 +357,17 @@ public class PostDAO {
 
 
 
-        String sql = "delete from post where postId =?";
+       // String sql = "delete from post where postId =?";
+        String sql_delete ="update post set content= ? where postId =? ";
         try {
 
-            conn=getConnection();
-            pstmt= conn.prepareStatement(sql);
-            pstmt.setInt(1, postId);  //groupId에 postId 입력
 
+            String content ="삭제된 댓글입니다.";
+
+            conn=getConnection();
+            pstmt= conn.prepareStatement(sql_delete);
+            pstmt.setString(1, content);  //groupId에 postId 입력
+            pstmt.setInt(2,postId);
             result = pstmt.executeUpdate();
 
         } catch (SQLException throwables) {
