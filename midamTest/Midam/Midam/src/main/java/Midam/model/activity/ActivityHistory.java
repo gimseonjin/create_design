@@ -20,7 +20,7 @@ public class ActivityHistory {
     private String createDate;
     private String approvalDate;
     private int approvalStatus;
-    private String companionReason;
+    private String rejectionReason;
     //보고서 용
     private String mentorName;
     private String linkAgencyName;
@@ -154,12 +154,12 @@ public class ActivityHistory {
         this.approvalStatus = approvalStatus;
     }
 
-    public String getCompanionReason() {
-        return companionReason;
+    public String getRejectionReason() {
+        return rejectionReason;
     }
 
-    public void setCompanionReason(String companionReason) {
-        this.companionReason = companionReason;
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
     }
 
     //    BLOB을 JSON으로 보낼수가 없어. binary데이터는 담을 수 없는듯. 그래서 uri로 바꿔서 보낼수있게 바꾸려고함.

@@ -149,7 +149,7 @@ public class ActivityHistoryController {
         result.put("linkAgencyName",resultHistory.getLinkAgencyName());
         result.put("activityName",resultHistory.getActivityName());
         result.put("approvalDate",resultHistory.getApprovalDate());
-        result.put("companionReason",resultHistory.getCompanionReason());
+        result.put("rejectionReason",resultHistory.getRejectionReason());
         result.put("approvalDate",resultHistory.getApprovalDate());
 
 

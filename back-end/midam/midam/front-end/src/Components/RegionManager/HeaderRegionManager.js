@@ -27,7 +27,7 @@ import useModal from 'react-hooks-use-modal';
 import '../Css/Header.css';
 import QrScanner from '../Shared/QrScanner';
 import axios from 'axios';
-import ReadActivityHistoryMentor from '../Mentor/ReadActivityHistoryMentor';
+import ReadActivityHistoryRegionManager from './ReadActivityHistoryRegionManager';
 
 const HeaderRegionManager = ({match, history}) => {
     
@@ -124,7 +124,7 @@ const HeaderRegionManager = ({match, history}) => {
             </div>
 
             <Switch>
-                <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryMentor}></Route>
+                <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryRegionManager}></Route>
 
             </Switch>
         </div>

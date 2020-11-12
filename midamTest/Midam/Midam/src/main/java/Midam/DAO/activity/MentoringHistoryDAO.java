@@ -127,7 +127,7 @@ public class MentoringHistoryDAO {
                 activityHistory.setCreateDate(rs.getString("createDate"));
                 activityHistory.setApprovalDate(rs.getString("approvalDate"));
                 activityHistory.setApprovalStatus(rs.getInt("approvalStatus"));
-                activityHistory.setCompanionReason(rs.getString("companionReason"));
+                activityHistory.setRejectionReason(rs.getString("rejectionReason"));
 
             }
         }catch(Exception e) {
@@ -231,11 +231,11 @@ public class MentoringHistoryDAO {
                 sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history Join mentor Join link_agency Join mentor_recruitment ON mentor.regionCode=link_agency.regionCode AND link_agency.linkAgencyCode = mentor_recruitment.linkAgencyCode AND mentor_recruitment.mentorRecruitmentCode = activity_history.mentorRecruitmentCode Where mentor.id=? AND startTime >= ? AND startTime <= ?; ";
                 pstmt = conn.prepareStatement(sql);
             }else if(option == 1){ //연계기관만 선택
-                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history JOIN mentor_recruitment On activity_history.mentorRecruitmentCode=mentor_recruitment.mentorRecruitmentCode Where activity_history.mentorId= ? AND activity_history.startTime>= ? AND activity_history.startTime <= ? AND mentor_recruitment.linkAgencyCode=?;";
+                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history Join mentor Join link_agency Join mentor_recruitment ON mentor.regionCode=link_agency.regionCode AND link_agency.linkAgencyCode = mentor_recruitment.linkAgencyCode AND mentor_recruitment.mentorRecruitmentCode = activity_history.mentorRecruitmentCode Where mentor.id=? AND startTime >= ? AND startTime <= ? AND mentor_recruitment.linkAgencyCode=?;";
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(4, linkAgency);
             }else if(option == 2){ // 연계기관 + 활동 선택
-                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history JOIN mentor_recruitment On activity_history.mentorRecruitmentCode=mentor_recruitment.mentorRecruitmentCode Where activity_history.mentorId= ? AND activity_history.startTime>= ? AND activity_history.startTime <= ? AND mentor_recruitment.linkAgencyCode=?  AND activity_history.mentorRecruitmentCode=?;";
+                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history Join mentor Join link_agency Join mentor_recruitment ON mentor.regionCode=link_agency.regionCode AND link_agency.linkAgencyCode = mentor_recruitment.linkAgencyCode AND mentor_recruitment.mentorRecruitmentCode = activity_history.mentorRecruitmentCode Where mentor.id=? AND startTime >= ? AND startTime <= ? AND mentor_recruitment.linkAgencyCode=?  AND activity_history.mentorRecruitmentCode=?;";
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(4, linkAgency);
                 pstmt.setString(5, activity);
@@ -359,7 +359,7 @@ public class MentoringHistoryDAO {
     //    보고서 조회
     public ActivityHistory readReport(int activityHistoryCode){
         ActivityHistory activityHistory = new ActivityHistory();
-        sql = "SELECT startTime, endTime, activityContent, note, activityPicture, createDate, approvalStatus,createDate, approvalDate, companionReason, user.name, mentor_recruitment.activityName, link_agency.linkAgencyName FROM activity_history JOIN user JOIN mentor_recruitment JOIN link_agency ON user.id = activity_history.mentorId AND mentor_recruitment.mentorRecruitmentCode=activity_history.mentorRecruitmentCode AND link_agency.linkAgencyCode=mentor_recruitment.linkAgencyCode WHERE activityHistoryCode = ?;";
+        sql = "SELECT startTime, endTime, activityContent, note, activityPicture, createDate, approvalStatus,createDate, approvalDate, rejectionReason, user.name, mentor_recruitment.activityName, link_agency.linkAgencyName FROM activity_history JOIN user JOIN mentor_recruitment JOIN link_agency ON user.id = activity_history.mentorId AND mentor_recruitment.mentorRecruitmentCode=activity_history.mentorRecruitmentCode AND link_agency.linkAgencyCode=mentor_recruitment.linkAgencyCode WHERE activityHistoryCode = ?;";
 
         try {
             conn=getConnection();
@@ -379,7 +379,7 @@ public class MentoringHistoryDAO {
                 activityHistory.setLinkAgencyName(rs.getString("linkAgencyName"));
                 activityHistory.setActivityName(rs.getString("activityName"));
                 activityHistory.setApprovalDate(rs.getString("approvalDate"));
-                activityHistory.setCompanionReason(rs.getString("companionReason"));
+                activityHistory.setRejectionReason(rs.getString("rejectionReason"));
 
             }
 

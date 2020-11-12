@@ -14,7 +14,7 @@ import {Image} from 'react-bootstrap';
 import cookie from 'react-cookies';
 
 //활동보고서 작성 활동 보고서 조회 페이지 필요할지. 여기서 함께할지 논의.
-const ReadReport = (props) =>{
+const ReadReportMentor = (props) =>{
     const [activityHistoryCode, setActivityHistoryCode] = useState(
         props.activityHistoryCode
     );
@@ -30,7 +30,7 @@ const ReadReport = (props) =>{
     const [dateOfActivity, setDateOfActivity] = useState("");
     const [approvalDate, setApprovalDate] = useState("");
     const [approvalStatus, setApprovalStatus] = useState("");
-    const [companionReason, setCompanionReason] = useState("");
+    const [rejectionReason, setRejectionReason] = useState("");
     const [createDate, setCreateDate] = useState("");
     const [statusValue, setStatusValue] = useState("");
 
@@ -122,7 +122,7 @@ const ReadReport = (props) =>{
             setApprovalDate(response.data.approvalDate);
             setApprovalStatus(response.data.approvalStatus);
             setCreateDate(response.data.createDate);
-            setCompanionReason(response.data.companionReason);
+            setRejectionReason(response.data.rejectionReason);
             statusToValue(response.data.approvalStatus);
 
         })
@@ -193,7 +193,7 @@ const ReadReport = (props) =>{
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>반려 사유</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="place" placeholder="" readOnly={true} value = {companionReason}></Input>
+                        <Input type="text" name="place" placeholder="" readOnly={true} value = {rejectionReason}></Input>
                     </InputGroup> :""}
                     
                     <InputGroup>
@@ -250,4 +250,4 @@ const ReadReport = (props) =>{
         </div>
     )
 }
-export default ReadReport;
+export default ReadReportMentor;
