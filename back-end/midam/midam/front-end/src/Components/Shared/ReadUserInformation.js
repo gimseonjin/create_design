@@ -11,7 +11,7 @@ import cookie from 'react-cookies';
 const ReadUserInformation = (props) => {
 
   // id,권한 일단 저장
-    const [token, setToken] = useState(cookie.load("userToken"));
+    const [token, setToken] = useState(localStorage.getItem("userToken"));
     const [authority, setAuthority] = useState("1");
     const [userInfo, setUserInfo] = useState([]);
 

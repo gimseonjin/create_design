@@ -21,6 +21,34 @@ public class ActivityHistory {
     private String approvalDate;
     private int approvalStatus;
     private String companionReason;
+    //보고서 용
+    private String mentorName;
+    private String linkAgencyName;
+    private String activityName;
+
+    public String getMentorName() {
+        return mentorName;
+    }
+
+    public void setMentorName(String mentorName) {
+        this.mentorName = mentorName;
+    }
+
+    public String getLinkAgencyName() {
+        return linkAgencyName;
+    }
+
+    public void setLinkAgencyName(String linkAgencyName) {
+        this.linkAgencyName = linkAgencyName;
+    }
+
+    public String getActivityName() {
+        return activityName;
+    }
+
+    public void setActivityName(String activityName) {
+        this.activityName = activityName;
+    }
 
     public int getActivityHistoryCode() {
         return activityHistoryCode;
@@ -137,7 +165,11 @@ public class ActivityHistory {
     //    BLOB을 JSON으로 보낼수가 없어. binary데이터는 담을 수 없는듯. 그래서 uri로 바꿔서 보낼수있게 바꾸려고함.
 
     public String getActivityPictureBASE64(){
-        return "data:image/jpeg;base64,"+ new String(Base64.getEncoder().encode(activityPicture));
+        if(activityPicture != null) {
+            return "data:image/jpeg;base64," + new String(Base64.getEncoder().encode(activityPicture));
+        }
+        else
+            return null;
     }
 
 }

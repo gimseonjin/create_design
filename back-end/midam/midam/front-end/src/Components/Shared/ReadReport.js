@@ -19,7 +19,8 @@ const ReadReport = (props) =>{
         props.activityHistoryCode
     );
     const [mentorName, setMentorName] = useState();
-    const [place, setPlace] = useState();
+    const [linkAgencyName, setLinkAgencyName] = useState();
+    const [activityName, setActivityName] = useState();
     const [content, setContent] = useState();
     const [note, setNote] = useState();
     const [file, setFile] = useState("");
@@ -27,6 +28,11 @@ const ReadReport = (props) =>{
     const [token, setToken] = useState(cookie.load("userToken"));
     const [isReadOnly, setIsReadOnly] = useState(true);
     const [dateOfActivity, setDateOfActivity] = useState("");
+    const [approvalDate, setApprovalDate] = useState("");
+    const [approvalStatus, setApprovalStatus] = useState("");
+    const [companionReason, setCompanionReason] = useState("");
+    const [createDate, setCreateDate] = useState("");
+    const [statusValue, setStatusValue] = useState("");
 
     const toggleIsReadOnly = () => {
         setIsReadOnly(!isReadOnly);
@@ -58,40 +64,89 @@ const ReadReport = (props) =>{
         setNote(e.target.value);
     }
 
+    function statusToValue(approvalStatusInt){
+        var approvalValue="";
+        switch(approvalStatusInt){
+            case 0:
+                approvalValue ="활동 중";
+                break; 
+            case 1:
+                approvalValue ="활동 완료";
+                break;
+            case 2:
+                approvalValue ="보고서 작성완료";
+                break;
+            case 3:
+                approvalValue ="승인완료";
+                break;
+            case 4:
+                approvalValue ="반려";
+                break;
+            case -1:
+                approvalValue ="비활성화";
+                break;
+        }
+        setStatusValue(approvalValue);
+    }
+
     let $imagePreview = null;
 
     const updateReport = () => {
         var form = new FormData;
-        console.log("update");
         form.append("userToken", token);
         form.append("activityHistoryCode", activityHistoryCode);
         form.append("content",content);
         form.append("note",note);
         form.append("file",file);
         axios
-            .post('/activityHistory/createReport/mentor', form,{headers: {'content-type':'multipart/form-data'}})
+            .post('/activityHistory/updateReport/mentor', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
                 alert(response.data.responseMsg);
-               
-
+                window.location.reload();
             })
     }
     function readReport () {
         var form = new FormData;
-        form.append("userToken ", cookie.load("userToken"));
+        form.append("userToken ", localStorage.getItem("userToken"));
         form.append("activityHistoryCode", activityHistoryCode);
         axios.post('/activityHistory/readReport/mentor',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
             
             setContent(response.data.activityContent);
             setNote(response.data.note);
             setImagePreviewUrl(response.data.activityPictureBASE64);
+            setFile(dataURLtoFile(response.data.activityPictureBASE64, 'picture'));
             setDateOfActivity(response.data.startTime + " ~ " + response.data.endTime);
-            console.log("readReport");
-            
+            setMentorName(response.data.mentorName);
+            setActivityName(response.data.activityName);
+            setLinkAgencyName(response.data.linkAgencyName);
+            setApprovalDate(response.data.approvalDate);
+            setApprovalStatus(response.data.approvalStatus);
+            setCreateDate(response.data.createDate);
+            setCompanionReason(response.data.companionReason);
+            statusToValue(response.data.approvalStatus);
 
         })
-
     }
+
+    const dataURLtoFile = (dataurl, fileName) => {
+    
+        if(dataurl!==null){
+            var arr = dataurl.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]), 
+                n = bstr.length, 
+                u8arr = new Uint8Array(n);
+                
+            while(n--){
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            
+            return new File([u8arr], fileName, {type:mime});
+        }else{
+            return null;
+        }
+    }
+
     useEffect(()=>{
         readReport();
     },[])
@@ -110,17 +165,50 @@ const ReadReport = (props) =>{
 
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
-                            <InputGroupText>참여자</InputGroupText>
+                            <InputGroupText>멘토</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="mentorName" placeholder="참여자 입력" readOnly={true}></Input>
+                        <Input type="text" name="mentorName" placeholder="참여자" readOnly={true} value = {mentorName}></Input>
                     </InputGroup>
 
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
-                            <InputGroupText>활동 기관</InputGroupText>
+                            <InputGroupText>연계 기관</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="place" placeholder="활동 장소 입력" readOnly={true}></Input>
+                        <Input type="text" name="place" placeholder="활동 장소" readOnly={true} value = {linkAgencyName}></Input>
                     </InputGroup>
+
+                    <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                            <InputGroupText>활동 이름</InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" name="place" placeholder="활동 장소" readOnly={true} value = {activityName}></Input>
+                    </InputGroup>
+                    <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                            <InputGroupText>승인 여부</InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" name="place" placeholder="" readOnly={true} value = {statusValue}></Input>
+                    </InputGroup>
+                    {approvalStatus===4?<InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                            <InputGroupText>반려 사유</InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" name="place" placeholder="" readOnly={true} value = {companionReason}></Input>
+                    </InputGroup> :""}
+                    
+                    <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                            <InputGroupText>보고서 작성일</InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" name="place" placeholder="" readOnly={true} value = {createDate}></Input>
+                    </InputGroup>
+                   {approvalStatus===3?
+                    <InputGroup>
+                    <InputGroupAddon addonType="prepend">
+                        <InputGroupText>승인 날짜</InputGroupText>
+                    </InputGroupAddon>
+                    <Input type="text" name="place" placeholder="" readOnly={true} value = {approvalDate}></Input>
+                </InputGroup> : ""}
                 </FormGroup>
 
                 <FormGroup>
@@ -147,13 +235,13 @@ const ReadReport = (props) =>{
                             accept='image/jpg,impge/png,image/jpeg,image/gif'
                             name="file"
                             label="파일 선택"
-                            onChange={handleImageOnChange} readOnly={isReadOnly}>asdf</CustomInput>
+                            onChange={handleImageOnChange} disabled={isReadOnly}></CustomInput>
                     </InputGroup>
                 </FormGroup>
                 {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
                 <Button onClick={toggleIsReadOnly}>수정</Button>
-                <Button type="hidden" color="danger" onClick={updateReport}>완료</Button>
-                <Button onClick={readReport}>조회</Button>
+                <Button className={isReadOnly? "invisible": ""} disabled={isReadOnly} color="danger" onClick={updateReport}>완료</Button>
+                <Button className="float-right" color="primary" onClick={readReport}>조회</Button>
             
             </Form>
             <div className="mw-100">

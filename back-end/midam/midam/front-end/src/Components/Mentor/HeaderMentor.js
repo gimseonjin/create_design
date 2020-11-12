@@ -25,7 +25,7 @@ import ApplyChangeRegion from './ApplyChangeRegion';
 import ReadUserInformation from '../Shared/ReadUserInformation';
 import UpdateUserInformation from '../Shared/UpdateUserInformation';
 import Withdraw from '../Shared/Withdraw';
-import ReadActivityHistory from '../Shared/ReadActivityHistory';
+import ReadActivityHistoryMentor from './ReadActivityHistoryMentor';
 import CreateMentorRecruitment from '../LinkAgencyManager/CreateMentorRecruitment';
 import CreateReport from './CreateReport';
 import ReadMentoringApplication from './ReadMentoringApplication';
@@ -98,9 +98,6 @@ const HeaderMentor = ({match, history}) => {
                                                     <Link to={`${match.url}/readActivityHistory`}><span>활동조회</span></Link>
                                                 </DropdownItem>
                                                 <DropdownItem>
-                                                    <Link to={`${match.url}/createReport`}><span>활동보고서 작성</span></Link>
-                                                </DropdownItem>
-                                                <DropdownItem>
                                                     <Link to={`${match.url}/readMentoringApplication`}><span>멘토링 신청 내역 조회</span></Link>
                                                 </DropdownItem>
                                             </DropdownMenu>
@@ -169,7 +166,7 @@ const HeaderMentor = ({match, history}) => {
                
                 <Route exact path={`${match.path}/readMentoringApplication`} component={ReadMentoringApplication}></Route>
                 {/* 활동 */}
-                <Route exact path={`${match.path}/readActivityHistory`} component = {ReadActivityHistory}></Route>
+                <Route exact path={`${match.path}/readActivityHistory`} component = {ReadActivityHistoryMentor}></Route>
                 <Route exact path={`${match.path}/readMentoringApplication`} component = {ReadMentoringApplication}></Route>
                 {/* 커뮤니티 */}
                 <Route exact path={`${match.path}/readPost`} component = {ReadPost}></Route>

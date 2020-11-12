@@ -173,50 +173,99 @@ public class MentoringHistoryDAO {
     }      //전체 활동내역 목록
 
 //    지훈.11.01 추가 - 멘토가 자신의 id를 통해 자기 활동 내역만 조회
-    public ArrayList<HashMap> getHistoryListMentor(String id, int option, String optionLinkAgency, String optionActivity, String optionStartDate, String optionEndDate){
+    public ArrayList<HashMap> getHistoryListMentor(String id, int option, String linkAgency, String activity, String startDate, String endDate){
 
         ArrayList<HashMap> list =new ArrayList<HashMap>();
 
 
         try {
-
+            conn=getConnection();
             if(option==0){ //아무것도 안할때, 옵션 0
-                sql = "SELECT * FROM activity_history where mentorId=? ";
-                conn=getConnection();
+                sql = "SELECT * FROM activity_history where mentorId=? AND startTime >= ? AND startTime <= ?";
                 pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, id);  //검색하기위해 입력한 아이디
-                ResultSet rs= pstmt.executeQuery();
 
-                while(rs.next()) {
-                    ActivityHistory activityHistory =new ActivityHistory();
+            }else if(option == 1){ //연계기관만 선택
+                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history JOIN mentor_recruitment On activity_history.mentorRecruitmentCode=mentor_recruitment.mentorRecruitmentCode Where activity_history.mentorId= ? AND activity_history.startTime>= ? AND activity_history.startTime <= ? AND mentor_recruitment.linkAgencyCode=?;";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(4, linkAgency);
+            }else if(option == 2){ // 연계기관 + 활동 선택
+                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history JOIN mentor_recruitment On activity_history.mentorRecruitmentCode=mentor_recruitment.mentorRecruitmentCode Where activity_history.mentorId= ? AND activity_history.startTime>= ? AND activity_history.startTime <= ? AND mentor_recruitment.linkAgencyCode=?  AND activity_history.mentorRecruitmentCode=?;";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(4, linkAgency);
+                pstmt.setString(5, activity);
+            }
+            pstmt.setString(1, id);  //검색하기위해 입력한 아이디
+            pstmt.setString(2, startDate);
+            pstmt.setString(3, endDate);
+            ResultSet rs= pstmt.executeQuery();
+            while(rs.next()) {
+                ActivityHistory activityHistory =new ActivityHistory();
 
-                    HashMap historyHashMap = new HashMap();
-                    historyHashMap.put("activityHistoryCode",rs.getInt("activityHistoryCode"));
-                    historyHashMap.put("MentorRecruitmentCode",rs.getString("MentorRecruitmentCode"));
-                    historyHashMap.put("startTime", rs.getString("startTime"));
-                    historyHashMap.put("endTime", rs.getString("endTime"));
-                    historyHashMap.put("date",rs.getString("createDate"));
-                    historyHashMap.put("status",rs.getString("approvalStatus"));
-                    historyHashMap.put("report",rs.getString("activityContent"));
+                HashMap historyHashMap = new HashMap();
+                historyHashMap.put("activityHistoryCode",rs.getInt("activityHistoryCode"));
+                historyHashMap.put("startTime", rs.getString("startTime"));
+                historyHashMap.put("endTime", rs.getString("endTime"));
+                historyHashMap.put("date",rs.getString("createDate"));
+                historyHashMap.put("status",rs.getString("approvalStatus"));
 
-                    list.add(historyHashMap);
-                    }
-            }else if(option == 1){
-
-
-            }else if(option == 2){
-
-            }else if(option == 3){
-
+                list.add(historyHashMap);
             }
         }catch(Exception e) {
             e.printStackTrace();
 
         }finally {
+
+
             closeConnection(conn);
         }
         return list;
-    }      //전체 활동내역 목록
+    }      //전체 활동내역 목록 for 멘토
+
+    public ArrayList<HashMap> getHistoryListRegionManager(String id, int option, String linkAgency, String activity, String startDate, String endDate){
+
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+
+        try {
+            conn=getConnection();
+            if(option==0){ //아무것도 안할때, 옵션 0
+                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history Join mentor Join link_agency Join mentor_recruitment ON mentor.regionCode=link_agency.regionCode AND link_agency.linkAgencyCode = mentor_recruitment.linkAgencyCode AND mentor_recruitment.mentorRecruitmentCode = activity_history.mentorRecruitmentCode Where mentor.id=? AND startTime >= ? AND startTime <= ?; ";
+                pstmt = conn.prepareStatement(sql);
+            }else if(option == 1){ //연계기관만 선택
+                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history JOIN mentor_recruitment On activity_history.mentorRecruitmentCode=mentor_recruitment.mentorRecruitmentCode Where activity_history.mentorId= ? AND activity_history.startTime>= ? AND activity_history.startTime <= ? AND mentor_recruitment.linkAgencyCode=?;";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(4, linkAgency);
+            }else if(option == 2){ // 연계기관 + 활동 선택
+                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history JOIN mentor_recruitment On activity_history.mentorRecruitmentCode=mentor_recruitment.mentorRecruitmentCode Where activity_history.mentorId= ? AND activity_history.startTime>= ? AND activity_history.startTime <= ? AND mentor_recruitment.linkAgencyCode=?  AND activity_history.mentorRecruitmentCode=?;";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(4, linkAgency);
+                pstmt.setString(5, activity);
+            }
+            pstmt.setString(1, id);  //검색하기위해 입력한 아이디
+            pstmt.setString(2, startDate);
+            pstmt.setString(3, endDate);
+            ResultSet rs= pstmt.executeQuery();
+            while(rs.next()) {
+                ActivityHistory activityHistory =new ActivityHistory();
+
+                HashMap historyHashMap = new HashMap();
+                historyHashMap.put("activityHistoryCode",rs.getInt("activityHistoryCode"));
+                historyHashMap.put("startTime", rs.getString("startTime"));
+                historyHashMap.put("endTime", rs.getString("endTime"));
+                historyHashMap.put("date",rs.getString("createDate"));
+                historyHashMap.put("status",rs.getString("approvalStatus"));
+
+                list.add(historyHashMap);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+
+
+            closeConnection(conn);
+        }
+        return list;
+    }      //전체 활동내역 목록 for 지역본부 관리자
 
     public ArrayList<HashMap> getListMentorWithOption(String id){
 
@@ -260,7 +309,8 @@ public class MentoringHistoryDAO {
     // 보고서 최초작성 createReport. content, note, image DB상에 업데이트
     public int createReport(int activityHistoryCode, String id, String content, String note, Blob imageBlob){
         int result = 0;
-        sql = "UPDATE activity_history SET activityContent = ?, note = ? ,activityPicture=?, approvalStatus=?  WHERE activityHistoryCode = ? AND mentorId= ?;";
+        String createDate = LocalDateTime.now().toString();
+        sql = "UPDATE activity_history SET activityContent = ?, note = ? ,activityPicture=?, approvalStatus=?, createDate=?  WHERE activityHistoryCode = ? AND mentorId= ?;";
 
         try {
             conn=getConnection();
@@ -268,9 +318,10 @@ public class MentoringHistoryDAO {
             pstmt.setString(1,content);
             pstmt.setString(2,note);
             pstmt.setBlob(3,imageBlob);
-            pstmt.setInt(4,2); //최초: 0 활동완료: 1 보고서작성완료: 2 보고서승인: 3 보고서반려: 4 비활성화: -1
+            pstmt.setInt(4,2); //최초 0, 활동완료 1, 보고서 작성 2, 보고서 승인 3, 보고서 반려 4, 비활성화 -1
             pstmt.setInt(5,activityHistoryCode);
             pstmt.setString(6,id);
+            pstmt.setString(7,createDate);
             result= pstmt.executeUpdate();
 
         } catch (SQLException throwables) {
@@ -288,9 +339,11 @@ public class MentoringHistoryDAO {
         try {
             conn=getConnection();
             pstmt = conn.prepareStatement(sql);
+            //update
             pstmt.setString(1,content);
             pstmt.setString(2,note);
             pstmt.setBlob(3,imageBlob);
+            //where
             pstmt.setInt(4,activityHistoryCode);
             pstmt.setString(5,id);
             result= pstmt.executeUpdate();
@@ -306,7 +359,7 @@ public class MentoringHistoryDAO {
     //    보고서 조회
     public ActivityHistory readReport(int activityHistoryCode){
         ActivityHistory activityHistory = new ActivityHistory();
-        sql = "SELECT startTime, endTime, activityContent, note, activityPicture, createDate, approvalStatus FROM activity_history WHERE activityHistoryCode = ?;";
+        sql = "SELECT startTime, endTime, activityContent, note, activityPicture, createDate, approvalStatus,createDate, approvalDate, companionReason, user.name, mentor_recruitment.activityName, link_agency.linkAgencyName FROM activity_history JOIN user JOIN mentor_recruitment JOIN link_agency ON user.id = activity_history.mentorId AND mentor_recruitment.mentorRecruitmentCode=activity_history.mentorRecruitmentCode AND link_agency.linkAgencyCode=mentor_recruitment.linkAgencyCode WHERE activityHistoryCode = ?;";
 
         try {
             conn=getConnection();
@@ -322,6 +375,12 @@ public class MentoringHistoryDAO {
                 activityHistory.setActivityPicture(rs.getBytes("activityPicture"));
                 activityHistory.setCreateDate(rs.getString("createDate"));
                 activityHistory.setApprovalStatus(rs.getInt("approvalStatus"));
+                activityHistory.setMentorName(rs.getString("name"));
+                activityHistory.setLinkAgencyName(rs.getString("linkAgencyName"));
+                activityHistory.setActivityName(rs.getString("activityName"));
+                activityHistory.setApprovalDate(rs.getString("approvalDate"));
+                activityHistory.setCompanionReason(rs.getString("companionReason"));
+
             }
 
         } catch (SQLException throwables) {
@@ -332,7 +391,61 @@ public class MentoringHistoryDAO {
         return activityHistory;
     }
     // user가 소속되어있는 지역본부에 소속되어있는 연계기관 조회
+    public ArrayList<HashMap> getLinkAgencyList(String id){
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+        sql = "SELECT region.regionCode, region.regionName, link_agency.linkAgencyCode, link_agency.linkAgencyName FROM mentor JOIN region Join link_agency on mentor.regionCode = region.regionCode AND region.regionCode=link_agency.regionCode WHERE mentor.id=?;";
 
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);  //검색하기위해 입력한 아이디
+            ResultSet rs= pstmt.executeQuery();
+
+            while(rs.next()) {
+
+                HashMap historyHashMap = new HashMap();
+                historyHashMap.put("regionCode",rs.getString("regionCode"));
+                historyHashMap.put("regionName",rs.getString("regionName"));
+                historyHashMap.put("linkAgencyCode",rs.getString("linkAgencyCode"));
+                historyHashMap.put("linkAgencyName",rs.getString("linkAgencyName"));
+
+
+                list.add(historyHashMap);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return list;
+    }
     // 연계기관에 소속되어있는 활동 조회
+    public ArrayList<HashMap> getActivityList(String linkAgencyCode){
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+        sql = "SELECT mentorRecruitmentCode, activityName FROM mentor_recruitment WHERE linkAgencyCode=?;";
+
+        try {
+
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, linkAgencyCode);  //검색하기위해 입력한 아이디
+            ResultSet rs= pstmt.executeQuery();
+
+            while(rs.next()) {
+
+                HashMap activityHashMap = new HashMap();
+                activityHashMap.put("activityCode",rs.getString("mentorRecruitmentCode"));
+                activityHashMap.put("activityName",rs.getString("activityName"));
+                list.add(activityHashMap);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return list;
+    }
 
 }
