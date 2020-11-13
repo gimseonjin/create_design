@@ -189,20 +189,29 @@ public class ActivityHistoryController {
 
     @ResponseBody
     @PostMapping(value="/rejectReport/regionManager")
-    public ArrayList<HashMap> rejectReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+    public HashMap rejectReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
-        // front에서 받을것: 활동코드, 지역본부관리자ID(db에들어감), 반려 사유
+        // front에서 받을것: 활동코드, 지역본부관리자ID(db에들어감)
         // 날짜는 서버기준으로
         String userToken = request.getParameter("userToken");
         Token token = new Token();
         Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
         String id = map.get("id").toString();
-
-        String linkAgencyCode = request.getParameter("linkAgencyCode");
         MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
-        ArrayList<HashMap> activityList = mentoringHistoryDAO.getActivityList(linkAgencyCode);
 
-        return activityList;
+        String activityHistoryCode = request.getParameter("activityHistoryCode");
+        String rejectionReason = request.getParameter("rejectionReason");
+        String resultMessage="";
+        int resultInt= mentoringHistoryDAO.rejectReport(activityHistoryCode, id, rejectionReason);
+        if(resultInt > 0){
+            resultMessage="성공";
+        }
+        else{
+            resultMessage="실패";
+        }
+
+        result.put("resultMessage", resultMessage);
+        return result;
     }
 
 

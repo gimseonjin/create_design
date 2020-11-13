@@ -467,5 +467,25 @@ public class MentoringHistoryDAO {
         return result;
     }
     //보고서 반려
+    public int rejectReport(String activityHistoryCode, String id, String rejectionReason){
+        int result = 0;
+        sql = "UPDATE activity_history SET regionManagerId=?, approvalStatus = 4, rejectionReason=? WHERE activityHistoryCode = ?;";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            pstmt.setString(2, rejectionReason);
+            pstmt.setString(3, activityHistoryCode);  //검색하기위해 입력한 아이디
+            result= pstmt.executeUpdate();
+
+
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
 
 }

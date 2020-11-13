@@ -30,7 +30,7 @@ const RejectReport = (props) =>{
         form.append("activityHistoryCode", activityHistoryCode);
         form.append("userToken",localStorage.getItem("userToken"));
         form.append("rejectionReason", rejectionReason);
-        axios.post("/activityHistory/rejectReport",form).then((response)=>{
+        axios.post("/activityHistory/rejectReport/regionManager",form).then((response)=>{
             alert(response.data.resultMessage);
         });
     }
