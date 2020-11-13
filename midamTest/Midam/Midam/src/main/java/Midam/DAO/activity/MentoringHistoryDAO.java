@@ -5,6 +5,7 @@ import Midam.model.activity.ActivityHistory;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -53,7 +54,6 @@ public class MentoringHistoryDAO {
                 "linkAgencyManagerId, regionManagerId,mentorId,startTime)"
                 + " values(?, ?, ?, ?, ?, ?)";
         try {
-
             conn= getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, activityHistory.getActivityHistoryCode());
@@ -176,8 +176,6 @@ public class MentoringHistoryDAO {
     public ArrayList<HashMap> getHistoryListMentor(String id, int option, String linkAgency, String activity, String startDate, String endDate){
 
         ArrayList<HashMap> list =new ArrayList<HashMap>();
-
-
         try {
             conn=getConnection();
             if(option==0){ //아무것도 안할때, 옵션 0
@@ -228,14 +226,14 @@ public class MentoringHistoryDAO {
         try {
             conn=getConnection();
             if(option==0){ //아무것도 안할때, 옵션 0
-                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history Join mentor Join link_agency Join mentor_recruitment ON mentor.regionCode=link_agency.regionCode AND link_agency.linkAgencyCode = mentor_recruitment.linkAgencyCode AND mentor_recruitment.mentorRecruitmentCode = activity_history.mentorRecruitmentCode Where mentor.id=? AND startTime >= ? AND startTime <= ?; ";
+                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate, name FROM activity_history Join mentor Join link_agency Join mentor_recruitment JOIN user ON mentor.regionCode=link_agency.regionCode AND link_agency.linkAgencyCode = mentor_recruitment.linkAgencyCode AND mentor_recruitment.mentorRecruitmentCode = activity_history.mentorRecruitmentCode AND user.id=mentor.id Where mentor.id=? AND startTime >= ? AND startTime <= ?; ";
                 pstmt = conn.prepareStatement(sql);
             }else if(option == 1){ //연계기관만 선택
-                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history Join mentor Join link_agency Join mentor_recruitment ON mentor.regionCode=link_agency.regionCode AND link_agency.linkAgencyCode = mentor_recruitment.linkAgencyCode AND mentor_recruitment.mentorRecruitmentCode = activity_history.mentorRecruitmentCode Where mentor.id=? AND startTime >= ? AND startTime <= ? AND mentor_recruitment.linkAgencyCode=?;";
+                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate, name FROM activity_history Join mentor Join link_agency Join mentor_recruitment JOIN user ON mentor.regionCode=link_agency.regionCode AND link_agency.linkAgencyCode = mentor_recruitment.linkAgencyCode AND mentor_recruitment.mentorRecruitmentCode = activity_history.mentorRecruitmentCode AND user.id=mentor.id Where mentor.id=? AND startTime >= ? AND startTime <= ? AND mentor_recruitment.linkAgencyCode=?;";
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(4, linkAgency);
             }else if(option == 2){ // 연계기관 + 활동 선택
-                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate FROM activity_history Join mentor Join link_agency Join mentor_recruitment ON mentor.regionCode=link_agency.regionCode AND link_agency.linkAgencyCode = mentor_recruitment.linkAgencyCode AND mentor_recruitment.mentorRecruitmentCode = activity_history.mentorRecruitmentCode Where mentor.id=? AND startTime >= ? AND startTime <= ? AND mentor_recruitment.linkAgencyCode=?  AND activity_history.mentorRecruitmentCode=?;";
+                sql = "SELECT activityHistoryCode, startTime, endTime, approvalStatus, createDate, name FROM activity_history Join mentor Join link_agency Join mentor_recruitment JOIN user ON mentor.regionCode=link_agency.regionCode AND link_agency.linkAgencyCode = mentor_recruitment.linkAgencyCode AND mentor_recruitment.mentorRecruitmentCode = activity_history.mentorRecruitmentCode AND user.id=mentor.id Where mentor.id=? AND startTime >= ? AND startTime <= ? AND mentor_recruitment.linkAgencyCode=?  AND activity_history.mentorRecruitmentCode=?;";
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(4, linkAgency);
                 pstmt.setString(5, activity);
@@ -253,7 +251,7 @@ public class MentoringHistoryDAO {
                 historyHashMap.put("endTime", rs.getString("endTime"));
                 historyHashMap.put("date",rs.getString("createDate"));
                 historyHashMap.put("status",rs.getString("approvalStatus"));
-
+                historyHashMap.put("mentorName",rs.getString("name"));
                 list.add(historyHashMap);
             }
         }catch(Exception e) {
@@ -309,7 +307,7 @@ public class MentoringHistoryDAO {
     // 보고서 최초작성 createReport. content, note, image DB상에 업데이트
     public int createReport(int activityHistoryCode, String id, String content, String note, Blob imageBlob){
         int result = 0;
-        String createDate = LocalDateTime.now().toString();
+        String createDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd hh:mm:ss")));
         sql = "UPDATE activity_history SET activityContent = ?, note = ? ,activityPicture=?, approvalStatus=?, createDate=?  WHERE activityHistoryCode = ? AND mentorId= ?;";
 
         try {
@@ -319,9 +317,9 @@ public class MentoringHistoryDAO {
             pstmt.setString(2,note);
             pstmt.setBlob(3,imageBlob);
             pstmt.setInt(4,2); //최초 0, 활동완료 1, 보고서 작성 2, 보고서 승인 3, 보고서 반려 4, 비활성화 -1
-            pstmt.setInt(5,activityHistoryCode);
-            pstmt.setString(6,id);
-            pstmt.setString(7,createDate);
+            pstmt.setString(5,createDate);
+            pstmt.setInt(6,activityHistoryCode);
+            pstmt.setString(7,id);
             result= pstmt.executeUpdate();
 
         } catch (SQLException throwables) {
@@ -356,7 +354,7 @@ public class MentoringHistoryDAO {
         return result;
     }
 
-    //    보고서 조회
+    //보고서 조회
     public ActivityHistory readReport(int activityHistoryCode){
         ActivityHistory activityHistory = new ActivityHistory();
         sql = "SELECT startTime, endTime, activityContent, note, activityPicture, createDate, approvalStatus,createDate, approvalDate, rejectionReason, user.name, mentor_recruitment.activityName, link_agency.linkAgencyName FROM activity_history JOIN user JOIN mentor_recruitment JOIN link_agency ON user.id = activity_history.mentorId AND mentor_recruitment.mentorRecruitmentCode=activity_history.mentorRecruitmentCode AND link_agency.linkAgencyCode=mentor_recruitment.linkAgencyCode WHERE activityHistoryCode = ?;";
@@ -447,5 +445,27 @@ public class MentoringHistoryDAO {
         }
         return list;
     }
+
+    //보고서 승인
+    public int approveReport(String activityHistoryCode, String id ){
+        int result = 0;
+        sql = "UPDATE activity_history SET regionManagerId=?, approvalStatus = 3 WHERE activityHistoryCode = ?;";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            pstmt.setString(2, activityHistoryCode);  //검색하기위해 입력한 아이디
+            result= pstmt.executeUpdate();
+
+
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+    //보고서 반려
 
 }

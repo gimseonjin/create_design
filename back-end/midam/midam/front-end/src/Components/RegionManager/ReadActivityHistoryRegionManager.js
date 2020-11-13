@@ -97,7 +97,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
         var statusValue="default";
         var ButtonValue="default";
         var ButtonColor="secondary";
-        var buttonClassName = "createReportButton";
+        var buttonClassName = "";
 
         switch(historyArray.status){
             case '0':
@@ -119,7 +119,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
                 statusValue="승인완료";
                 ButtonValue="조회";
                 ButtonColor="success";
-                buttonClassName="readReportReadOnlyButton";
+                buttonClassName="readReportButton";
                 break;
             case '4':
                 statusValue="반려";
@@ -137,6 +137,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
         return(
             <tr key={index}>
                 <th>{historyArray.activityHistoryCode}</th>
+                <th>{historyArray.mentorName}</th>
                 <td>{historyArray.startTime}</td>
                 <td>{historyArray.endTime}</td>
                 <td><Button className={buttonClassName} color={ButtonColor} >{ButtonValue}</Button></td>
@@ -296,6 +297,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
                             {/* 열 이름부분 */}
                             <tr>
                                 <th>#</th>
+                                <th>이름</th>
                                 <th>시작 시간</th>
                                 <th>종료 시간</th>
                                 <th>활동 보고서</th>
@@ -311,13 +313,10 @@ const ReadActivityHistoryRegionManager=(props)=> {
                 </Col>
             </Row>
 
-
             <Modal isOpen={modalReadReport}>
                 <ModalHeader toggle={toggleReadReport}>활동보고서 조회</ModalHeader>
                 <ReadReportRegionManager activityHistoryCode={modalInput}></ReadReportRegionManager>
             </Modal>
-
-
 
             <Modal isOpen={modalExportExcel}>
                 <ModalHeader toggle={toggleExportExcel}>활동 내역 내보내기</ModalHeader>

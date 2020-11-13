@@ -239,10 +239,10 @@ const ReadReportMentor = (props) =>{
                     </InputGroup>
                 </FormGroup>
                 {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
-                <Button onClick={toggleIsReadOnly}>수정</Button>
-                <Button className={isReadOnly? "invisible": ""} disabled={isReadOnly} color="danger" onClick={updateReport}>완료</Button>
+                {approvalStatus===3?"":<Button onClick={toggleIsReadOnly}>수정</Button>}
+                {approvalStatus===3?"":<Button className={isReadOnly? "invisible": ""} disabled={isReadOnly} color="danger" onClick={updateReport}>완료</Button>}
                 <Button className="float-right" color="primary" onClick={readReport}>조회</Button>
-            
+                   
             </Form>
             <div className="mw-100">
                 

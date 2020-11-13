@@ -105,7 +105,7 @@ const ReadActivityHistoryMentor=(props)=> {
         switch(historyArray.status){
             case '0':
                 statusValue="활동미완료";
-                ButtonValue="작성";
+                ButtonValue="작성하기";
                 break;
             case '1':
                 statusValue="활동완료/보고서미작성";
@@ -261,7 +261,7 @@ const ReadActivityHistoryMentor=(props)=> {
             var td = tr.children();
             console.log("row데이터 : "+td.eq(0).text());
             setModalInput(td.eq(0).text());
-            toggleCreateReport();
+            toggleReadReport();
         }
         )
     }

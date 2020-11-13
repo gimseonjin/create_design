@@ -7,11 +7,14 @@ import {
     Input,
     InputGroup,
     InputGroupAddon,
-    InputGroupText
+    InputGroupText,
+    Modal,
+    ModalHeader
 } from 'reactstrap';
 import axios from 'axios';
 import {Image} from 'react-bootstrap';
 import cookie from 'react-cookies';
+import RejectReport from './RejectReport';
 
 //활동보고서 작성 활동 보고서 조회 페이지 필요할지. 여기서 함께할지 논의.
 const ReadReportMentor = (props) =>{
@@ -33,6 +36,8 @@ const ReadReportMentor = (props) =>{
     const [rejectionReason, setRejectionReason] = useState("");
     const [createDate, setCreateDate] = useState("");
     const [statusValue, setStatusValue] = useState("");
+    const [modalRejection, setModalRejection] = useState(false);
+    const toggleRejection = () => { setModalRejection(!modalRejection); }
 
     const toggleIsReadOnly = () => {
         setIsReadOnly(!isReadOnly);
@@ -96,7 +101,7 @@ const ReadReportMentor = (props) =>{
         var form = new FormData;
         form.append("userToken ", localStorage.getItem("userToken"));
         form.append("activityHistoryCode", activityHistoryCode);
-        axios.post('/activityHistory/readReport/mentor',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
+        axios.post('/activityHistory/readReport/mentor',form).then((response)=>{
             
             setContent(response.data.activityContent);
             setNote(response.data.note);
@@ -115,12 +120,16 @@ const ReadReportMentor = (props) =>{
     }
     //승인
     function approveReport(){
-
+        var form = new FormData();
+        form.append("activityHistoryCode", activityHistoryCode);
+        form.append("userToken",token);
+        axios.post("/activityHistory/approveReport/regionManager",form).then((response)=>{
+            alert(response.data.resultMessage);
+            readReport();
+        });
     }
-    //반려
-    function rejectReport(){
 
-    }
+  
 
     useEffect(()=>{
         readReport();
@@ -209,14 +218,16 @@ const ReadReportMentor = (props) =>{
                 </FormGroup>
                 {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
 
-                {approvalStatus!==3?<Button  color="primary" >승인</Button>:""}
-                {approvalStatus!==4?<Button  color="danger" >반려</Button>:""}
+                {approvalStatus!==3?<Button  color="primary" onClick={approveReport}>승인</Button>:""}
+                {approvalStatus!==4?<Button  color="danger" onClick={ toggleRejection } >반려</Button>:""}
                 <Button className="float-right" color="primary" onClick={readReport}>조회</Button>
             
             </Form>
-            <div className="mw-100">
-                
-            </div>
+           
+            <Modal isOpen={modalRejection}>
+                <ModalHeader toggle={toggleRejection}>활동 내역 내보내기</ModalHeader>
+                <RejectReport activityHistoryCode={activityHistoryCode}></RejectReport>
+            </Modal>
         </div>
     )
 }
