@@ -99,10 +99,31 @@ const SignInLinkAgency = ({history},props) => {
             form.append('phoneNumber', phoneNumber);
             form.append('authority', authority);
             form.append('linkAgencyCode', linkAgencyCode);
+            axios.post("/user/createLinkAgencyManager", form,{headers: {'content-type':'multipart/form-data'}}).then((response)=>{
+                console.log(response.data.authority);
+                history.push("/");
+            })
+        }else{
+            alert("비밀번호 불일치");
+        }
+    }
+
+    const signInWithLinkAgencyPost = () => {
+        if(password===checkPassword){
+            var form = new FormData;
+            form.append('id', id);
+            form.append('password', password);
+            form.append('name', name);
+            form.append('gender', gender);
+            form.append('age', age);
+            form.append('address', address);
+            form.append('phoneNumber', phoneNumber);
+            form.append('authority', authority);
+            form.append('linkAgencyCode', linkAgencyCode);
             form.append('linkAgencyName', linkAgencyName);
             form.append('linkAgencyAddress', linkAgencyAddress);
             form.append('linkAgencyInfo', linkAgencyInfo);
-            axios.post("http://localhost:8080/user/createLinkAgencyManager", form,{headers: {'content-type':'multipart/form-data'}}).then((response)=>{
+            axios.post("/user/createLinkAgencyManager", form,{headers: {'content-type':'multipart/form-data'}}).then((response)=>{
             console.log(response.data.authority);
             history.push("/");
         
@@ -111,6 +132,8 @@ const SignInLinkAgency = ({history},props) => {
             alert("비밀번호 불일치");
         }
     }
+
+
         return (
             <div
                 className="signIN_container d-flex justify-content-center align-self-center"
