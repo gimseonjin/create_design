@@ -1,4 +1,4 @@
-import React, {useState, setState} from 'react';
+import React, {useState, setState, useEffect} from 'react';
 import {Form, InputGroup, InputGroupAddon, InputGroupText, Input, TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, CustomInput } from 'reactstrap';
 import axios from 'axios';
 
@@ -6,25 +6,43 @@ import axios from 'axios';
 //연계기관 담당자 회원가입
 const SignInLinkAgency = ({history},props) => {
     const [activeTab, setActiveTab] = useState(null);
-    const [isNewLinkAgency, setIsNewLinkAgency] = useState(true);
-    
+    const [isNewLinkAgency, setIsNewLinkAgency] = useState(false);
 
-    const [id, setId] = useState();
-    const [password, setPassword] = useState();
-    const [checkPassword, setCheckPassword] = useState();
-    const [name, setName] = useState();
-    const [gender, setGender] = useState();
-    const [age, setAge] = useState();
-    const [address, setAddress] = useState();
-    const [phoneNumber, setPhoneNumber] = useState();
-    const [authority, setAuthority] = useState();
+    const [id, setId] = useState("");
+    const [password, setPassword] = useState("");
+    const [checkPassword, setCheckPassword] = useState("");
+    const [name, setName] = useState("");
+    const [gender, setGender] = useState("");
+    const [age, setAge] = useState("");
+    const [address, setAddress] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [authority, setAuthority] = useState("");
     
-    const [regionCode, setRegionCode] = useState();
-    const [linkAgencyCode, setLinkAgencyCode] = useState();
+    const [regionCode, setRegionCode] = useState("");
+    const [linkAgencyCode, setLinkAgencyCode] = useState("");
 
-    const [linkAgencyName, setLinkAgencyName] = useState();
-    const [linkAgencyAddress, setLinkAgencyAddress] = useState();
-    const [linkAgencyInfo, setLinkAgencyInfo] = useState();
+    const [linkAgencyName, setLinkAgencyName] = useState("");
+    const [linkAgencyAddress, setLinkAgencyAddress] = useState("");
+    const [linkAgencyInfo, setLinkAgencyInfo] = useState("");
+
+    //옵션 선택용
+    const [regionList, setRegionList] = useState();
+    const [linkAgencyList, setLinkAgencyList] = useState(<option value="">선택</option>);
+    let regionArrays = [];
+    let linkAgencyArrays = [];
+
+    function renderRegionList(regionArray, index){
+        return(
+            <option key={index} value={regionArray.regionCode}>{ regionArray.regionName }</option>
+        )
+    }
+    function renderLinkAgencyList(linkAgencyArray, index){
+        return(
+            <option key={index} value={linkAgencyArray.linkAgencyCode}>{ linkAgencyArray.linkAgencyName }</option>
+        )
+    }
+
+
 
     const toggle = tab => {
       if(activeTab !== tab) setActiveTab(tab);
@@ -66,6 +84,7 @@ const SignInLinkAgency = ({history},props) => {
     const handleSubmitRegionCode = (e) => {
         e.preventDefault();
         setRegionCode(e.target.value);
+        readLinkAgencyList(e.target.value);
     }
     const handleSubmitLinkAgencyCode = (e) => {
         e.preventDefault();
@@ -88,50 +107,71 @@ const SignInLinkAgency = ({history},props) => {
         setCheckPassword(e.target.value);
     }
     const signInPost = () => {
-        if(password===checkPassword){
-            var form = new FormData;
-            form.append('id', id);
-            form.append('password', password);
-            form.append('name', name);
-            form.append('gender', gender);
-            form.append('age', age);
-            form.append('address', address);
-            form.append('phoneNumber', phoneNumber);
-            form.append('authority', authority);
-            form.append('linkAgencyCode', linkAgencyCode);
-            axios.post("/user/createLinkAgencyManager", form,{headers: {'content-type':'multipart/form-data'}}).then((response)=>{
+        if(checkEssentialInput()===1){
+            if(isNewLinkAgency){ //새로운 연계기관을 등록하면서 함께 신청
+                var form = new FormData;
+                form.append('id', id);
+                form.append('password', password);
+                form.append('name', name);
+                form.append('gender', gender);
+                form.append('age', age);
+                form.append('address', address);
+                form.append('phoneNumber', phoneNumber);
+                form.append('linkAgencyCode', linkAgencyCode);
+                form.append('linkAgencyName', linkAgencyName);
+                form.append('linkAgencyAddress', linkAgencyAddress);
+                form.append('linkAgencyInfo', linkAgencyInfo);
+                axios.post("/signIn/createLinkAgencyManagerNewLinkAgency", form,{headers: {'content-type':'multipart/form-data'}}).then((response)=>{
                 console.log(response.data.authority);
                 history.push("/");
-            })
-        }else{
-            alert("비밀번호 불일치");
+            
+                })
+            }
+            else{ //아니다! 기존 연계기관에 등록하겠다.
+                var form = new FormData;
+                form.append('id', id);
+                form.append('password', password);
+                form.append('name', name);
+                form.append('gender', gender);
+                form.append('age', age);
+                form.append('address', address);
+                form.append('phoneNumber', phoneNumber);
+                form.append('authority', authority);
+                form.append('linkAgencyCode', linkAgencyCode);
+                axios.post("/signIn/createLinkAgencyManager", form).then((response)=>{
+                    console.log(response.data.authority);
+                    history.push("/");
+                })
+            }
         }
+        
     }
 
-    const signInWithLinkAgencyPost = () => {
-        if(password===checkPassword){
-            var form = new FormData;
-            form.append('id', id);
-            form.append('password', password);
-            form.append('name', name);
-            form.append('gender', gender);
-            form.append('age', age);
-            form.append('address', address);
-            form.append('phoneNumber', phoneNumber);
-            form.append('authority', authority);
-            form.append('linkAgencyCode', linkAgencyCode);
-            form.append('linkAgencyName', linkAgencyName);
-            form.append('linkAgencyAddress', linkAgencyAddress);
-            form.append('linkAgencyInfo', linkAgencyInfo);
-            axios.post("/user/createLinkAgencyManager", form,{headers: {'content-type':'multipart/form-data'}}).then((response)=>{
-            console.log(response.data.authority);
-            history.push("/");
-        
-            })
-        }else{
-            alert("비밀번호 불일치");
-        }
+  
+    const readRegionList=()=>{
+        axios.post("/signIn/readRegionList").then((response)=>{
+            regionArrays = response.data;
+            setRegionList(regionArrays.map(renderRegionList));
+        });
+
     }
+    const readLinkAgencyList=(regionCode)=>{
+        var form = new FormData;
+        form.append("regionCode", regionCode);
+        axios.post("/signIn/readLinkAgencyList",form).then((response)=>{
+            linkAgencyArrays = response.data;
+            setLinkAgencyList(linkAgencyArrays.map(renderLinkAgencyList));
+        })
+    }
+    const checkEssentialInput=()=>{
+        if(name===""){alert("빈칸을 입력해주세요"); return 0;}
+        return 1;
+    }
+
+    useEffect(()=>{
+            readRegionList();
+    },[])
+
 
 
         return (
@@ -140,24 +180,11 @@ const SignInLinkAgency = ({history},props) => {
                 style={{
                     margin: "50px"
                 }}>
-                { <Form className="w-75">
+                <Form className="w-75">
                     <h3 style={{
                             marginBottom: '5%'
-                            
                         }}>연계기관</h3>
 
-                        <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
-                        <InputGroupAddon addonType="prepend">
-                            <InputGroupText className = "input-group-addon">권한</InputGroupText>
-                        </InputGroupAddon>
-                        <Col sm={4}>
-                            <Input type='select' name="authority" onChange={handleSubmitAuthority}>
-                            {/* 여기에 option을 지역본부를 DB에서 select 해서 for문으로 추가하면 될듯! */}
-                                     <option>선택</option>
-                                <option value='6'>담당자</option>                                
-                            </Input>
-                        </Col>
-                    </InputGroup> 
                     <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">이름</InputGroupText>
@@ -183,7 +210,7 @@ const SignInLinkAgency = ({history},props) => {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">나이</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text'  name='age' onChange={handleSubmitAge}/>
+                        <Input type='number'  name='age' onChange={handleSubmitAge}/>
                     </InputGroup>
 
                     
@@ -201,7 +228,7 @@ const SignInLinkAgency = ({history},props) => {
                         </InputGroupAddon>
                         <Input type='password'  name='password'onChange={handleSubmitPw}/>
                     </InputGroup>
-
+                        
                     
                     <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
                         <InputGroupAddon addonType="prepend">
@@ -214,7 +241,7 @@ const SignInLinkAgency = ({history},props) => {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">휴대폰 번호</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text'  name='phoneNumber'onChange={handleSubmitPhoneNumber}/>
+                        <Input type='number'  name='phoneNumber'onChange={handleSubmitPhoneNumber}/>
                     </InputGroup>
 
                     
@@ -232,9 +259,7 @@ const SignInLinkAgency = ({history},props) => {
                         <Col sm={4}>
                             <Input type='select' name='region' onChange={handleSubmitRegionCode} >
                             {/* 여기에 option을 지역본부를 DB에서 select 해서 for문으로 추가하면 될듯! */}
-                                <option>선택</option>
-                                <option value='1'>금오공과대학교</option>
-                                <option value='2'>구미도서관</option>
+                              {regionList}
                             </Input>
                         </Col>
                     </InputGroup>
@@ -243,17 +268,14 @@ const SignInLinkAgency = ({history},props) => {
                             <InputGroupText className = "input-group-addon">연계 기관</InputGroupText>
                         </InputGroupAddon>
                         <div>&nbsp;&nbsp;&nbsp;</div>
-                        <CustomInput type="radio" id="selectRegion" name = "radioRegion" onClick={() => {setIsNewLinkAgency(true)}} defaultChecked>연계기관 선택</CustomInput>
+                        <CustomInput type="radio" id="selectRegion" name = "radioRegion" onClick={() => {setIsNewLinkAgency(false)}} defaultChecked>연계기관 선택</CustomInput>
                         <Col sm={4}>
-                            <Input type='select' name='selectRegion' disabled={!isNewLinkAgency} onChange={handleSubmitLinkAgencyCode}>
+                            <Input type='select' name='selectRegion' disabled={isNewLinkAgency} onChange={handleSubmitLinkAgencyCode}>
                                 {/* 여기에 option을 연계기관을 DB에서 select 해서 for문으로 추가하면 될듯! */}
-                                <option>선택</option>
-                                <option value='LA0001'>구미도서관</option>
-                                <option value='LA0002'>구미행복교회</option>
-                                <option value='LA0003'>피노키오 유치원</option>
+                               {linkAgencyList}
                             </Input>
                         </Col>
-                        <CustomInput type="radio" id="newRegion" name="radioRegion" onClick={() => {setIsNewLinkAgency(false)} }>연계기관 신규 등록</CustomInput>
+                        <CustomInput type="radio" id="newRegion" name="radioRegion" onClick={() => {setIsNewLinkAgency(true)} }>연계기관 신규 등록</CustomInput>
                     </InputGroup>
                     
                     {/* 연계기관 신규등록을 선택할 시 disabled={isNewLinkAgency} isNewLinkAgency가 false로 변하면서 disabled가 해제. 작성할수있게됨 */}
@@ -262,26 +284,26 @@ const SignInLinkAgency = ({history},props) => {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">연계기관명</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text'  disabled={isNewLinkAgency} onChange={handleSubmitLinkAgencyName}/>
+                        <Input type='text'  disabled={!isNewLinkAgency} onChange={handleSubmitLinkAgencyName}/>
                     </InputGroup>
 
                     <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">주소</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text'  disabled={isNewLinkAgency} onChange={handleSubmitLinkAgencyAddress}/>
+                        <Input type='text'  disabled={!isNewLinkAgency} onChange={handleSubmitLinkAgencyAddress}/>
                     </InputGroup>
 
                     <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">설명</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text'  disabled={isNewLinkAgency} onChange={handleSubmitLinkAgencyInfo}/>
+                        <Input type='text'  disabled={!isNewLinkAgency} onChange={handleSubmitLinkAgencyInfo}/>
                     </InputGroup>
 
                     <Button onClick={()=>history.push("/")} style={{float: 'right'}}>취소</Button>
                     <Button  className="btn btn-primary btn-block w-25" style={{float: 'right'}} type="post" onClick={signInPost}>회원가입</Button>
-                </Form> }
+                </Form>
             </div>
         )
 }

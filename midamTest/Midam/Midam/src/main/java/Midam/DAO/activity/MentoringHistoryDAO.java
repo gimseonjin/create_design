@@ -138,39 +138,7 @@ public class MentoringHistoryDAO {
         }
         return activityHistory;
     }      //활동내역 상세조회
-    public ArrayList<ActivityHistory> getList(String linkAgencyCode){
 
-        ArrayList<ActivityHistory> list =new ArrayList<ActivityHistory>();
-        sql = "SELECT * FROM activity_history where linkAgencyCode=?";
-
-        try {
-
-            conn=getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, linkAgencyCode);  //검색하기위해 입력한 아이디
-            ResultSet rs= pstmt.executeQuery();
-
-
-            while(rs.next()) {
-                ActivityHistory activityHistory =new ActivityHistory();
-                activityHistory.setActivityHistoryCode(rs.getInt("activityHistoryCode"));
-                activityHistory.setMentorRecruitmentCode(rs.getString("MentorRecruitmentCode"));
-                activityHistory.setLinkAgencyManagerId(rs.getString("linkAgencyManagerId"));
-                activityHistory.setRegionManagerId(rs.getString("regionManagerId"));
-                activityHistory.setMentorId(rs.getString("mentorId"));
-                activityHistory.setStartTime(rs.getString("startTime"));
-                activityHistory.setEndTime(rs.getString("endTime"));
-
-                list.add(activityHistory);
-            }
-        }catch(Exception e) {
-            e.printStackTrace();
-
-        }finally {
-            closeConnection(conn);
-        }
-        return list;
-    }      //전체 활동내역 목록
 
 //    지훈.11.01 추가 - 멘토가 자신의 id를 통해 자기 활동 내역만 조회
     public ArrayList<HashMap> getHistoryListMentor(String id, int option, String linkAgency, String activity, String startDate, String endDate){
@@ -265,44 +233,6 @@ public class MentoringHistoryDAO {
 
     }      //전체 활동내역 목록 for 지역본부 관리자
 
-    public ArrayList<HashMap> getListMentorWithOption(String id){
-
-        ArrayList<HashMap> list =new ArrayList<HashMap>();
-        sql = "SELECT * FROM activity_history where mentorId=? ";
-
-        try {
-
-            conn=getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, id);  //검색하기위해 입력한 아이디
-            ResultSet rs= pstmt.executeQuery();
-
-
-            while(rs.next()) {
-
-                ActivityHistory activityHistory =new ActivityHistory();
-
-                HashMap historyHashMap = new HashMap();
-                historyHashMap.put("activityHistoryCode",rs.getInt("activityHistoryCode"));
-                historyHashMap.put("MentorRecruitmentCode",rs.getString("MentorRecruitmentCode"));
-                historyHashMap.put("startTime", rs.getString("startTime"));
-                historyHashMap.put("endTime", rs.getString("endTime"));
-                historyHashMap.put("date",rs.getString("createDate"));
-                historyHashMap.put("status",rs.getString("approvalStatus"));
-                historyHashMap.put("report",rs.getString("activityContent"));
-
-
-
-                list.add(historyHashMap);
-            }
-        }catch(Exception e) {
-            e.printStackTrace();
-
-        }finally {
-            closeConnection(conn);
-        }
-        return list;
-    }      //전체 활동내역 목록
 
     // 보고서 최초작성 createReport. content, note, image DB상에 업데이트
     public int createReport(int activityHistoryCode, String id, String content, String note, Blob imageBlob){
@@ -388,38 +318,9 @@ public class MentoringHistoryDAO {
         }
         return activityHistory;
     }
-    // user가 소속되어있는 지역본부에 소속되어있는 연계기관 조회
-    public ArrayList<HashMap> getLinkAgencyList(String id){
-        ArrayList<HashMap> list =new ArrayList<HashMap>();
-        sql = "SELECT region.regionCode, region.regionName, link_agency.linkAgencyCode, link_agency.linkAgencyName FROM mentor JOIN region Join link_agency on mentor.regionCode = region.regionCode AND region.regionCode=link_agency.regionCode WHERE mentor.id=?;";
 
-        try {
-            conn=getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, id);  //검색하기위해 입력한 아이디
-            ResultSet rs= pstmt.executeQuery();
-
-            while(rs.next()) {
-
-                HashMap historyHashMap = new HashMap();
-                historyHashMap.put("regionCode",rs.getString("regionCode"));
-                historyHashMap.put("regionName",rs.getString("regionName"));
-                historyHashMap.put("linkAgencyCode",rs.getString("linkAgencyCode"));
-                historyHashMap.put("linkAgencyName",rs.getString("linkAgencyName"));
-
-
-                list.add(historyHashMap);
-            }
-        }catch(Exception e) {
-            e.printStackTrace();
-
-        }finally {
-            closeConnection(conn);
-        }
-        return list;
-    }
     // 연계기관에 소속되어있는 활동 조회
-    public ArrayList<HashMap> getActivityList(String linkAgencyCode){
+    public ArrayList<HashMap> readActivityList(String linkAgencyCode){
         ArrayList<HashMap> list =new ArrayList<HashMap>();
         sql = "SELECT mentorRecruitmentCode, activityName FROM mentor_recruitment WHERE linkAgencyCode=?;";
 

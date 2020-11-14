@@ -1,4 +1,4 @@
-import React, {useState, setState} from 'react';
+import React, {useState, setState, useEffect} from 'react';
 import {
     Form,
     InputGroup,
@@ -34,6 +34,15 @@ function SignIn({history},props) {
 
     const [regionCode, setRegionCode] = useState();
     const [volunteerId, setVolunteerId] = useState();
+
+// 옵션 조회용
+    const [regionList, setRegionList] = useState();
+    let regionArrays = [];
+    function renderRegionList(regionArray, index){
+            return(
+                <option key={index} value={regionArray.regionCode}>{ regionArray.regionName }</option>
+            )
+        }
 
     const handleSubmitId = (e) => {
         e.preventDefault();
@@ -89,7 +98,6 @@ function SignIn({history},props) {
         form.append('age', age);
         form.append('address', address);
         form.append('phoneNumber', phoneNumber);
-        form.append('authority', authority);
         form.append('regionCode', regionCode);
         form.append('volunteerId', volunteerId);
         axios.post("/user/createMentor", form,{headers: {'content-type':'multipart/form-data'}})
@@ -99,6 +107,17 @@ function SignIn({history},props) {
      
      })
     }
+
+    const readRegionList=()=>{
+        axios.post("/signIn/readRegionList").then((response)=>{
+            regionArrays = response.data;
+            setRegionList(regionArrays.map(renderRegionList));
+        });
+
+    }
+    useEffect(()=>{
+        readRegionList();
+    },[])
         return (
             <div
                 className="signIN_container d-flex justify-content-center align-self-center"
@@ -109,18 +128,7 @@ function SignIn({history},props) {
                     <h3 style={{
                             marginBottom: '5%'                            
                         }}>멘토</h3>
-                    <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
-                        <InputGroupAddon addonType="prepend">
-                            <InputGroupText className = "input-group-addon">권한</InputGroupText>
-                        </InputGroupAddon>
-                        <Col sm={4}>
-                            <Input type='select' name="authority" onChange={handleSubmitAuthority}>
-                            {/* 여기에 option을 지역본부를 DB에서 select 해서 for문으로 추가하면 될듯! */}
-                                <option >선택</option>
-                                <option value='1'>멘토</option>                                
-                            </Input>
-                        </Col>
-                    </InputGroup> 
+
                     <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">이름</InputGroupText>
@@ -146,7 +154,7 @@ function SignIn({history},props) {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">나이</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text'  name='age' onChange={handleSubmitAge}/>
+                        <Input type='number'  name='age' onChange={handleSubmitAge}/>
                     </InputGroup>
 
                     
@@ -181,12 +189,7 @@ function SignIn({history},props) {
                         <Col sm={4}>
                             <Input type='select' name='region' onChange={handleSubmitRegionCode} >
                             {/* 여기에 option을 지역본부를 DB에서 select 해서 for문으로 추가하면 될듯! */}
-                                <option>선택</option>
-                                <option value='1'>금오공과대학교</option>
-                                <option value='RG0002'>서울대학교</option>
-                                <option value='RG0003'>MIT</option>
-                                <option value='RG0004'>UCLA</option>
-                          
+                                {regionList}
                             </Input>
                         </Col>
                     </InputGroup>
@@ -196,7 +199,7 @@ function SignIn({history},props) {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">휴대폰 번호</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='text'  name='phoneNumber'onChange={handleSubmitPhoneNumber}/>
+                        <Input type='number'  name='phoneNumber'onChange={handleSubmitPhoneNumber}/>
                     </InputGroup>
 
                     

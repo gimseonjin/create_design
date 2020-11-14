@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 public class LinkAgencyDAO {
 
-
     private Connection conn=null;
     private PreparedStatement pstmt;
     SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -70,5 +69,68 @@ public class LinkAgencyDAO {
             closeConnection(conn);
         }
         return list;
+    }
+
+    // 멘토, 지역본부관리자 : mentor.id가 소속되어있는 지역본부에 소속되어있는 연계기관 조회. 연계기관담당자는 테이블이 달라서 안됨.
+    public ArrayList<HashMap> readLinkAgencyListMentor(String id){
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+        sql = "SELECT region.regionCode, region.regionName, link_agency.linkAgencyCode, link_agency.linkAgencyName FROM mentor JOIN region Join link_agency on mentor.regionCode = region.regionCode AND region.regionCode=link_agency.regionCode WHERE mentor.id=?;";
+
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);  //검색하기위해 입력한 아이디
+            ResultSet rs= pstmt.executeQuery();
+
+            while(rs.next()) {
+
+                HashMap historyHashMap = new HashMap();
+                historyHashMap.put("regionCode",rs.getString("regionCode"));
+                historyHashMap.put("regionName",rs.getString("regionName"));
+                historyHashMap.put("linkAgencyCode",rs.getString("linkAgencyCode"));
+                historyHashMap.put("linkAgencyName",rs.getString("linkAgencyName"));
+
+
+                list.add(historyHashMap);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return list;
+    }
+
+    // 지역본부 코드를 통해 소속된 연계기관 목록을 리스트로 반환
+    public ArrayList<HashMap> readLinkAgencyList(String regionCode){
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+        sql = "SELECT linkAgencyCode, linkAgencyName FROM link_agency WHERE regionCode=?;";
+
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, regionCode);  //검색하기위해 입력한 아이디
+            ResultSet rs= pstmt.executeQuery();
+
+            while(rs.next()) {
+
+                HashMap historyHashMap = new HashMap();
+                historyHashMap.put("linkAgencyCode",rs.getString("linkAgencyCode"));
+                historyHashMap.put("linkAgencyName",rs.getString("linkAgencyName"));
+
+
+                list.add(historyHashMap);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return list;
+    }
+    public String createLinkAgencyApplication(String linkAgencyName, String linkAgencyAddress, String linkAgencyInfo){
+
     }
 }
