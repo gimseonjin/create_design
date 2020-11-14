@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import CreateRecruitment from '../Shared/CreateRecruitment';
+import CreateRecruitment from '../LinkAgencyManager/CreateRecruitment';
 import ReadRecruitmentInfo from '../Shared/ReadRecruitmentInfo';
 import '../Css/test.css';
 import {
@@ -122,7 +122,7 @@ const ReadRecruitment = (props) => {
 
 
         axios.post('/activity/readRecruitment',form).then((response)=>{
-        //setHistoryArrays(response.data); 
+ 
         recruitmentArrays = response.data[0];
         setRecruitmentList(recruitmentArrays.map(renderRecruitmentArrays));
         
@@ -212,7 +212,7 @@ const ReadRecruitment = (props) => {
                             }}>조회</Button>
                         {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
                         
-                        <Button onClick={()=>alert(option+region + linkAgency)}>InputTest</Button>
+                     
                     </Form>
                 </Col>
                 {/*게시판 테이블*/}
