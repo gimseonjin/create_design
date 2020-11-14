@@ -83,7 +83,7 @@ public class RecruitmentDAO {
 
             pstmt= conn.prepareStatement(sql_create);
             pstmt.setString(1, mentorRecruitmentCode);
-            pstmt.setString(2, id);  
+            pstmt.setString(2, id);
             pstmt.setString(3, linkAgencyCode);
             pstmt.setString(4, activityName);
             pstmt.setInt(5, numberOfMentor);
@@ -156,5 +156,33 @@ public class RecruitmentDAO {
         return list;
     }      //모집 등록 조회
 
+    public Post readRecruitmentInfo(int postId){
+        Post post = new Post();
+        String sql = "SELECT postId, writerId, title, content, writeDate FROM post WHERE postId = ? ;";
+        String sql_view = "update post set numberOfView =numberOfView+1 where postId=?";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
 
+            pstmt.setInt(1, postId);
+            ResultSet rs= pstmt.executeQuery();
+            while(rs.next()){
+                post.setPostId(rs.getInt("postId"));
+                post.setWriterId(rs.getString("writerId"));
+                post.setTitle(rs.getString("title"));
+                post.setContent(rs.getString("content"));
+                post.setWriteDate(rs.getString("writeDate"));
+
+            }
+            pstmt=conn.prepareStatement(sql_view);
+            pstmt.setInt(1,postId);
+            pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return post;
+    }
 }

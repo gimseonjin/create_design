@@ -80,7 +80,7 @@ const HeaderLinkAgencyManager = ({match, history}) => {
                                         <DropdownToggle nav caret><span class = "nav-title">커뮤니티</span></DropdownToggle>
                                             <DropdownMenu left>
                                                 <DropdownItem ><span>게시판 보기</span></DropdownItem>
-                                                <DropdownItem ><span>멘토링 모집</span></DropdownItem>
+                                                <DropdownItem ><Link to={`${match.url}/readRecruitment`}><span>멘토링 모집</span></Link></DropdownItem>
                                                 <DropdownItem ><Link to={`${match.url}/createRecruitment`}><span>모집 등록</span></Link></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>

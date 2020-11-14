@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import CreateRecruitment from '../LinkAgencyManager/CreateRecruitment';
-import ReadRecruitmentInfo from '../Shared/ReadRecruitmentInfo';
+
+import ReadRecruitmentInfo from './ReadRecruitmentInfo';
 import '../Css/test.css';
 import {
     Button,
@@ -24,7 +24,7 @@ const ReadRecruitment = (props) => {
     const [regionList, setRegionList] =useState();
     const [linkAgencyList, setLinkAgencyList] = useState();
 
-    const [modalCreateRecruitment, setModalCreateRecruitment] = useState(false); 
+   
     const [modalReadRecruitmentInfo, setModalReadRecruitmentInfo] = useState(false);
 
     //*검색 옵션들. option 0:
@@ -59,7 +59,7 @@ const ReadRecruitment = (props) => {
     }
     
     
-    const toggleCreateRecruitment = () => setModalCreateRecruitment(!modalCreateRecruitment);
+   
     const toggleReadRecruitmentInfo = () => setModalReadRecruitmentInfo(!modalReadRecruitmentInfo);
 
     let recruitmentArrays = [];
@@ -70,7 +70,15 @@ const ReadRecruitment = (props) => {
     const [modalInput, setModalInput] = useState("default");
     function setRecruitmentArrays(newArrays) {recruitmentArrays = newArrays;}
     const renderRecruitmentArrays = (recruitmentArray, index) => {
-        
+        var statusValue="default";
+        switch(recruitmentArray.recruitmentStatus){
+            case 0:
+                statusValue="모집중";    
+                break;
+            case 1:
+                statusValue="모집완료";     
+                break;  
+        }
         return (
             <tr key={index} >
                 <th>{recruitmentArray.regionName}</th>
@@ -78,7 +86,7 @@ const ReadRecruitment = (props) => {
                 <td className={"readRecruitmentInfo"} >{recruitmentArray.activityName}</td>
                 
                 <td onmouseover="this.style.background='white'" onmouseout="this.style.background='blue'">{recruitmentArray.numberOfMentor}</td>
-                <td>{recruitmentArray.recruitmentStatus}</td>
+                <td>{statusValue}</td>
             </tr>
         )
     }
@@ -94,7 +102,7 @@ const ReadRecruitment = (props) => {
         )
     }
 
-    // 아이디만으로 그냥 조회해오기
+   
     function getRecruitment () {
 
         var form=new FormData;
@@ -111,7 +119,6 @@ const ReadRecruitment = (props) => {
             );
     }
 
-    // 옵션을 걸어서 조회하기.
     function getRecruitmentWithOption () {
 
         var form=new FormData;
@@ -150,16 +157,7 @@ const ReadRecruitment = (props) => {
     )
  $(function() { 
     $(".readRecruitmentInfo").off("click")
-        $(".createRecruitmentButton").on("click",function(){
-  
-            var recruitmentButton = $(this);
-
-            var tr = recruitmentButton.parent();
-            var td = tr.children();
-            setModalInput(td.eq(0).text());
-            toggleCreateRecruitment();
-        }
-        ) 
+         
         $(".readRecruitmentInfo").on("click",function(){
             
             var recruitmentButton = $(this);
@@ -239,18 +237,15 @@ const ReadRecruitment = (props) => {
                     
                 </Col>
             </Row>
-            <Modal isOpen={modalCreateRecruitment}>
-                         <ModalHeader toggle={toggleCreateRecruitment}>모집 등록</ModalHeader>
-                         <CreateRecruitment mentorRecruitmentCode={modalInput}></CreateRecruitment>                         
-            </Modal>
+          
                    
             <Modal isOpen={modalReadRecruitmentInfo}>
                 <ModalHeader toggle={toggleReadRecruitmentInfo}>멘토링 모집 상세조회</ModalHeader>
-                <ReadRecruitmentInfo postId={modalInput}></ReadRecruitmentInfo>
+                <ReadRecruitmentInfo mentorRecruitmentCode={modalInput}></ReadRecruitmentInfo>
                 
             </Modal>
 
-            <Button className={"createRecruitmentButton"} color={"primary"} >{"모집 등록"}</Button>
+           
         </div>
     )
 }

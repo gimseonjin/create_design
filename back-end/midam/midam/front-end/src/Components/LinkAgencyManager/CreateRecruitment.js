@@ -98,8 +98,8 @@ function CreateRecruitment(props) {
                             marginTop: "1%",
                             marginBottom: "1%"
                         }}>
-                        <InputGroupAddon addonType="prepend">
-                            <InputGroupText>모집인원</InputGroupText>
+                    <InputGroupAddon addonType="prepend">
+                        <InputGroupText>모집인원</InputGroupText>
                         </InputGroupAddon>
                         <Input type="textarea" name="note" onChange={handleNumberOfMentorOnChange}></Input>
                     </InputGroup>
@@ -131,7 +131,7 @@ function CreateRecruitment(props) {
                         </InputGroupAddon>
                         <Input type="date" name="startDate" value={startDate} onChange={handleStartDateOnChange}></Input>~
                         <Input type="date" name="endDate" value={finishDate} onChange={handleFinishDateOnChange}></Input>
-                        </InputGroup>
+                    </InputGroup>
 
                 </FormGroup>
 
