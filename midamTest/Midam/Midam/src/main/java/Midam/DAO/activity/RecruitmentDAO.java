@@ -49,23 +49,57 @@ public class RecruitmentDAO {
         }
     }
 
-    public boolean createRecruitment(MentorRecruitment mentorRecruitment) { // 등록
-        String sql = "insert into midam.user(id, password, name, gender,age,address, authority) values(?, ?, ?, ?, ?, ?, ?)";
+    public int createRecruitment(String id,String activityName,int numberOfMentor,String activityInfo,String startDate,String finishDate) { // 등록
+        int result =0;
+        String max_code,str_code, code3 ,RC="RC" ,mentorRecruitmentCode;
+        int code,code2;
+
+        String sql_max ="select max(mentorRecruitmentCode) from mentor_recruitment";
+
+        String sql_id = "SELECT linkAgencyCode FROM mydb.link_agency_manager where id= ?";
+
+        String sql_create = "insert into mentor_recruitment"+
+                "(mentorRecruitmentCode,linkAgencyManagerId,linkAgencyCode,activityName,numberOfMentor,startDate,finishDate,recruitmentStatus,activityInfo)" +
+                " values(?,?,?,?,?,?,?,0,?)";
         try {
 
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql_max);
+            ResultSet rs= pstmt.executeQuery();
+            rs.next();
+            max_code = rs.getString(1);
+            str_code=max_code.substring(2,6);
+            code = Integer.parseInt(str_code);
+            code2 =code+1;
+            code3=String.format("%04d", code2);
+            mentorRecruitmentCode= RC.concat(code3);
 
-            conn= getConnection();
-            pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(sql_id);
+            pstmt.setString(1,id);
+            rs= pstmt.executeQuery();
+            rs.next();
+            String linkAgencyCode =rs.getString(1);
 
-            int r = pstmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+            pstmt= conn.prepareStatement(sql_create);
+            pstmt.setString(1, mentorRecruitmentCode);
+            pstmt.setString(2, id);
+            pstmt.setString(3, linkAgencyCode);
+            pstmt.setString(4, activityName);
+            pstmt.setInt(5, numberOfMentor);
+            pstmt.setString(6, startDate);
+            pstmt.setString(7, finishDate);
+            pstmt.setString(8, activityInfo);
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         } finally {
             closeConnection(conn);
         }
-        return false;
-    }            //회원가입
+        return result;
+    } //게시글 작성
 
 
     public ArrayList<HashMap> getListRecruitment(int option, String regionCode,String linkAgencyCode){
@@ -122,5 +156,33 @@ public class RecruitmentDAO {
         return list;
     }      //모집 등록 조회
 
+    public Post readRecruitmentInfo(int postId){
+        Post post = new Post();
+        String sql = "SELECT postId, writerId, title, content, writeDate FROM post WHERE postId = ? ;";
+        String sql_view = "update post set numberOfView =numberOfView+1 where postId=?";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
 
+            pstmt.setInt(1, postId);
+            ResultSet rs= pstmt.executeQuery();
+            while(rs.next()){
+                post.setPostId(rs.getInt("postId"));
+                post.setWriterId(rs.getString("writerId"));
+                post.setTitle(rs.getString("title"));
+                post.setContent(rs.getString("content"));
+                post.setWriteDate(rs.getString("writeDate"));
+
+            }
+            pstmt=conn.prepareStatement(sql_view);
+            pstmt.setInt(1,postId);
+            pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return post;
+    }
 }

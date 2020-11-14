@@ -30,9 +30,10 @@ import CreateMentorRecruitment from '../LinkAgencyManager/CreateMentorRecruitmen
 import CreateReport from './CreateReport';
 import ReadMentoringApplication from './ReadMentoringApplication';
 import ReadPost from '../Shared/ReadPost';
+import CreatePost from '../Shared/CreatePost';
 import UserListComponent from './showUser';
 import ReadRecruitment from '../Shared/ReadRecruitment';
-import CreatePost from '../Shared/CreatePost';
+
 import useModal from 'react-hooks-use-modal';
 import QRCode from 'qrcode.react';
 import midamLogo from '../img/midam.png';

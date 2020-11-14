@@ -24,6 +24,11 @@ import {
 import midamLogo from '../img/midam.png';
 import useModal from 'react-hooks-use-modal';
 import QrScanner from '../Shared/QrScanner';
+
+import ReadPost from '../Shared/ReadPost';
+import CreatePost from '../Shared/CreatePost';
+import ReadRecruitment from '../Shared/ReadRecruitment';
+import CreateRecruitment from './CreateRecruitment';
 import '../Css/Header.css';
 import axios from 'axios';
 
@@ -75,7 +80,8 @@ const HeaderLinkAgencyManager = ({match, history}) => {
                                         <DropdownToggle nav caret><span class = "nav-title">커뮤니티</span></DropdownToggle>
                                             <DropdownMenu left>
                                                 <DropdownItem ><span>게시판 보기</span></DropdownItem>
-                                                <DropdownItem ><span>멘토링 모집</span></DropdownItem>
+                                                <DropdownItem ><Link to={`${match.url}/readRecruitment`}><span>멘토링 모집</span></Link></DropdownItem>
+                                                <DropdownItem ><Link to={`${match.url}/createRecruitment`}><span>모집 등록</span></Link></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </NavItem>
@@ -110,7 +116,18 @@ const HeaderLinkAgencyManager = ({match, history}) => {
                             </Collapse>
                     </Navbar>
             </div>
+
+            <Switch>
+               
+                {/* 커뮤니티 */}
+                <Route exact path={`${match.path}/readPost`} component = {ReadPost}></Route>
+                <Route exact path={`${match.path}/createPost`} component = {CreatePost}></Route>
+                <Route exact path={`${match.path}/readRecruitment`} component = {ReadRecruitment}></Route>
+                <Route exact path={`${match.path}/createRecruitment`} component = {CreateRecruitment}></Route>
+            </Switch>
         </div>
+
+        
     )
 }
 export default HeaderLinkAgencyManager;
