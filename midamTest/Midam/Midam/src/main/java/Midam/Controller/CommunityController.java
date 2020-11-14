@@ -6,7 +6,7 @@ import Midam.model.community.Post;
 import Midam.model.token.Token;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import java.util.Map;
         }
         @ResponseBody
         @PostMapping(value="/readPostInfo")
-        public HashMap readPostInfo(MultipartHttpServletRequest request)  {
+        public HashMap readPostInfo(HttpServletRequest request)  {
             HashMap result = new HashMap();
 
 
@@ -70,7 +70,7 @@ import java.util.Map;
         }
     @ResponseBody
     @PostMapping(value="/updatePost")
-    public HashMap updatePost(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+    public HashMap updatePost(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
         HashMap result = new HashMap();
 
@@ -87,7 +87,7 @@ import java.util.Map;
 
     @ResponseBody
     @PostMapping(value="/deletePost")
-    public HashMap deletePost(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+    public HashMap deletePost(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
         HashMap result = new HashMap();
 
@@ -102,7 +102,7 @@ import java.util.Map;
     }
         @ResponseBody
         @PostMapping(value="/readReply")
-        public ArrayList readReply(MultipartHttpServletRequest request)  {
+        public ArrayList readReply(HttpServletRequest request)  {
 
             int postId = Integer.parseInt(request.getParameter("postId"));
             PostDAO postDAO = new PostDAO();
@@ -114,7 +114,7 @@ import java.util.Map;
 
         @ResponseBody
         @PostMapping(value="/createReply")
-        public HashMap createReply(@RequestParam(name="userToken") String userToken, MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+        public HashMap createReply(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
             HashMap result = new HashMap();
             Token token = new Token();
@@ -134,7 +134,7 @@ import java.util.Map;
         }
     @ResponseBody
     @PostMapping(value="/deleteReply")
-    public HashMap deleteReply(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+    public HashMap deleteReply(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
         HashMap result = new HashMap();
 
@@ -153,6 +153,6 @@ import java.util.Map;
 
 
 
-    }
+}
 
 

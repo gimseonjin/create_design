@@ -64,7 +64,7 @@ const ReadActivityHistoryMentor=(props)=> {
         e.preventDefault();
         setEndDate(e.target.value);
     }
-    //*/
+    
 
     const toggleReadReport = () => setModalReadReport(!modalReadReport);
     const toggleCreateReport = () => setModalCreateReport(!modalCreateReport);

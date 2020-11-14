@@ -162,7 +162,7 @@ const HeaderMentor = ({match, history}) => {
                 <Route exact path={`${match.path}`} children={<img class = "establishment" src={establishment} art="midam"></img>}></Route>
                 <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
                 <Route exact path={`${match.path}/withdraw`} component={Withdraw}></Route>
-                <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistory}></Route>
+                <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryMentor}></Route>
                
                 <Route exact path={`${match.path}/readMentoringApplication`} component={ReadMentoringApplication}></Route>
                 {/* 활동 */}
