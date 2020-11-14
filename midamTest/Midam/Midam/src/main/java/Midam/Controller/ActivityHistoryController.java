@@ -1,6 +1,7 @@
 package Midam.Controller;
 
 import Midam.DAO.activity.MentoringHistoryDAO;
+import Midam.DAO.linkAgency.LinkAgencyDAO;
 import Midam.DAO.user.UserDAO;
 import Midam.model.activity.ActivityHistory;
 
@@ -45,11 +46,12 @@ public class ActivityHistoryController {
         String endDate = request.getParameter("endDate");
 
             MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+            LinkAgencyDAO linkAgencyDAO = new LinkAgencyDAO();
                 ArrayList<HashMap> historyArrayList = mentoringHistoryDAO.getHistoryListMentor(id, option, linkAgency, activity, startDate, endDate);
                 result.add(historyArrayList);
 
                 if(option==0) {
-                    ArrayList<HashMap> linkAgencyArrayList = mentoringHistoryDAO.getLinkAgencyList(id);
+                    ArrayList<HashMap> linkAgencyArrayList = linkAgencyDAO.readLinkAgencyListMentor(id);
                     result.add(linkAgencyArrayList);
                 }
             return result;
@@ -69,11 +71,12 @@ public class ActivityHistoryController {
         String endDate = request.getParameter("endDate");
 
         MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+        LinkAgencyDAO linkAgencyDAO = new LinkAgencyDAO();
         ArrayList<HashMap> historyArrayList = mentoringHistoryDAO.getHistoryListRegionManager(id, option, linkAgency, activity, startDate, endDate);
         result.add(historyArrayList);
 
         if(option==0) {
-            ArrayList<HashMap> linkAgencyArrayList = mentoringHistoryDAO.getLinkAgencyList(id);
+            ArrayList<HashMap> linkAgencyArrayList = linkAgencyDAO.readLinkAgencyListMentor(id);
             result.add(linkAgencyArrayList);
         }
         return result;
@@ -151,12 +154,12 @@ public class ActivityHistoryController {
     }
 
     @ResponseBody
-    @PostMapping(value="/getActivityList/mentor")
+    @PostMapping(value="/readActivityList/mentor")
     public ArrayList<HashMap> getActivityListMentor(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
         String linkAgencyCode = request.getParameter("linkAgencyCode");
         MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
-        ArrayList<HashMap> activityList = mentoringHistoryDAO.getActivityList(linkAgencyCode);
+        ArrayList<HashMap> activityList = mentoringHistoryDAO.readActivityList(linkAgencyCode);
 
         return activityList;
     }

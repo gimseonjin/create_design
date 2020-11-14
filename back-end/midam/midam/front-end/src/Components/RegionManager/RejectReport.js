@@ -24,7 +24,7 @@ const RejectReport = (props) =>{
         e.preventDefault();
         setRejectionReason(e.target.value);
     }
-      //반려
+    //반려
     function rejectReport(){
         var form = new FormData();
         form.append("activityHistoryCode", activityHistoryCode);
@@ -44,8 +44,6 @@ const RejectReport = (props) =>{
                 </InputGroupAddon>
                 <Input type="text" name="rejectionReason" placeholder="반려 사유" onChange={handleRejectionReasonOnChange}></Input>
             </InputGroup>
-        
-            {rejectionReason}
 
             <Button color="danger" onClick={rejectReport}>반려하기</Button>
         </div>

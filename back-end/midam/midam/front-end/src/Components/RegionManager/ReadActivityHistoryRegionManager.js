@@ -37,7 +37,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
             setOption(0);
         }else{
             //선택시 getActivityList로 해당 연계기관의 활동 받아옴
-            getActivityList(e.target.value);
+            readActivityList(e.target.value);
             setOption(1);
         }
     }
@@ -159,7 +159,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
     
 
    // 아이디만으로 그냥 조회해오기
-    function getActivityHistory () {
+    function readActivityHistory () {
 
         var form=new FormData;
         form.append("userToken",localStorage.getItem('userToken'));
@@ -176,7 +176,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
     }
 
     // 옵션을 걸어서 조회하기.
-    function getActivityHistoryWithOption () {
+    function readActivityHistoryWithOption () {
 
         var form=new FormData;
         form.append("userToken",localStorage.getItem('userToken'));
@@ -206,11 +206,11 @@ const ReadActivityHistoryRegionManager=(props)=> {
 
 
     // 연계기관 리스트 선택 시 해당 연계기관의 활동 받아오기
-    function getActivityList(linkAgencyCode){
+    function readActivityList(linkAgencyCode){
         var form=new FormData;
         form.append("userToken",localStorage.getItem('userToken'));
         form.append("linkAgencyCode", linkAgencyCode);
-        axios.post('/activityHistory/getActivityList/regionManager', form).then((response)=>{
+        axios.post('/activityHistory/readActivityList/mentor', form).then((response)=>{
             activityArrays=response.data;
             setActivityList(activityArrays.map(renderActivityList));
         });
@@ -218,7 +218,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
 
 
     useEffect(()=>{
-        getActivityHistory();
+        readActivityHistory();
       },[]
     )
     
@@ -282,7 +282,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
                         </InputGroup>
                         <Button className="float-right" color="primary" onClick={()=>{
                             /* axios.데이터요청->inputs에 넣음 */
-                            getActivityHistoryWithOption ();
+                            readActivityHistoryWithOption ();
                             }}>조회</Button>
                         {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
                         <Button color="primary" onClick={()=>setModalExportExcel(true)}>내보내기</Button>

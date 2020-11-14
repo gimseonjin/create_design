@@ -42,7 +42,7 @@ public class RecruitmentController {
         result.add(recruitmentArrayList);
         if(option==0) {
             RegionDAO regionDAO =new RegionDAO();
-            ArrayList<HashMap> regionArrayList = regionDAO.getRegionList();
+            ArrayList<HashMap> regionArrayList = regionDAO.readRegionList();
             result.add(regionArrayList);
         }
         return result;

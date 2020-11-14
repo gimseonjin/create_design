@@ -40,10 +40,10 @@ public class RegionDAO {
     }
 
 
-
-    public ArrayList<HashMap> getRegionList(){
+    //지역본부 목록을 List로 반환
+    public ArrayList<HashMap> readRegionList(){
         ArrayList<HashMap> list =new ArrayList<HashMap>();
-        sql = "select * from region";
+        sql = "select regionCode, regionName, regionAddress from region";
 
         try {
             conn=getConnection();
@@ -58,8 +58,6 @@ public class RegionDAO {
                 regionHashMap.put("regionName",rs.getString("regionName"));
                 regionHashMap.put("regionAddress",rs.getString("regionAddress"));
 
-
-
                 list.add(regionHashMap);
             }
         }catch(Exception e) {
@@ -70,4 +68,6 @@ public class RegionDAO {
         }
         return list;
     }
+    
+    
 }
