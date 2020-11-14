@@ -31,8 +31,9 @@ public class RecruitmentController {
         ArrayList result = new ArrayList();
 
         int option = Integer.parseInt(request.getParameter("option"));
+        String regionCode = request.getParameter("region");
         String linkAgencyCode = request.getParameter("linkAgency");
-        String regionCode = request.getParameter("regionCode");
+
 
         RecruitmentDAO recruitmentDAO = new RecruitmentDAO();
         ArrayList<HashMap> recruitmentArrayList = recruitmentDAO.getListRecruitment(option, regionCode, linkAgencyCode);
