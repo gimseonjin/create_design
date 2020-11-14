@@ -81,9 +81,11 @@ const ReadRecruitment = (props) => {
         }
         return (
             <tr key={index} >
+               
+               <td className="display">{recruitmentArray.mentorRecruitmentCode}</td>
                 <th>{recruitmentArray.regionName}</th>
                 <td>{recruitmentArray.linkAgencyName}</td>
-                <td className={"readRecruitmentInfo"} >{recruitmentArray.activityName}</td>
+                <td className={"readRecruitmentInfo"}>{recruitmentArray.activityName}</td>
                 
                 <td onmouseover="this.style.background='white'" onmouseout="this.style.background='blue'">{recruitmentArray.numberOfMentor}</td>
                 <td>{statusValue}</td>

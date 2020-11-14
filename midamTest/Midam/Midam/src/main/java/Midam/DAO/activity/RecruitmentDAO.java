@@ -22,7 +22,7 @@ public class RecruitmentDAO {
     private PreparedStatement pstmt;
     SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date now =new Date();
-
+    ResultSet rs;
     private Connection getConnection(){
 
         try {
@@ -65,7 +65,7 @@ public class RecruitmentDAO {
 
             conn=getConnection();
             pstmt = conn.prepareStatement(sql_max);
-            ResultSet rs= pstmt.executeQuery();
+            rs= pstmt.executeQuery();
             rs.next();
             max_code = rs.getString(1);
             str_code=max_code.substring(2,6);
@@ -99,7 +99,34 @@ public class RecruitmentDAO {
             closeConnection(conn);
         }
         return result;
-    } //게시글 작성
+    } //모집 등록
+
+    public int updateRecruitment(String mentorRecruitmentCode,String activityName,int numberOfMentor,String activityInfo,String startDate,String finishDate) { // 수정
+        int result =0;
+
+
+        String sql = "update mentor_recruitment set activityName= ? , numberOfMentor= ? ,activityInfo =? , startDate= ?, finishDate = ? where mentorRecruitmentCode =?";
+        try {
+
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, activityName);
+            pstmt.setInt(2, numberOfMentor);
+            pstmt.setString(3, activityInfo);
+            pstmt.setString(3, startDate);
+            pstmt.setString(3, finishDate);
+
+
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    } //모집 수정
 
 
     public ArrayList<HashMap> getListRecruitment(int option, String regionCode,String linkAgencyCode){
@@ -114,19 +141,19 @@ public class RecruitmentDAO {
             conn=getConnection();
 
             if(option==0){ //아무것도 안할때, 옵션 0
-                sql = "SELECT regionName, linkAgencyName, activityName, numberOfMentor, recruitmentStatus" +
+                sql = "SELECT mentorRecruitmentCode ,regionName, linkAgencyName, activityName, numberOfMentor, recruitmentStatus" +
                         " FROM mentor_recruitment join link_agency join region " +
                         "on mentor_recruitment.linkAgencyCode=link_agency.linkAgencyCode and link_agency.regionCode= region.regionCode ";
                 pstmt = conn.prepareStatement(sql);
             }else if(option == 1){ //지역본부만 선택
-                sql = "SELECT regionName, linkAgencyName, activityName, numberOfMentor, recruitmentStatus" +
+                sql = "SELECT mentorRecruitmentCode, regionName, linkAgencyName, activityName, numberOfMentor, recruitmentStatus" +
                         " FROM mentor_recruitment join link_agency join region " +
                         "on mentor_recruitment.linkAgencyCode=link_agency.linkAgencyCode and link_agency.regionCode= region.regionCode " +
                         "where region.regionCode =?";
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, regionCode);
             }else if(option == 2){ // 연계기관 선택
-                sql = "SELECT regionName, linkAgencyName, activityName, numberOfMentor, recruitmentStatus" +
+                sql = "SELECT mentorRecruitmentCode, regionName, linkAgencyName, activityName, numberOfMentor, recruitmentStatus" +
                         " FROM mentor_recruitment join link_agency join region " +
                         "on mentor_recruitment.linkAgencyCode=link_agency.linkAgencyCode and link_agency.regionCode= region.regionCode " +
                         "where link_agency.linkAgencyCode = ?";
@@ -134,10 +161,11 @@ public class RecruitmentDAO {
                 pstmt.setString(1, linkAgencyCode);
 
             }
-            ResultSet rs= pstmt.executeQuery();
+            rs= pstmt.executeQuery();
             while(rs.next()) {
 
                 HashMap recruitmentHashMap = new HashMap();
+                recruitmentHashMap.put("mentorRecruitmentCode",rs.getString("mentorRecruitmentCode"));
                 recruitmentHashMap.put("regionName",rs.getString("regionName"));
                 recruitmentHashMap.put("linkAgencyName",rs.getString("linkAgencyName"));
                 recruitmentHashMap.put("activityName",rs.getString("activityName"));
@@ -156,33 +184,38 @@ public class RecruitmentDAO {
         return list;
     }      //모집 등록 조회
 
-    public Post readRecruitmentInfo(int postId){
-        Post post = new Post();
-        String sql = "SELECT postId, writerId, title, content, writeDate FROM post WHERE postId = ? ;";
-        String sql_view = "update post set numberOfView =numberOfView+1 where postId=?";
+    public MentorRecruitment readRecruitmentInfo(String mentorRecruitmentCode){
+
+        MentorRecruitment mentorRecruitment = new MentorRecruitment();
+        String sql = "SELECT mentorRecruitmentCode, linkAgencyManagerId, activityName, numberOfMentor, startDate, finishDate, activityInfo, passedNumber " +
+                     "FROM mentor_recruitment WHERE mentorRecruitmentCode = ? ";
+
         try {
             conn=getConnection();
             pstmt = conn.prepareStatement(sql);
-
-            pstmt.setInt(1, postId);
-            ResultSet rs= pstmt.executeQuery();
+            pstmt.setString(1, mentorRecruitmentCode);
+            rs= pstmt.executeQuery();
             while(rs.next()){
-                post.setPostId(rs.getInt("postId"));
-                post.setWriterId(rs.getString("writerId"));
-                post.setTitle(rs.getString("title"));
-                post.setContent(rs.getString("content"));
-                post.setWriteDate(rs.getString("writeDate"));
+                mentorRecruitment.setMentorRecruitmentCode(rs.getString("mentorRecruitmentCode"));
+                mentorRecruitment.setLinkAgencyManagerId(rs.getString("linkAgencyManagerId"));
+                mentorRecruitment.setActivityName(rs.getString("activityName"));
+                mentorRecruitment.setNumberOfMentor(rs.getInt("numberOfMentor"));
+                mentorRecruitment.setStartDate(rs.getString("startDate"));
+                mentorRecruitment.setFinishDate(rs.getString("finishDate"));
+                mentorRecruitment.setActivityInfo(rs.getString("activityInfo"));
+                mentorRecruitment.setPassedNumber(rs.getInt("passedNumber"));
 
             }
-            pstmt=conn.prepareStatement(sql_view);
-            pstmt.setInt(1,postId);
-            pstmt.executeUpdate();
+
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
             closeConnection(conn);
         }
-        return post;
+        return mentorRecruitment;
     }
+
+
+
 }

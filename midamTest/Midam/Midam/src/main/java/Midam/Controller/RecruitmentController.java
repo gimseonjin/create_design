@@ -6,6 +6,7 @@ import Midam.DAO.activity.RecruitmentDAO;
 import Midam.DAO.community.PostDAO;
 import Midam.DAO.linkAgency.LinkAgencyDAO;
 import Midam.DAO.region.RegionDAO;
+import Midam.model.activity.MentorRecruitment;
 import Midam.model.community.Post;
 import Midam.model.token.Token;
 import org.springframework.stereotype.Controller;
@@ -47,7 +48,25 @@ public class RecruitmentController {
         return result;
 
     }
+    @ResponseBody
+    @PostMapping(value="/readRecruitmentInfo")
+    public HashMap readRecruitmentInfo(HttpServletRequest request)  {
+        HashMap result = new HashMap();
 
+        String mentorRecruitmentCode = request.getParameter("mentorRecruitmentCode");
+        RecruitmentDAO recruitmentDAO = new RecruitmentDAO();
+
+        MentorRecruitment readResult = recruitmentDAO.readRecruitmentInfo(mentorRecruitmentCode);
+        result.put("mentorRecruitmentCode",readResult.getMentorRecruitmentCode());
+        result.put("linkAgencyManagerId",readResult.getLinkAgencyManagerId());
+        result.put("activityName",readResult.getActivityName());
+        result.put("numberOfMentor",readResult.getNumberOfMentor());
+        result.put("startDate",readResult.getStartDate());
+        result.put("finishDate",readResult.getFinishDate());
+        result.put("activityInfo",readResult.getActivityInfo());
+        result.put("passedNumber",readResult.getPassedNumber());
+        return result;
+    }
 
     @ResponseBody
     @PostMapping(value="/getLinkAgencyList")
@@ -83,4 +102,27 @@ public class RecruitmentController {
         result.put("responseMsg",createResult);
         return result;
     }
+
+    @ResponseBody
+    @PostMapping(value="/updateRecruitment")
+    public HashMap updateRecruitment(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+
+        HashMap result = new HashMap();
+
+        String mentorRecruitmentCode = request.getParameter("mentorRecruitmentCode");
+        String activityName=request.getParameter("activityName");
+        int numberOfMentor = Integer.parseInt(request.getParameter("numberOfMentor"));
+        String activityInfo=request.getParameter("activityInfo");
+        String startDate=request.getParameter("startDate");
+        String finishDate=request.getParameter("finishDate");
+        RecruitmentDAO recruitmentDAO = new RecruitmentDAO();
+
+
+        int updateResult = recruitmentDAO.updateRecruitment(mentorRecruitmentCode,activityName,numberOfMentor,activityInfo,startDate,finishDate);
+        result.put("responseMsg",updateResult);
+        return result;
+    }
+
+
+
 }
