@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Button,
     CustomInput,
@@ -17,9 +17,10 @@ function CreateReport(props) {
     const [activityHistoryCode, setActivityHistoryCode] = useState(
         props.activityHistoryCode
     );
-    const [dayOfActivity, setDayOfActivity] = useState();
+    const [dateOfActivity, setDateOfActivity] = useState("");
+    const [linkAgencyName, setLinkAgencyName] = useState();
+    const [activityName, setActivityName] = useState();
     const [mentorName, setMentorName] = useState();
-    const [place, setPlace] = useState();
     const [content, setContent] = useState();
     const [note, setNote] = useState();
     const [file, setFile] = useState("");
@@ -67,6 +68,24 @@ function CreateReport(props) {
             })
     }
 
+    function readReport () {
+        var form = new FormData;
+        form.append("userToken ", localStorage.getItem("userToken"));
+        form.append("activityHistoryCode", activityHistoryCode);
+        axios.post('/activityHistory/readReport/mentor',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
+            
+            setDateOfActivity(response.data.startTime + " ~ " + response.data.endTime);
+            setMentorName(response.data.mentorName);
+            setActivityName(response.data.activityName);
+            setLinkAgencyName(response.data.linkAgencyName);
+           
+        })
+    }
+
+    useEffect(()=>{
+        readReport();
+    },[])
+
     return (
         <div className="container">
             <h1>props.activityHistoryCode : {activityHistoryCode}</h1>
@@ -76,21 +95,21 @@ function CreateReport(props) {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동일자</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="dayOfActivity" placeholder="날짜" readOnly="readOnly"></Input>
+                        <Input type="text" name="dateOfActivity" placeholder="날짜" readOnly="readOnly" value={dateOfActivity}></Input>
                     </InputGroup>
 
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>참여자</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="mentorName" placeholder="참여자 입력" readOnly="readOnly"></Input>
+                        <Input type="text" name="mentorName" placeholder="참여자 입력" readOnly="readOnly" value={mentorName}></Input>
                     </InputGroup>
 
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동 기관</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="place" placeholder="활동 장소 입력" readOnly="readOnly"></Input>
+                        <Input type="text" name="place" placeholder="활동 장소 입력" readOnly="readOnly" value={linkAgencyName}></Input>
                     </InputGroup>
                 </FormGroup>
 

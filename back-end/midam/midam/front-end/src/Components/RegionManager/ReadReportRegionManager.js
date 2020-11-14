@@ -7,14 +7,17 @@ import {
     Input,
     InputGroup,
     InputGroupAddon,
-    InputGroupText
+    InputGroupText,
+    Modal,
+    ModalHeader
 } from 'reactstrap';
 import axios from 'axios';
 import {Image} from 'react-bootstrap';
 import cookie from 'react-cookies';
+import RejectReport from './RejectReport';
 
 //활동보고서 작성 활동 보고서 조회 페이지 필요할지. 여기서 함께할지 논의.
-const ReadReport = (props) =>{
+const ReadReportMentor = (props) =>{
     const [activityHistoryCode, setActivityHistoryCode] = useState(
         props.activityHistoryCode
     );
@@ -25,14 +28,16 @@ const ReadReport = (props) =>{
     const [note, setNote] = useState();
     const [file, setFile] = useState("");
     const [imagePreviewUrl, setImagePreviewUrl] = useState("");
-    const [token, setToken] = useState(cookie.load("userToken"));
+    const [token, setToken] = useState(localStorage.getItem("userToken"));
     const [isReadOnly, setIsReadOnly] = useState(true);
     const [dateOfActivity, setDateOfActivity] = useState("");
     const [approvalDate, setApprovalDate] = useState("");
     const [approvalStatus, setApprovalStatus] = useState("");
-    const [companionReason, setCompanionReason] = useState("");
+    const [rejectionReason, setRejectionReason] = useState("");
     const [createDate, setCreateDate] = useState("");
     const [statusValue, setStatusValue] = useState("");
+    const [modalRejection, setModalRejection] = useState(false);
+    const toggleRejection = () => { setModalRejection(!modalRejection); }
 
     const toggleIsReadOnly = () => {
         setIsReadOnly(!isReadOnly);
@@ -91,30 +96,16 @@ const ReadReport = (props) =>{
 
     let $imagePreview = null;
 
-    const updateReport = () => {
-        var form = new FormData;
-        form.append("userToken", token);
-        form.append("activityHistoryCode", activityHistoryCode);
-        form.append("content",content);
-        form.append("note",note);
-        form.append("file",file);
-        axios
-            .post('/activityHistory/updateReport/mentor', form,{headers: {'content-type':'multipart/form-data'}})
-            .then((response) => {
-                alert(response.data.responseMsg);
-                window.location.reload();
-            })
-    }
+   
     function readReport () {
         var form = new FormData;
         form.append("userToken ", localStorage.getItem("userToken"));
         form.append("activityHistoryCode", activityHistoryCode);
-        axios.post('/activityHistory/readReport/mentor',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
+        axios.post('/activityHistory/readReport/mentor',form).then((response)=>{
             
             setContent(response.data.activityContent);
             setNote(response.data.note);
             setImagePreviewUrl(response.data.activityPictureBASE64);
-            setFile(dataURLtoFile(response.data.activityPictureBASE64, 'picture'));
             setDateOfActivity(response.data.startTime + " ~ " + response.data.endTime);
             setMentorName(response.data.mentorName);
             setActivityName(response.data.activityName);
@@ -122,30 +113,23 @@ const ReadReport = (props) =>{
             setApprovalDate(response.data.approvalDate);
             setApprovalStatus(response.data.approvalStatus);
             setCreateDate(response.data.createDate);
-            setCompanionReason(response.data.companionReason);
+            setRejectionReason(response.data.rejectionReason);
             statusToValue(response.data.approvalStatus);
 
         })
     }
-
-    const dataURLtoFile = (dataurl, fileName) => {
-    
-        if(dataurl!==null){
-            var arr = dataurl.split(','),
-                mime = arr[0].match(/:(.*?);/)[1],
-                bstr = atob(arr[1]), 
-                n = bstr.length, 
-                u8arr = new Uint8Array(n);
-                
-            while(n--){
-                u8arr[n] = bstr.charCodeAt(n);
-            }
-            
-            return new File([u8arr], fileName, {type:mime});
-        }else{
-            return null;
-        }
+    //승인
+    function approveReport(){
+        var form = new FormData();
+        form.append("activityHistoryCode", activityHistoryCode);
+        form.append("userToken",token);
+        axios.post("/activityHistory/approveReport/regionManager",form).then((response)=>{
+            alert(response.data.resultMessage);
+            readReport();
+        });
     }
+
+  
 
     useEffect(()=>{
         readReport();
@@ -193,7 +177,7 @@ const ReadReport = (props) =>{
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>반려 사유</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="place" placeholder="" readOnly={true} value = {companionReason}></Input>
+                        <Input type="text" name="place" placeholder="" readOnly={true} value = {rejectionReason}></Input>
                     </InputGroup> :""}
                     
                     <InputGroup>
@@ -230,24 +214,21 @@ const ReadReport = (props) =>{
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동사진</InputGroupText>
                         </InputGroupAddon>
-                        <CustomInput
-                            type="file"
-                            accept='image/jpg,impge/png,image/jpeg,image/gif'
-                            name="file"
-                            label="파일 선택"
-                            onChange={handleImageOnChange} disabled={isReadOnly}></CustomInput>
                     </InputGroup>
                 </FormGroup>
                 {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
-                <Button onClick={toggleIsReadOnly}>수정</Button>
-                <Button className={isReadOnly? "invisible": ""} disabled={isReadOnly} color="danger" onClick={updateReport}>완료</Button>
+
+                {approvalStatus!==3?<Button  color="primary" onClick={approveReport}>승인</Button>:""}
+                {approvalStatus!==4?<Button  color="danger" onClick={ toggleRejection } >반려</Button>:""}
                 <Button className="float-right" color="primary" onClick={readReport}>조회</Button>
             
             </Form>
-            <div className="mw-100">
-                
-            </div>
+           
+            <Modal isOpen={modalRejection}>
+                <ModalHeader toggle={toggleRejection}>활동 내역 내보내기</ModalHeader>
+                <RejectReport activityHistoryCode={activityHistoryCode}></RejectReport>
+            </Modal>
         </div>
     )
 }
-export default ReadReport;
+export default ReadReportMentor;

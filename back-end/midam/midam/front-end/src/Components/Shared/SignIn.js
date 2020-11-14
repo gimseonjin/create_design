@@ -92,7 +92,7 @@ function SignIn({history},props) {
         form.append('authority', authority);
         form.append('regionCode', regionCode);
         form.append('volunteerId', volunteerId);
-        axios.post("http://localhost:8080/user/createMentor", form,{headers: {'content-type':'multipart/form-data'}})
+        axios.post("/user/createMentor", form,{headers: {'content-type':'multipart/form-data'}})
         .then((response)=>{
          console.log(response.data.authority);
          history.push("/");

@@ -1,14 +1,11 @@
 import React,{useEffect, useState} from 'react';
 import { Button, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Modal, ModalHeader, Row, Table } from 'reactstrap';
-import CreateReport from './CreateReport';
-import CreateQR from './CreateQR';
 import ExportMentoringActivity from '../LinkAgencyManager/ExportMentoringActivity';
 import useRequest from '../Shared/useRequest';
 import axios from 'axios';
-import usePost from '../Shared/usePost';
 import $ from 'jquery';
-import ReadReport from '../Shared/ReadReport';
 import cookie from 'react-cookies';
+import ReadReportRegionManager from './ReadReportRegionManager';
 
 //활동 내역 조회
 const ReadActivityHistoryRegionManager=(props)=> {
@@ -100,12 +97,12 @@ const ReadActivityHistoryRegionManager=(props)=> {
         var statusValue="default";
         var ButtonValue="default";
         var ButtonColor="secondary";
-        var buttonClassName = "createReportButton";
+        var buttonClassName = "";
 
         switch(historyArray.status){
             case '0':
                 statusValue="활동미완료";
-                ButtonValue="작성";
+                ButtonValue="미작성";
                 break;
             case '1':
                 statusValue="활동완료/보고서미작성";
@@ -122,7 +119,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
                 statusValue="승인완료";
                 ButtonValue="조회";
                 ButtonColor="success";
-                buttonClassName="readReportReadOnlyButton";
+                buttonClassName="readReportButton";
                 break;
             case '4':
                 statusValue="반려";
@@ -140,6 +137,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
         return(
             <tr key={index}>
                 <th>{historyArray.activityHistoryCode}</th>
+                <th>{historyArray.mentorName}</th>
                 <td>{historyArray.startTime}</td>
                 <td>{historyArray.endTime}</td>
                 <td><Button className={buttonClassName} color={ButtonColor} >{ButtonValue}</Button></td>
@@ -228,16 +226,6 @@ const ReadActivityHistoryRegionManager=(props)=> {
     $(function() { 
         $(".readReportButton").off("click")
             // $(document).ready 에 해당하는부분. 업데이트되며 문법이 바뀐듯하다
-        $(".createReportButton").on("click",function(){
-
-            var reportButton = $(this);
-
-            var tr = reportButton.parent().parent();
-            var td = tr.children();
-            setModalInput(td.eq(0).text());
-            toggleCreateReport();
-        }
-        )
         
         $(".readReportButton").on("click",function(){
 
@@ -252,17 +240,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
         }
         )
 
-        $(".readReportReadOnlyButton").on("click",function(){
-
-            var reportButton = $(this);
-
-            var tr = reportButton.parent().parent();
-            var td = tr.children();
-            console.log("row데이터 : "+td.eq(0).text());
-            setModalInput(td.eq(0).text());
-            toggleCreateReport();
-        }
-        )
+        
     }
     )
 
@@ -319,6 +297,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
                             {/* 열 이름부분 */}
                             <tr>
                                 <th>#</th>
+                                <th>이름</th>
                                 <th>시작 시간</th>
                                 <th>종료 시간</th>
                                 <th>활동 보고서</th>
@@ -334,19 +313,9 @@ const ReadActivityHistoryRegionManager=(props)=> {
                 </Col>
             </Row>
 
-            <Modal isOpen={modalCreateReport}>
-                <ModalHeader toggle={toggleCreateReport}>활동보고서 작성</ModalHeader>
-                <CreateReport activityHistoryCode={modalInput}></CreateReport>
-            </Modal>
-
             <Modal isOpen={modalReadReport}>
                 <ModalHeader toggle={toggleReadReport}>활동보고서 조회</ModalHeader>
-                <ReadReport activityHistoryCode={modalInput}></ReadReport>
-            </Modal>
-
-            <Modal isOpen={modalCreateQR}>
-                <ModalHeader toggle={toggleCreateQR}>QR코드 생성</ModalHeader>
-                <CreateQR></CreateQR>
+                <ReadReportRegionManager activityHistoryCode={modalInput}></ReadReportRegionManager>
             </Modal>
 
             <Modal isOpen={modalExportExcel}>

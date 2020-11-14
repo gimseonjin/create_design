@@ -37,8 +37,7 @@ public class ActivityHistoryController {
         String jwt = request.getParameter("userToken") ;
         Token token = new Token();
         Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
-        Object objectId = map.get("id");
-        String id = objectId.toString();
+        String id = map.get("id").toString();
         int option = Integer.parseInt(request.getParameter("option"));
         String linkAgency = request.getParameter("linkAgency");
         String activity = request.getParameter("activity");
@@ -59,11 +58,10 @@ public class ActivityHistoryController {
     @PostMapping(value="/readHistory/regionManager")
     public ArrayList readActivityHistoryListRegionManager(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
         ArrayList result = new ArrayList();
-        String jwt = request.getParameter("userToken");
+        String userToken = request.getParameter("userToken");
         Token token = new Token();
-        Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
-        Object objectId = map.get("id");
-        String id = objectId.toString();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
         int option = Integer.parseInt(request.getParameter("option"));
         String linkAgency = request.getParameter("linkAgency");
         String activity = request.getParameter("activity");
@@ -85,11 +83,10 @@ public class ActivityHistoryController {
     @PostMapping(value="/createReport/mentor")
     public HashMap createReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
-        String jwt = request.getParameter("userToken");
+        String userToken = request.getParameter("userToken");
         Token token = new Token();
-        Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
-        Object objectId = map.get("id");
-        String id = objectId.toString();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
 
         String content = request.getParameter("content");
         String note = request.getParameter("note");
@@ -107,11 +104,10 @@ public class ActivityHistoryController {
     @PostMapping(value="/updateReport/mentor")
     public HashMap updateReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
-        String jwt = request.getParameter("userToken");
+        String userToken = request.getParameter("userToken");
         Token token = new Token();
-        Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
-        Object objectId = map.get("id");
-        String id = objectId.toString();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
 
         String content = request.getParameter("content");
         String note = request.getParameter("note");
@@ -128,11 +124,10 @@ public class ActivityHistoryController {
     @PostMapping(value="/readReport/mentor")
     public HashMap readReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();
-        String jwt = request.getParameter("userToken");
+        String userToken = request.getParameter("userToken");
         Token token = new Token();
-        Map<String, Object> map = token.verifyJWTAll(jwt).get("data", HashMap.class);
-        Object objectId = map.get("id");
-        String id = objectId.toString();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
 
         int activityHistoryCode = Integer.parseInt(request.getParameter("activityHistoryCode"));
 
@@ -149,10 +144,8 @@ public class ActivityHistoryController {
         result.put("linkAgencyName",resultHistory.getLinkAgencyName());
         result.put("activityName",resultHistory.getActivityName());
         result.put("approvalDate",resultHistory.getApprovalDate());
-        result.put("companionReason",resultHistory.getCompanionReason());
+        result.put("rejectionReason",resultHistory.getRejectionReason());
         result.put("approvalDate",resultHistory.getApprovalDate());
-
-
 
         return result;
     }
@@ -168,6 +161,58 @@ public class ActivityHistoryController {
         return activityList;
     }
 
+    @ResponseBody
+    @PostMapping(value="/approveReport/regionManager")
+    public HashMap approveReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+        HashMap result = new HashMap();
+        // front에서 받을것: 활동코드, 지역본부관리자ID(db에들어감)
+        // 날짜는 서버기준으로
+        String userToken = request.getParameter("userToken");
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+
+        String activityHistoryCode = request.getParameter("activityHistoryCode");
+        String resultMessage="";
+        int resultInt= mentoringHistoryDAO.approveReport(activityHistoryCode, id);
+        if(resultInt > 0){
+            resultMessage="성공";
+        }
+        else{
+            resultMessage="실패";
+        }
+
+        result.put("resultMessage", resultMessage);
+        return result;
+    }
+
+    @ResponseBody
+    @PostMapping(value="/rejectReport/regionManager")
+    public HashMap rejectReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+        HashMap result = new HashMap();
+        // front에서 받을것: 활동코드, 지역본부관리자ID(db에들어감)
+        // 날짜는 서버기준으로
+        String userToken = request.getParameter("userToken");
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+
+        String activityHistoryCode = request.getParameter("activityHistoryCode");
+        String rejectionReason = request.getParameter("rejectionReason");
+        String resultMessage="";
+        int resultInt= mentoringHistoryDAO.rejectReport(activityHistoryCode, id, rejectionReason);
+        if(resultInt > 0){
+            resultMessage="성공";
+        }
+        else{
+            resultMessage="실패";
+        }
+
+        result.put("resultMessage", resultMessage);
+        return result;
+    }
 
 
     public Blob multipartFileToBlob(MultipartFile file) throws IOException, SQLException {
@@ -179,5 +224,4 @@ public class ActivityHistoryController {
         return resultBlob;
     }
 
-//    /getActivityList/mentor
 }

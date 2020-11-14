@@ -7,7 +7,7 @@ import useRequest from '../Shared/useRequest';
 import axios from 'axios';
 import usePost from '../Shared/usePost';
 import $ from 'jquery';
-import ReadReport from '../Shared/ReadReport';
+import ReadReportMentor from './ReadReportMentor';
 import cookie from 'react-cookies';
 
 //활동 내역 조회
@@ -105,7 +105,7 @@ const ReadActivityHistoryMentor=(props)=> {
         switch(historyArray.status){
             case '0':
                 statusValue="활동미완료";
-                ButtonValue="작성";
+                ButtonValue="작성하기";
                 break;
             case '1':
                 statusValue="활동완료/보고서미작성";
@@ -261,7 +261,7 @@ const ReadActivityHistoryMentor=(props)=> {
             var td = tr.children();
             console.log("row데이터 : "+td.eq(0).text());
             setModalInput(td.eq(0).text());
-            toggleCreateReport();
+            toggleReadReport();
         }
         )
     }
@@ -342,7 +342,7 @@ const ReadActivityHistoryMentor=(props)=> {
 
             <Modal isOpen={modalReadReport}>
                 <ModalHeader toggle={toggleReadReport}>활동보고서 조회</ModalHeader>
-                <ReadReport activityHistoryCode={modalInput}></ReadReport>
+                <ReadReportMentor activityHistoryCode={modalInput}></ReadReportMentor>
             </Modal>
 
             <Modal isOpen={modalCreateQR}>

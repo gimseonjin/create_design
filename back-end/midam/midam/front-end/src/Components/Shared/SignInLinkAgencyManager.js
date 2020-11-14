@@ -122,7 +122,7 @@ const SignInLinkAgency = ({history},props) => {
                             <Input type='select' name="authority" onChange={handleSubmitAuthority}>
                             {/* 여기에 option을 지역본부를 DB에서 select 해서 for문으로 추가하면 될듯! */}
                                      <option>선택</option>
-                                <option value='2'>담당자</option>                                
+                                <option value='6'>담당자</option>                                
                             </Input>
                         </Col>
                     </InputGroup> 
