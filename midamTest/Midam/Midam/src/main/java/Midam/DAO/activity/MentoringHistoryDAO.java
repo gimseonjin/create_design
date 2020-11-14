@@ -261,8 +261,8 @@ public class MentoringHistoryDAO {
 
 
             closeConnection(conn);
-        }
-        return list;
+        }return list;
+
     }      //전체 활동내역 목록 for 지역본부 관리자
 
     public ArrayList<HashMap> getListMentorWithOption(String id){

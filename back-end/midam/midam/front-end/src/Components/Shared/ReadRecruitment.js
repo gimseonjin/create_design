@@ -18,76 +18,153 @@ import {
 } from 'reactstrap';
 import axios from 'axios';
 import $ from 'jquery';
-import ReadPostInfo from './ReadPostInfo';
 
 const ReadRecruitment = (props) => {
+    const [recruitmentList, setRecruitmentList] = useState();
+    const [regionList, setRegionList] =useState();
     const [linkAgencyList, setLinkAgencyList] = useState();
-    const [activityList, setActivityList] = useState();
 
-    const [tableData, setTableData] = useState();
     const [modalCreateRecruitment, setModalCreateRecruitment] = useState(false); 
     const [modalReadRecruitmentInfo, setModalReadRecruitmentInfo] = useState(false);
 
     //*검색 옵션들. option 0:
     const [option, setOption] = useState(0);
+    const [region, setRegion] = useState("선택안함");
     const [linkAgency, setLinkAgency] = useState("선택안함");
-    const [activity, setActivity] = useState("선택안함");
+    
+    const handleRegionOnChange = (e) => { 
+        e.preventDefault();
+        setRegion(e.target.value);
+        if(e.target.value === "선택안함")
+        {
+           
+            setLinkAgencyList("선택안함");
+            setOption(0);
+        }else{
+        
+            getLinkAgencyList(e.target.value);
+            setOption(1);
+        }
+    }
 
+    const handleLinkAgencyOnChange = (e) => {
+        e.preventDefault();
+        setLinkAgency(e.target.value);
+        if(e.target.value === "선택안함")
+        {
+            setOption(1);
+        }else{
+            setOption(2);
+        }
+    }
+    
+    
     const toggleCreateRecruitment = () => setModalCreateRecruitment(!modalCreateRecruitment);
     const toggleReadRecruitmentInfo = () => setModalReadRecruitmentInfo(!modalReadRecruitmentInfo);
 
     let recruitmentArrays = [];
+    let regionArrays =[];
     let linkAgencyArrays = [];
-    let activityArrays = [];
+  
+    
     const [modalInput, setModalInput] = useState("default");
     function setRecruitmentArrays(newArrays) {recruitmentArrays = newArrays;}
-    const renderInput = (recruitmentArray, index) => {
+    const renderRecruitmentArrays = (recruitmentArray, index) => {
         
         return (
             <tr key={index} >
-                <th>{recruitmentArrays.postId}</th>
-                <td>{recruitmentArrays.writerId}</td>
-                <td className={"readRecruitmentInfo"} >{recruitmentArrays.title}</td>
+                <th>{recruitmentArray.regionName}</th>
+                <td>{recruitmentArray.linkAgencyName}</td>
+                <td className={"readRecruitmentInfo"} >{recruitmentArray.activityName}</td>
                 
-                <td onmouseover="this.style.background='white'" onmouseout="this.style.background='blue'">{recruitmentArrays.writeDate}</td>
-                <td>{recruitmentArrays.numberOfView}</td>
+                <td onmouseover="this.style.background='white'" onmouseout="this.style.background='blue'">{recruitmentArray.numberOfMentor}</td>
+                <td>{recruitmentArray.recruitmentStatus}</td>
             </tr>
         )
     }
-    function getRecruitmentHistory(form) {
-        axios.post('http://localhost:8080/community/readRecruitment', form).then((response) => {
-         
-                
-                setRecruitmentArrays(response.data);
-                setTableData(recruitmentArrays.map(renderInput));
-            });
+
+    function renderLinkAgencyList(linkAgencyArray, index){
+        return(
+         <option key={index} value={linkAgencyArray.linkAgencyCode}>{ linkAgencyArray.linkAgencyName }</option>
+        )
     }
+    function renderRegionList(regionArray, index){
+        return(
+         <option key={index} value={regionArray.regionCode}>{ regionArray.regionName }</option>
+        )
+    }
+
+    // 아이디만으로 그냥 조회해오기
+    function getRecruitment () {
+
+        var form=new FormData;
+        form.append("userToken",localStorage.getItem('userToken'));
+        form.append("option", option);
    
+        axios.post('/activity/readRecruitment',form).then((response)=>{
+                
+            recruitmentArrays = response.data[0];
+            regionArrays = response.data[1];
+            setRecruitmentList(recruitmentArrays.map(renderRecruitmentArrays));
+            setRegionList(regionArrays.map(renderRegionList));
+        }
+            );
+    }
+
+    // 옵션을 걸어서 조회하기.
+    function getRecruitmentWithOption () {
+
+        var form=new FormData;
+        form.append("userToken",localStorage.getItem('userToken'));
+        form.append("option", option);
+        form.append("linkAgency", linkAgency);
+        form.append("region", region);
+
+
+        axios.post('/activity/readRecruitment',form).then((response)=>{
+        //setHistoryArrays(response.data); 
+        recruitmentArrays = response.data[0];
+        setRecruitmentList(recruitmentArrays.map(renderRecruitmentArrays));
+        
+        }
+            );
+    }
+
+
+
+    
+    function getLinkAgencyList(regionCode){
+        var form=new FormData;
+        form.append("userToken",localStorage.getItem('userToken'));
+        form.append("regionCode",regionCode);
+        axios.post('/activity/getLinkAgencyList', form).then((response)=>{
+            linkAgencyArrays=response.data;
+            setLinkAgencyList(linkAgencyArrays.map(renderLinkAgencyList));
+        });
+    }   
 
     useEffect(() => {
-        var form = new FormData;
-        form.append("id", localStorage.getItem('id'));
-        getRecruitmentHistory(form);
+
+        getRecruitment();
         }, []
     )
  $(function() { 
     $(".readRecruitmentInfo").off("click")
         $(".createRecruitmentButton").on("click",function(){
   
-            var postButton = $(this);
+            var recruitmentButton = $(this);
 
-            var tr = postButton.parent();
+            var tr = recruitmentButton.parent();
             var td = tr.children();
-            console.log("row데이터 : "+td.eq(0).text());
             setModalInput(td.eq(0).text());
             toggleCreateRecruitment();
         }
         ) 
         $(".readRecruitmentInfo").on("click",function(){
             
-            var postButton = $(this);
+            var recruitmentButton = $(this);
 
-            var tr = postButton.parent();
+            var tr = recruitmentButton.parent();
             var td = tr.children();
             console.log("row데이터 : "+td.eq(0).text());
             setModalInput(td.eq(0).text());
@@ -99,8 +176,45 @@ const ReadRecruitment = (props) => {
 
     return (
         <div className="container">
+
+
             <Row>
                 
+                {/* 날짜, 연계기관, 활동 선택 */}
+                <Col className="mb-5">
+                    <Form>
+
+                    <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                            <InputGroupText>지역본부</InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="select" onChange={handleRegionOnChange}>
+                            <option>선택안함</option>
+                            {regionList}
+                        </Input>
+                        </InputGroup>
+
+                        <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                            <InputGroupText>연계기관</InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="select" onChange={handleLinkAgencyOnChange}>
+                            <option>선택안함</option>
+                            {linkAgencyList}
+                        </Input>
+                        </InputGroup>
+
+                        
+
+                        <Button className="float-right" color="primary" onClick={()=>{
+                            /* axios.데이터요청->inputs에 넣음 */
+                            getRecruitmentWithOption ();
+                            }}>조회</Button>
+                        {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
+                        
+                        <Button onClick={()=>alert(option+region + linkAgency)}>InputTest</Button>
+                    </Form>
+                </Col>
                 {/*게시판 테이블*/}
                 <Col>
                     <Table  >
@@ -108,19 +222,18 @@ const ReadRecruitment = (props) => {
                         <thead className="text-nowrap">
                             {/* 열 이름부분 */}
                             <tr>
-                           
+                                
+                                <th>지역본부</th>
                                 <th>연계기관</th>
-                                <th>작성자 ID</th>
-                                <th>활동 명</th>
+                                <th>활동명</th>
                                 <th>모집인원</th>
-                                <th>활동 기간</th>
                                 <th>모집여부</th>
 
                             </tr>
                         </thead>
                         <tbody >
                             {/* 내용부분 여기에 서버에서 정보 받아와서 포문돌려서 넣으면 될듯!*/}
-                            {tableData}
+                            {recruitmentList}
                         </tbody>
                     </Table>
                     
@@ -128,7 +241,7 @@ const ReadRecruitment = (props) => {
             </Row>
             <Modal isOpen={modalCreateRecruitment}>
                          <ModalHeader toggle={toggleCreateRecruitment}>모집 등록</ModalHeader>
-                         <CreateRecruitment recruitmentCode={modalInput}></CreateRecruitment>                         
+                         <CreateRecruitment mentorRecruitmentCode={modalInput}></CreateRecruitment>                         
             </Modal>
                    
             <Modal isOpen={modalReadRecruitmentInfo}>
@@ -137,7 +250,7 @@ const ReadRecruitment = (props) => {
                 
             </Modal>
 
-            <Button className={"createPostButton"} color={"primary"} >{"모집 등록"}</Button>
+            <Button className={"createRecruitmentButton"} color={"primary"} >{"모집 등록"}</Button>
         </div>
     )
 }
