@@ -11,6 +11,7 @@ const SignInLinkAgency = ({history},props) => {
 
     const [id, setId] = useState();
     const [password, setPassword] = useState();
+    const [checkPassword, setCheckPassword] = useState();
     const [name, setName] = useState();
     const [gender, setGender] = useState();
     const [age, setAge] = useState();
@@ -82,25 +83,33 @@ const SignInLinkAgency = ({history},props) => {
         e.preventDefault();
         setLinkAgencyInfo(e.target.value);
     }
+    const handleCheckPasswordOnChange = (e) => {
+        e.preventDefault();
+        setCheckPassword(e.target.value);
+    }
     const signInPost = () => {
-        var form = new FormData;
-        form.append('id', id);
-        form.append('password', password);
-        form.append('name', name);
-        form.append('gender', gender);
-        form.append('age', age);
-        form.append('address', address);
-        form.append('phoneNumber', phoneNumber);
-        form.append('authority', authority);
-        form.append('linkAgencyCode', linkAgencyCode);
-        form.append('linkAgencyName', linkAgencyName);
-        form.append('linkAgencyAddress', linkAgencyAddress);
-        form.append('linkAgencyInfo', linkAgencyInfo);
-        axios.post("http://localhost:8080/user/createLinkAgencyManager", form,{headers: {'content-type':'multipart/form-data'}}).then((response)=>{
-         console.log(response.data.authority);
-         history.push("/");
-     
-     })
+        if(password===checkPassword){
+            var form = new FormData;
+            form.append('id', id);
+            form.append('password', password);
+            form.append('name', name);
+            form.append('gender', gender);
+            form.append('age', age);
+            form.append('address', address);
+            form.append('phoneNumber', phoneNumber);
+            form.append('authority', authority);
+            form.append('linkAgencyCode', linkAgencyCode);
+            form.append('linkAgencyName', linkAgencyName);
+            form.append('linkAgencyAddress', linkAgencyAddress);
+            form.append('linkAgencyInfo', linkAgencyInfo);
+            axios.post("http://localhost:8080/user/createLinkAgencyManager", form,{headers: {'content-type':'multipart/form-data'}}).then((response)=>{
+            console.log(response.data.authority);
+            history.push("/");
+        
+            })
+        }else{
+            alert("비밀번호 불일치");
+        }
     }
         return (
             <div
@@ -114,7 +123,7 @@ const SignInLinkAgency = ({history},props) => {
                             
                         }}>연계기관</h3>
 
-<InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
+                        <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">권한</InputGroupText>
                         </InputGroupAddon>
@@ -175,7 +184,7 @@ const SignInLinkAgency = ({history},props) => {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText className = "input-group-addon">비밀번호 확인</InputGroupText>
                         </InputGroupAddon>
-                        <Input type='password' name='password'/>
+                        <Input type='password' name='password' onChange={handleCheckPasswordOnChange}/>
                     </InputGroup>
               
                     <InputGroup style={{marginTop : "1%", marginBottom : "1%"}}>
@@ -203,7 +212,6 @@ const SignInLinkAgency = ({history},props) => {
                                 <option>선택</option>
                                 <option value='1'>금오공과대학교</option>
                                 <option value='2'>구미도서관</option>
-                          
                             </Input>
                         </Col>
                     </InputGroup>
@@ -212,10 +220,10 @@ const SignInLinkAgency = ({history},props) => {
                             <InputGroupText className = "input-group-addon">연계 기관</InputGroupText>
                         </InputGroupAddon>
                         <div>&nbsp;&nbsp;&nbsp;</div>
-                       <CustomInput type="radio" id="selectRegion" name = "radioRegion" onClick={() => {setIsNewLinkAgency(true)}} defaultChecked>연계기관 선택</CustomInput>
+                        <CustomInput type="radio" id="selectRegion" name = "radioRegion" onClick={() => {setIsNewLinkAgency(true)}} defaultChecked>연계기관 선택</CustomInput>
                         <Col sm={4}>
                             <Input type='select' name='selectRegion' disabled={!isNewLinkAgency} onChange={handleSubmitLinkAgencyCode}>
-                            {/* 여기에 option을 연계기관을 DB에서 select 해서 for문으로 추가하면 될듯! */}
+                                {/* 여기에 option을 연계기관을 DB에서 select 해서 for문으로 추가하면 될듯! */}
                                 <option>선택</option>
                                 <option value='LA0001'>구미도서관</option>
                                 <option value='LA0002'>구미행복교회</option>
