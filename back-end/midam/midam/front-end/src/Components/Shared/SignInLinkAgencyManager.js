@@ -116,13 +116,14 @@ const SignInLinkAgency = ({history},props) => {
                 form.append('gender', gender);
                 form.append('age', age);
                 form.append('address', address);
+                form.append('regionCode', regionCode);
                 form.append('phoneNumber', phoneNumber);
                 form.append('linkAgencyCode', linkAgencyCode);
                 form.append('linkAgencyName', linkAgencyName);
                 form.append('linkAgencyAddress', linkAgencyAddress);
                 form.append('linkAgencyInfo', linkAgencyInfo);
                 axios.post("/signIn/createLinkAgencyManagerNewLinkAgency", form,{headers: {'content-type':'multipart/form-data'}}).then((response)=>{
-                console.log(response.data.authority);
+                alert(response.data.responseMsg);
                 history.push("/");
             
                 })
@@ -134,12 +135,13 @@ const SignInLinkAgency = ({history},props) => {
                 form.append('name', name);
                 form.append('gender', gender);
                 form.append('age', age);
+                form.append('regionCode', regionCode);
                 form.append('address', address);
                 form.append('phoneNumber', phoneNumber);
                 form.append('authority', authority);
                 form.append('linkAgencyCode', linkAgencyCode);
                 axios.post("/signIn/createLinkAgencyManager", form).then((response)=>{
-                    console.log(response.data.authority);
+                    alert(response.data.responseMsg);
                     history.push("/");
                 })
             }

@@ -69,6 +69,7 @@ public class RecruitmentDAO {
             rs.next();
             max_code = rs.getString(1);
             str_code=max_code.substring(2,6);
+
             code = Integer.parseInt(str_code);
             code2 =code+1;
             code3=String.format("%04d", code2);
@@ -172,7 +173,6 @@ public class RecruitmentDAO {
                 post.setTitle(rs.getString("title"));
                 post.setContent(rs.getString("content"));
                 post.setWriteDate(rs.getString("writeDate"));
-
             }
             pstmt=conn.prepareStatement(sql_view);
             pstmt.setInt(1,postId);

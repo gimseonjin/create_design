@@ -2,6 +2,7 @@ package Midam.Controller;
 import Midam.DAO.activity.MentoringHistoryDAO;
 import Midam.DAO.linkAgency.LinkAgencyDAO;
 import Midam.DAO.region.RegionDAO;
+import Midam.model.token.Token;
 import org.springframework.stereotype.Controller;
 import Midam.DAO.user.UserDAO;
 import org.springframework.web.bind.annotation.*;
@@ -9,9 +10,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value= "/signIn", method=RequestMethod.POST)
@@ -80,22 +83,32 @@ public class SignInController {
         String phoneNumber = request.getParameter("phoneNumber");
 
         // 연계기관 신규 등록
+        String regionCode = request.getParameter("regionCode");
         String linkAgencyName = request.getParameter("linkAgencyName");
         String linkAgencyAddress = request.getParameter("linkAgencyAddress");
         String linkAgencyInfo = request.getParameter("linkAgencyInfo");
         LinkAgencyDAO linkAgencyDAO = new LinkAgencyDAO();
         UserDAO userDAO = new UserDAO();
 
-        String linkAgencyCode = linkAgencyDAO.createLinkAgencyApplication(linkAgencyName, linkAgencyAddress, linkAgencyInfo);
+        String linkAgencyCode = linkAgencyDAO.createLinkAgencyApplication(regionCode, linkAgencyName, linkAgencyAddress, linkAgencyInfo);
         //등록결과 연계기관 코드를 반환
         //신규 연계기관을 등록 한 후 그 연계기관의 코드를 가져와야한다
-        int createResultlinkAgencyManager = userDAO.createLinkAgencyManager(id,password,name,gender,age,address,phoneNumber,
-                linkAgencyCode);
-        String createResult = "성공 혹은 실패 확률 은 50 대 50";
-        result.put("responseMsg",createResult);
+        if(linkAgencyCode != null) {
+
+            int createResult = userDAO.createLinkAgencyManager(id, password, name, gender, age, address, phoneNumber,
+                    linkAgencyCode);
+
+            if(createResult >= 1) {
+                result.put("responseMsg", "신청 성공");
+            }
+        }else{
+            result.put("responseMsg", "신청 실패, 다시 시도해주세요");
+        }
         return result;
     }
 
+    
+    
     // 회원가입시 선택할 지역본부 목록 리스트로 반환
     @ResponseBody
     @PostMapping(value="/readRegionList")
@@ -117,4 +130,25 @@ public class SignInController {
 
         return linkAgencyList;
     }
+
+    //지역본부 관리자가 신청자 리스트 조회
+    @ResponseBody
+    @PostMapping(value="/readApplicant/regionManager")
+    public ArrayList readApplicant(@RequestParam("userToken") String userToken) throws UnsupportedEncodingException {
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
+
+        UserDAO userDAO = new UserDAO();
+        ArrayList<HashMap> mentorApplicantList = userDAO.readMentorApplicant(id);
+        ArrayList<HashMap> linkAgencyManagerApplicantList = userDAO.readLinkAgencyApplicant(id);
+
+        ArrayList result = new ArrayList();
+        result.add(mentorApplicantList);
+        result.add(linkAgencyManagerApplicantList);
+
+        return result;
+    }
+    //신청자 상세 조회.
+
 }

@@ -28,6 +28,7 @@ import '../Css/Header.css';
 import QrScanner from '../Shared/QrScanner';
 import axios from 'axios';
 import ReadActivityHistoryRegionManager from './ReadActivityHistoryRegionManager';
+import ReadApplicant from './ReadApplicant';
 
 const HeaderRegionManager = ({match, history}) => {
     
@@ -71,6 +72,15 @@ const HeaderRegionManager = ({match, history}) => {
                     <NavbarToggler onClick={toggle} />
                         <Collapse isOpen={isOpen} navbar>
                             <Nav className="mr-auto" navbar>
+                            <NavItem>
+                                    <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle nav caret><span class = "nav-title">회원 관리</span></DropdownToggle>
+                                            <DropdownMenu left>
+                                                <DropdownItem >  <Link to={`${match.url}/readApplicant`}><span>회원 가입 신청자 조회</span></Link></DropdownItem>
+                                                <DropdownItem ><span>~~</span></DropdownItem>
+                                            </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </NavItem>
                             <NavItem>
                                     <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">활동 관리</span></DropdownToggle>
@@ -125,7 +135,7 @@ const HeaderRegionManager = ({match, history}) => {
 
             <Switch>
                 <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryRegionManager}></Route>
-
+                <Route exact path={`${match.path}/readApplicant`} component={ReadApplicant}></Route>
             </Switch>
         </div>
     )

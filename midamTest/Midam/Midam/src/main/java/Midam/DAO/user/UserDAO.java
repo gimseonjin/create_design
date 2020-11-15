@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserDAO {
 
@@ -171,5 +172,61 @@ public class UserDAO {
         return result;
     }
 
+    //지역본부 관리자가 자신이 소속된 지역본부에 신청한 멘토 회원가입 신청자들을 조회함.
+    public ArrayList readMentorApplicant(String id){
+        ArrayList result = new ArrayList();
+        sql = "SELECT user.id, name, gender, age, address, phoneNumber, mentor.1365Id FROM user JOIN mentor ON user.id=mentor.id WHERE user.authority=5 AND mentor.regionCode=(SELECT regionCode FROM mentor WHERE id=?);";
+        try {
+            conn=getConnection();
 
+            pstmt = conn.prepareStatement(sql);  //회원테이블 회원가입
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                HashMap applicant = new HashMap();
+                applicant.put("id", rs.getString("id"));
+                applicant.put("name", rs.getString("name"));
+                applicant.put("gender",rs.getString("gender"));
+                applicant.put("age",rs.getInt("age"));
+                applicant.put("address",rs.getString("address"));
+                applicant.put("phoneNumber",rs.getString("phoneNumber"));
+                applicant.put("volunteerId", rs.getString("1365Id"));
+                result.add(applicant);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+    //지역본부 관리자가 자신이 소속된 지역본부에 신청한 연계기관 담당자 회원가입 신청자들을 조회함.
+    public ArrayList readLinkAgencyApplicant(String id){
+        ArrayList result = new ArrayList();
+        sql = "SELECT user.id, name, gender, age, address, phoneNumber FROM user JOIN mentor ON user.id=mentor.id WHERE user.authority=5 AND mentor.regionCode=(SELECT regionCode FROM mentor WHERE id=?);";
+        try {
+            conn=getConnection();
+
+            pstmt = conn.prepareStatement(sql);  //회원테이블 회원가입
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                HashMap applicant = new HashMap();
+                applicant.put("id", rs.getString("id"));
+                applicant.put("name", rs.getString("name"));
+                applicant.put("gender",rs.getString("gender"));
+                applicant.put("age",rs.getInt("age"));
+                applicant.put("address",rs.getString("address"));
+                applicant.put("phoneNumber",rs.getString("phoneNumber"));
+                result.add(applicant);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
 }

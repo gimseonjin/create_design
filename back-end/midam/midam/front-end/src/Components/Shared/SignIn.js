@@ -100,11 +100,10 @@ function SignIn({history},props) {
         form.append('phoneNumber', phoneNumber);
         form.append('regionCode', regionCode);
         form.append('volunteerId', volunteerId);
-        axios.post("/user/createMentor", form,{headers: {'content-type':'multipart/form-data'}})
+        axios.post("/signIn/createMentor", form)
         .then((response)=>{
          console.log(response.data.authority);
          history.push("/");
-     
      })
     }
 
@@ -113,8 +112,8 @@ function SignIn({history},props) {
             regionArrays = response.data;
             setRegionList(regionArrays.map(renderRegionList));
         });
-
     }
+
     useEffect(()=>{
         readRegionList();
     },[])
