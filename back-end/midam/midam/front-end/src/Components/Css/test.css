@@ -12,3 +12,7 @@
 .modal-content.textarea{
   overflow :hidden;
 }
+
+.display{
+  display :none;
+}
