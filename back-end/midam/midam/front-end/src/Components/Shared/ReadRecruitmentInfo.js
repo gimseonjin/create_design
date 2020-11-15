@@ -211,12 +211,12 @@ function ReadRecruitmentInfo(props){
       
          
             <Modal isOpen={modalCreateApplication}>
-                        <ModalHeader toggle={toggleCreateApplication}>댓글 등록</ModalHeader>
+                        <ModalHeader toggle={toggleCreateApplication}>모집 신청</ModalHeader>
                        
                          <CreateApplication mentorRecruitmentCode={modalInput}></CreateApplication>                         
             </Modal>
                                   
-            <Button className="btn btn-primary btn-block w-25" color={"primary"} style={{float: 'right'}}   type="post" onClick={""}>{"지원하기"}</Button>
+            <Button className="btn btn-primary btn-block w-25" color={"primary"} style={{float: 'right'}}   type="post" onClick={""}>{"모집 신청"}</Button>
             <div>
  
       
