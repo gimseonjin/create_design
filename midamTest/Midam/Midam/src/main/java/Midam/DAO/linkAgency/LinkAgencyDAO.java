@@ -169,6 +169,31 @@ public class LinkAgencyDAO {
             return result;
     }
 
+    //연계기관 등록 승인
+    public HashMap approveLinkAgency(String linkAgencyCode){
+        HashMap result = new HashMap();
+        sql = "UPDATE link_agency SET status = 1 WHERE (linkAgencyCode = ?);";
+
+        try {
+            conn=getConnection();
+            pstmt=conn.prepareStatement(sql);
+            pstmt.setString(1,linkAgencyCode);
+            int resultRows = pstmt.executeUpdate();
+            if(resultRows>0){
+                result.put("resultMsg","성공");
+            }else{
+                result.put("resultMsg","실패");
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+        closeConnection(conn);
+        }
+
+        return result;
+    }
+
 // 다음 코드 반환
     public String getNextCode(String code){
 

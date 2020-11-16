@@ -140,8 +140,8 @@ public class SignInController {
         String id = map.get("id").toString();
 
         UserDAO userDAO = new UserDAO();
-        ArrayList<HashMap> mentorApplicantList = userDAO.readMentorApplicant(id);
-        ArrayList<HashMap> linkAgencyManagerApplicantList = userDAO.readLinkAgencyApplicant(id);
+        ArrayList<HashMap> mentorApplicantList = userDAO.readMentorApplicantList(id);
+        ArrayList<HashMap> linkAgencyManagerApplicantList = userDAO.readLinkAgencyApplicantList(id);
 
         ArrayList result = new ArrayList();
         result.add(mentorApplicantList);
@@ -149,6 +149,43 @@ public class SignInController {
 
         return result;
     }
-    //신청자 상세 조회.
+    //신청자 승인 겸 상세 조회.
+    @ResponseBody
+    @PostMapping(value="/readLinkAgencyApplicantInfo/regionManager")
+    public HashMap readApplicantInfo(@RequestParam("userToken") String userToken, @RequestParam("applicantId") String applicantId) throws UnsupportedEncodingException {
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String authority = map.get("authority").toString();
 
+        HashMap result = null;
+        UserDAO userDAO = new UserDAO();
+        result = userDAO.readLinkAgencyApplicantInfo(applicantId);
+
+        return result;
+    }
+
+    //연계기관 담당자 회원가입 승인
+    @ResponseBody
+    @PostMapping(value="/approveLinkAgencyApplicant/regionManager")
+    public HashMap approveLinkAgencyApplicant(HttpServletRequest request) throws UnsupportedEncodingException {
+        String applicantId = request.getParameter("applicantId");
+        String linkAgencyCode = request.getParameter("linkAgencyCode");
+        int linkAgencyStatus = Integer.parseInt(request.getParameter("linkAgencyStatus"));
+
+        HashMap result = new HashMap();
+        UserDAO userDAO = new UserDAO();
+        LinkAgencyDAO linkAgencyDAO = new LinkAgencyDAO();
+        HashMap linkAgencyResult = new HashMap();
+        HashMap applicantResult = new HashMap();
+
+        //지역본부 등록을 승인 한 후
+        if(linkAgencyStatus == 0 ) {
+            linkAgencyResult = linkAgencyDAO.approveLinkAgency(linkAgencyCode);
+            result.put("linkAgencyResult",linkAgencyResult.get("resultMsg"));
+        }
+        //연계기관 담당자 승인.
+        applicantResult = userDAO.approveLinkAgencyApplicant(applicantId);
+        result.put("applicantResult", applicantResult.get("resultMsg"));
+        return result;
+    }
 }

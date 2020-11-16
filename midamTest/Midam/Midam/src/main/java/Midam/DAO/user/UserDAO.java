@@ -173,7 +173,7 @@ public class UserDAO {
     }
 
     //지역본부 관리자가 자신이 소속된 지역본부에 신청한 멘토 회원가입 신청자들을 조회함.
-    public ArrayList readMentorApplicant(String id){
+    public ArrayList readMentorApplicantList(String id){
         ArrayList result = new ArrayList();
         sql = "SELECT user.id, name, gender, age, address, phoneNumber, mentor.1365Id FROM user JOIN mentor ON user.id=mentor.id WHERE user.authority=5 AND mentor.regionCode=(SELECT regionCode FROM mentor WHERE id=?);";
         try {
@@ -202,9 +202,10 @@ public class UserDAO {
         return result;
     }
     //지역본부 관리자가 자신이 소속된 지역본부에 신청한 연계기관 담당자 회원가입 신청자들을 조회함.
-    public ArrayList readLinkAgencyApplicant(String id){
+    public ArrayList readLinkAgencyApplicantList(String id){
         ArrayList result = new ArrayList();
-        sql = "SELECT user.id, name, gender, age, address, phoneNumber FROM user JOIN mentor ON user.id=mentor.id WHERE user.authority=5 AND mentor.regionCode=(SELECT regionCode FROM mentor WHERE id=?);";
+        sql = "SELECT * FROM user Join link_agency_manager Join link_agency ON user.id=link_agency_manager.id \n" +
+                "AND link_agency_manager.linkAgencyCode=link_agency.linkAgencyCode WHERE user.authority=6 AND link_agency.regionCode=(SELECT regionCode FROM mentor WHERE id=?);";
         try {
             conn=getConnection();
 
@@ -220,6 +221,8 @@ public class UserDAO {
                 applicant.put("age",rs.getInt("age"));
                 applicant.put("address",rs.getString("address"));
                 applicant.put("phoneNumber",rs.getString("phoneNumber"));
+                applicant.put("linkAgencyName", rs.getString("linkAgencyName"));
+                applicant.put("linkAgencyStatus", rs.getInt("status"));
                 result.add(applicant);
             }
         } catch (SQLException throwables) {
@@ -229,4 +232,61 @@ public class UserDAO {
         }
         return result;
     }
+
+    // 연계기관 담당자 회원가입 신청자의 상세 조회
+    public HashMap readLinkAgencyApplicantInfo(String id){
+        HashMap result = new HashMap();
+        sql = "SELECT * FROM user Join link_agency_manager Join link_agency ON user.id=link_agency_manager.id \n" +
+                "AND link_agency_manager.linkAgencyCode=link_agency.linkAgencyCode WHERE user.id=?;";
+        try {
+            conn=getConnection();
+
+            pstmt = conn.prepareStatement(sql);  //회원테이블 회원가입
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                result.put("id", rs.getString("id"));
+                result.put("name", rs.getString("name"));
+                result.put("gender",rs.getString("gender"));
+                result.put("age",rs.getInt("age"));
+                result.put("address",rs.getString("address"));
+                result.put("phoneNumber",rs.getString("phoneNumber"));
+                result.put("linkAgencyName", rs.getString("linkAgencyName"));
+                result.put("linkAgencyStatus", rs.getInt("status"));
+                result.put("linkAgencyCode", rs.getString("linkAgencyCode"));
+                result.put("linkAgencyAddress", rs.getString("linkAgencyAddress"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+    // 연계기관 담당자 회원가입 신청자 승인
+    public HashMap approveLinkAgencyApplicant(String applicantId){
+        HashMap result = new HashMap();
+        sql = "UPDATE user SET authority = 3 WHERE (id = ?);";
+        try {
+            conn=getConnection();
+
+            pstmt = conn.prepareStatement(sql);  //회원테이블 회원가입
+            pstmt.setString(1, applicantId);
+            int resultRows = pstmt.executeUpdate();
+
+            if(resultRows > 0){
+                result.put("resultMsg","성공");
+            }else{
+                result.put("resultMsg","실패");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+
+
 }
