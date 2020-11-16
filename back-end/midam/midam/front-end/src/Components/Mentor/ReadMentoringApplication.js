@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-;
+
 import '../Css/test.css';
 import {
     Button,
@@ -56,32 +56,7 @@ const ReadMentoringApplication = (props) => {
         getApplicationHistory(form);
         }, []
     )
- $(function() { 
-    $(".readPostInfo").off("click")
-        $(".createPostButton").on("click",function(){
-  
-            var postButton = $(this);
 
-            var tr = postButton.parent();
-            var td = tr.children();
-            console.log("row데이터 : "+td.eq(0).text());
-            setModalInput(td.eq(0).text());
-            toggleCreatePost();
-        }
-        ) 
-        $(".readPostInfo").on("click",function(){
-            
-            var postButton = $(this);
-
-            var tr = postButton.parent();
-            var td = tr.children();
-            console.log("row데이터 : "+td.eq(0).text());
-            setModalInput(td.eq(0).text());
-            toggleReadPostInfo();
-        }
-        )       
-    }
-    )
 
     return (
         <div className="container">
@@ -111,18 +86,7 @@ const ReadMentoringApplication = (props) => {
                     
                 </Col>
             </Row>
-            <Modal isOpen={modalCreatePost}>
-                         <ModalHeader toggle={toggleCreatePost}>게시글 작성</ModalHeader>
-                         <CreatePost postId={modalInput}></CreatePost>                         
-            </Modal>
-                   
-            <Modal isOpen={modalReadPostInfo}>
-                <ModalHeader toggle={toggleReadPostInfo}>게시글 상세조회</ModalHeader>
-                <ReadPostInfo postId={modalInput}></ReadPostInfo>
-                
-            </Modal>
-
-            <Button className={"createPostButton"} color={"primary"} >{"작성"}</Button>
+         
         </div>
     )
 }
