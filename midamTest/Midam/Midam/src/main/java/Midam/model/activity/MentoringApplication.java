@@ -5,12 +5,18 @@ import java.sql.Timestamp;
 public class MentoringApplication {
     private String mentorRecruitmentCode;
     private String mentorId;
-    private java.sql.Timestamp applicationDate;
+    private String applicationDate;
     private String applicationMotivation;
     private String career;
     private String ability;
 
+    public String getMentorRecruitmentCode() {
+        return mentorRecruitmentCode;
+    }
 
+    public void setMentorRecruitmentCode(String mentorRecruitmentCode) {
+        this.mentorRecruitmentCode = mentorRecruitmentCode;
+    }
 
     public String getMentorId() {
         return mentorId;
@@ -20,11 +26,11 @@ public class MentoringApplication {
         this.mentorId = mentorId;
     }
 
-    public Timestamp getApplicationDate() {
+    public String getApplicationDate() {
         return applicationDate;
     }
 
-    public void setApplicationDate(Timestamp applicationDate) {
+    public void setApplicationDate(String applicationDate) {
         this.applicationDate = applicationDate;
     }
 

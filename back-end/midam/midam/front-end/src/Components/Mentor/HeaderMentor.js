@@ -165,7 +165,7 @@ const HeaderMentor = ({match, history}) => {
                 <Route exact path={`${match.path}/withdraw`} component={Withdraw}></Route>
                 <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryMentor}></Route>
                
-                <Route exact path={`${match.path}/readMentoringApplication`} component={ReadMentoringApplication}></Route>
+               
                 {/* 활동 */}
                 <Route exact path={`${match.path}/readActivityHistory`} component = {ReadActivityHistoryMentor}></Route>
                 <Route exact path={`${match.path}/readMentoringApplication`} component = {ReadMentoringApplication}></Route>

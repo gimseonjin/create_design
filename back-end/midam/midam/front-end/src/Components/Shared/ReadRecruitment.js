@@ -26,7 +26,9 @@ const ReadRecruitment = (props) => {
     const [linkAgencyList, setLinkAgencyList] = useState();
 
     const [modalReadRecruitmentInfo, setModalReadRecruitmentInfo] = useState(false);
-
+    const toggleReadRecruitmentInfo = () => setModalReadRecruitmentInfo(
+        !modalReadRecruitmentInfo
+    );
     //*검색 옵션들. option 0:
     const [option, setOption] = useState(0);
     const [region, setRegion] = useState("선택안함");
@@ -61,9 +63,7 @@ const ReadRecruitment = (props) => {
         }
     }
 
-    const toggleReadRecruitmentInfo = () => setModalReadRecruitmentInfo(
-        !modalReadRecruitmentInfo
-    );
+    
 
     let recruitmentArrays = [];
     let regionArrays = [];
