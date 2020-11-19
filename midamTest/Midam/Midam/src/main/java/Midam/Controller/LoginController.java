@@ -5,6 +5,7 @@ import Midam.model.token.Token;
 
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class LoginController {
     private java.lang.Object Map;
 
     @PostMapping("login")
-    public HashMap loginTest(@RequestParam("id") String id, @RequestParam("password") String password, @RequestParam("reqAuthority") int reqAuthority) throws SQLException, ClassNotFoundException {
+    public HashMap login(@RequestParam("id") String id, @RequestParam("password") String password, @RequestParam("reqAuthority") int reqAuthority) throws SQLException, ClassNotFoundException {
 
         HashMap result = new HashMap();
         String jwt = "";
@@ -37,6 +38,7 @@ public class LoginController {
                 jwt = tokenController.createToken(userToken);
                 result.put("result", 1);
                 result.put("userToken", jwt);
+                result.put("responseMsg","성공");
                 break;
 
             case 0:
@@ -44,7 +46,7 @@ public class LoginController {
             case -2:
             case -3:
                 result.put("result", 0);
-                result.put("message", "login fail");
+                result.put("responseMsg","실패");
         }
         return result;
     }
@@ -68,6 +70,8 @@ public class LoginController {
         }
         return result;
     }
+
+
 }
 
 

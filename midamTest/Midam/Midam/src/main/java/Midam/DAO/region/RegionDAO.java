@@ -43,8 +43,8 @@ public class RegionDAO {
     //지역본부 목록을 List로 반환
     public ArrayList<HashMap> readRegionList(){
         ArrayList<HashMap> list =new ArrayList<HashMap>();
-        sql = "select regionCode, regionName, regionAddress from region";
-
+        sql = "select regionCode, regionName, regionAddress from region WHERE status=1";
+        //status 가 1이면 정상. -1이면 비활성화상태.
         try {
             conn=getConnection();
             pstmt = conn.prepareStatement(sql);

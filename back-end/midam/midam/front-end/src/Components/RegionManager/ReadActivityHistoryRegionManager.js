@@ -80,7 +80,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
      }
      function setDefualtStartdate(){ //한달전~오늘날짜까지로 input date 값 설정
         let today = new Date();
-        today.setDate(today.getDate()-7);
+        today.setMonth(today.getMonth()-1);
         let date = ("0"+(today.getDate())).slice(-2);
         let month = ("0"+(today.getMonth()+1)).slice(-2);
         let year = today.getFullYear();
@@ -137,7 +137,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
         return(
             <tr key={index}>
                 <th>{historyArray.activityHistoryCode}</th>
-                <th>{historyArray.mentorName}</th>
+                <td className="text-nowrap">{historyArray.mentorName}</td>
                 <td>{historyArray.startTime}</td>
                 <td>{historyArray.endTime}</td>
                 <td><Button className={buttonClassName} color={ButtonColor} >{ButtonValue}</Button></td>
@@ -239,16 +239,11 @@ const ReadActivityHistoryRegionManager=(props)=> {
             toggleReadReport();
         }
         )
-
-        
     }
     )
 
-   
-
     return (
         <div className="container">
-        
             <Row>
                 {/* 날짜, 연계기관, 활동 선택 */}
                 <Col className="mb-5">
@@ -325,4 +320,5 @@ const ReadActivityHistoryRegionManager=(props)=> {
         </div>
     )
 }
+
 export default ReadActivityHistoryRegionManager;

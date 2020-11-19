@@ -26,6 +26,7 @@ import useModal from 'react-hooks-use-modal';
 import '../Css/Header.css';
 import QrScanner from '../Shared/QrScanner';
 import axios from 'axios';
+import ReadMentorAndRegionManager from './ReadMentorAndRegionManager';
 
 const HeaderSystemManager = ({match, history}) => {
 
@@ -46,7 +47,7 @@ const HeaderSystemManager = ({match, history}) => {
         axios.post("http://localhost:8080/checkAuthority", form)
         .then((response)=>{
             if(response.data === "TRUE"){
-                alert("success")
+                //성공
             }else{
                 alert("FALSE");
                 localStorage.removeItem("userToken");
@@ -70,6 +71,15 @@ const HeaderSystemManager = ({match, history}) => {
                     <NavbarToggler onClick={toggle} />
                         <Collapse isOpen={isOpen} navbar>
                             <Nav className="mr-auto" navbar>
+                                <NavItem>
+                                    <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle nav caret><span class = "nav-title">회원 관리</span></DropdownToggle>
+                                            <DropdownMenu left>
+                                                <DropdownItem ><Link to ={`${match.url}/readMentorAndRegionManager`}><span>지역본부 멘토 및 관리자 조회</span></Link></DropdownItem>
+                                                <DropdownItem ><span>멘토링 모집</span></DropdownItem>
+                                            </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </NavItem>
                                 <NavItem>
                                     <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">커뮤니티</span></DropdownToggle>
@@ -113,6 +123,11 @@ const HeaderSystemManager = ({match, history}) => {
                                 </Nav>
                             </Collapse>
                     </Navbar>
+
+                    <Switch>
+                     <Route exact path={`${match.path}/readMentorAndRegionManager`} component={ReadMentorAndRegionManager}></Route>
+
+                    </Switch>
             </div>
         </div>
     )

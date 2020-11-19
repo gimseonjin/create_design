@@ -170,20 +170,16 @@ public class LinkAgencyDAO {
     }
 
     //연계기관 등록 승인
-    public HashMap approveLinkAgency(String linkAgencyCode){
-        HashMap result = new HashMap();
+    public int approveLinkAgency(String linkAgencyCode){
+        int result = 0;
         sql = "UPDATE link_agency SET status = 1 WHERE (linkAgencyCode = ?);";
 
         try {
             conn=getConnection();
             pstmt=conn.prepareStatement(sql);
             pstmt.setString(1,linkAgencyCode);
-            int resultRows = pstmt.executeUpdate();
-            if(resultRows>0){
-                result.put("resultMsg","성공");
-            }else{
-                result.put("resultMsg","실패");
-            }
+            result = pstmt.executeUpdate();
+
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -193,8 +189,28 @@ public class LinkAgencyDAO {
 
         return result;
     }
+    //회원가입 거절 -> DB에서 삭제
+    public int deleteLinkAgency(String linkAgencyCode){
+       int result = 0;
+        sql = "DELETE FROM link_agency WHERE (linkAgencyCode = ?);";
+        try {
+            conn=getConnection();
+            pstmt=conn.prepareStatement(sql);
+            pstmt.setString(1,linkAgencyCode);
+            result = pstmt.executeUpdate();
 
-// 다음 코드 반환
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+
+        return result;
+
+    }
+
+// "XX0000" 형식에서 다음 코드 반환
     public String getNextCode(String code){
 
         String nextCode;
@@ -211,5 +227,30 @@ public class LinkAgencyDAO {
 
     }
 
+    //지역본부 관리자가 소속 연계기관담당자 조회시 지역본부 리스트 조회 -> option 선택용
+    public ArrayList readLinkAgencyListRegionManager(String id){
+        ArrayList result = new ArrayList();
+        sql="SELECT linkAgencyCode, linkAgencyName FROM mentor JOIN link_agency ON mentor.regionCode=link_agency.regionCode where mentor.id=? AND link_agency.status=1;";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                HashMap linkAgency = new HashMap();
+                linkAgency.put("linkAgencyCode",rs.getString("linkAgencyCode"));
+                linkAgency.put("linkAgencyName",rs.getString("linkAgencyName"));
+                result.add(linkAgency);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+
+        return result;
+    }
 
 }

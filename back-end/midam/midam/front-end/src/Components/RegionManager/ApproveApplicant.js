@@ -6,15 +6,15 @@ import { Button, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroup
 function ApproveApplicant(props) {
     const [applicantId, setApplicantId] = useState(props.applicantId);
     
-    const [name, setName] = useState();
-    const [gender, setGender] = useState();
-    const [age, setAge] = useState();
-    const [address, setAddress] = useState();
-    const [phoneNumber, setPhoneNumber] = useState();
-    const [linkAgencyName, setLinkAgencyName] = useState();
-    const [linkAgencyCode, setLinkAgencyCode] = useState();
-    const [linkAgencyAddress, setLinkAgencyAddress] = useState();
-    const [linkAgencyStatus, setLinkAgencyStatus] = useState();
+    const [name, setName] = useState("");
+    const [gender, setGender] = useState('');
+    const [age, setAge] = useState('');
+    const [address, setAddress] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [linkAgencyName, setLinkAgencyName] = useState('');
+    const [linkAgencyCode, setLinkAgencyCode] = useState('');
+    const [linkAgencyAddress, setLinkAgencyAddress] = useState('');
+    const [linkAgencyStatus, setLinkAgencyStatus] = useState('');
 
     function readApplicantInfo(){
         var form = new FormData();
@@ -32,14 +32,24 @@ function ApproveApplicant(props) {
             setLinkAgencyCode(response.data.linkAgencyCode);
         });
     }
-    function approveApplicant(){
+    function approveLinkAgencyApplicant(){
         var form = new FormData();
         form.append("userToken",localStorage.getItem("userToken"));
         form.append("applicantId", applicantId);
         form.append("linkAgencyCode", linkAgencyCode);
         form.append("linkAgencyStatus", linkAgencyStatus);
         axios.post("/signIn/approveLinkAgencyApplicant/regionManager",form).then((response)=>{
-            alert('test');
+            alert(response.data.resultMsg);
+        })
+    }
+    function rejectLinkAgencyApplicant(){
+        var form = new FormData();
+        form.append("userToken",localStorage.getItem("userToken"));
+        form.append("applicantId", applicantId);
+        form.append("linkAgencyCode", linkAgencyCode);
+        form.append("linkAgencyStatus", linkAgencyStatus);
+        axios.post("/signIn/rejectLinkAgencyApplicant/regionManager",form).then((response)=>{
+            alert(response.data.resultMsg);
         })
     }
 
@@ -132,8 +142,8 @@ function ApproveApplicant(props) {
                     readOnly={true}
                     value={linkAgencyAddress}></Input>
             </InputGroup>
-            <Button color="primary" onClick={()=>approveApplicant()}> 승인 </Button>
-            <Button color="danger"> 거절 </Button>
+            <Button color="primary" onClick={()=>approveLinkAgencyApplicant()}> 승인 </Button>
+            <Button color="danger" onClick={()=>rejectLinkAgencyApplicant()}> 거절 </Button>
         </FormGroup>
     </Form>
 
