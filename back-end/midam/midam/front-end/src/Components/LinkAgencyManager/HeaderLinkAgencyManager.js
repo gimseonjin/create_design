@@ -29,6 +29,7 @@ import ReadPost from '../Shared/ReadPost';
 import CreatePost from '../Shared/CreatePost';
 import ReadRecruitment from '../Shared/ReadRecruitment';
 import CreateRecruitment from './CreateRecruitment';
+import ReadApplication from './ReadApplicationManager';
 import '../Css/Header.css';
 import axios from 'axios';
 
@@ -82,6 +83,7 @@ const HeaderLinkAgencyManager = ({match, history}) => {
                                                 <DropdownItem ><span>게시판 보기</span></DropdownItem>
                                                 <DropdownItem ><Link to={`${match.url}/readRecruitment`}><span>멘토링 모집</span></Link></DropdownItem>
                                                 <DropdownItem ><Link to={`${match.url}/createRecruitment`}><span>모집 등록</span></Link></DropdownItem>
+                                                <DropdownItem ><Link to={`${match.url}/readApplication`}><span>멘토링 승인</span></Link></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </NavItem>
@@ -124,6 +126,7 @@ const HeaderLinkAgencyManager = ({match, history}) => {
                 <Route exact path={`${match.path}/createPost`} component = {CreatePost}></Route>
                 <Route exact path={`${match.path}/readRecruitment`} component = {ReadRecruitment}></Route>
                 <Route exact path={`${match.path}/createRecruitment`} component = {CreateRecruitment}></Route>
+                <Route exact path={`${match.path}/readApplication`} component = {ReadApplication}></Route>                                
             </Switch>
         </div>
 
