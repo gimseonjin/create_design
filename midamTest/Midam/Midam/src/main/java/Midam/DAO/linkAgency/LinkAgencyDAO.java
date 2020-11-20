@@ -189,8 +189,9 @@ public class LinkAgencyDAO {
 
         return result;
     }
+
     //회원가입 거절 -> DB에서 삭제
-    public int deleteLinkAgency(String linkAgencyCode){
+    public int deleteLinkAgencyApplication(String linkAgencyCode){
        int result = 0;
         sql = "DELETE FROM link_agency WHERE (linkAgencyCode = ?);";
         try {
@@ -210,22 +211,6 @@ public class LinkAgencyDAO {
 
     }
 
-// "XX0000" 형식에서 다음 코드 반환
-    public String getNextCode(String code){
-
-        String nextCode;
-        String character=code.substring(0,2);
-        String stringNumber=code.substring(2,6);
-
-
-        int intNumber = Integer.parseInt(stringNumber);
-
-        String nextNumber=String.format("%04d", intNumber+1);
-        nextCode= character.concat(nextNumber);
-
-        return nextCode;
-
-    }
 
     //지역본부 관리자가 소속 연계기관담당자 조회시 지역본부 리스트 조회 -> option 선택용
     public ArrayList readLinkAgencyListRegionManager(String id){
@@ -251,6 +236,75 @@ public class LinkAgencyDAO {
         }
 
         return result;
+    }
+
+    //지역본부 관리자가 소속 연계기관담당자 조회시 지역본부 리스트 조회 -> 전체 정보 조회
+    public ArrayList readLinkAgencyInfoListRegionManager(String id){
+        ArrayList result = new ArrayList();
+        sql="SELECT linkAgencyCode, linkAgencyName, linkAgencyAddress, linkAgencyInfo FROM mentor JOIN link_agency ON mentor.regionCode=link_agency.regionCode where mentor.id=? AND link_agency.status=1;";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                HashMap linkAgency = new HashMap();
+                linkAgency.put("linkAgencyCode",rs.getString("linkAgencyCode"));
+                linkAgency.put("linkAgencyName",rs.getString("linkAgencyName"));
+                linkAgency.put("linkAgencyAddress", rs.getString("linkAgencyAddress"));
+                linkAgency.put("linkAgencyInfo", rs.getString("linkAgencyInfo"));
+                result.add(linkAgency);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+
+        return result;
+    }
+
+    //연계기관 삭제 -> DB에서  status -1로 비활성화.
+    public int[] deleteLinkAgency(String linkAgencyCode){
+        int[] result = {0, 0};
+        sql = "UPDATE link_agency SET status = -1 WHERE linkAgencyCode = ?;";
+        String sql2 = "UPDATE user JOIN link_agency_manager ON user.id=link_agency_manager.id SET authority=-3 WHERE link_agency_manager.linkAgencyCode=?;";
+        try {
+            conn=getConnection();
+            pstmt=conn.prepareStatement(sql);
+            pstmt.setString(1,linkAgencyCode);
+            result[0] = pstmt.executeUpdate();
+
+            pstmt=conn.prepareStatement(sql2);
+            pstmt.setString(1,linkAgencyCode);
+            result[1] = pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+
+        return result;
+
+    }
+
+    // "XX0000" 형식에서 다음 코드 반환
+    public String getNextCode(String code){
+
+        String nextCode;
+        String character=code.substring(0,2);
+        String stringNumber=code.substring(2,6);
+
+
+        int intNumber = Integer.parseInt(stringNumber);
+
+        String nextNumber=String.format("%04d", intNumber+1);
+        nextCode= character.concat(nextNumber);
+
+        return nextCode;
+
     }
 
 }

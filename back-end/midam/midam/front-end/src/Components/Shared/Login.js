@@ -15,8 +15,6 @@ import {
 import midamLogo from '../img/midam.png';
 import '../Css/Login.css'
 import axios from 'axios';
-import usePost from './usePost';
-import cookie from 'react-cookies';
 
 const Login = ({props, history}) => {
 

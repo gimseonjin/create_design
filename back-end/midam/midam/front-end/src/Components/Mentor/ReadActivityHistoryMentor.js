@@ -3,12 +3,9 @@ import { Button, Col, Container, Form, Input, InputGroup, InputGroupAddon, Input
 import CreateReport from './CreateReport';
 import CreateQR from './CreateQR';
 import ExportMentoringActivity from '../LinkAgencyManager/ExportMentoringActivity';
-import useRequest from '../Shared/useRequest';
 import axios from 'axios';
-import usePost from '../Shared/usePost';
 import $ from 'jquery';
 import ReadReportMentor from './ReadReportMentor';
-import cookie from 'react-cookies';
 
 //활동 내역 조회
 const ReadActivityHistoryMentor=(props)=> {
@@ -197,15 +194,6 @@ const ReadActivityHistoryMentor=(props)=> {
         }
             );
     }
-    // 연계기관 리스트 받아오기, 디폴트로 하는 조회에서 같이받아와서 안쓰는중.
-    /* function getLinkAgencyList(){
-        var form = new FormData;
-        form.append("userToken", localStorage.getItem('userToken'));
-        axios.post('/activityHistory/getLinkAgencyList/mentor').then((response)=>{
-            console.log(response.data);
-        });
-
-    }; */
 
 
     // 연계기관 리스트 선택 시 해당 연계기관의 활동 받아오기
@@ -309,7 +297,6 @@ const ReadActivityHistoryMentor=(props)=> {
                             }}>조회</Button>
                         {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
                         <Button color="primary" onClick={()=>setModalExportExcel(true)}>내보내기</Button>
-                        <Button onClick={()=>alert(option+linkAgency + activity + startDate + endDate)}>InputTest</Button>
                     </Form>
                 </Col>
                 {/* 활동 내역 테이블 */}
