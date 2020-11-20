@@ -38,8 +38,8 @@ function ApplyChangeRegion() {
         axios
             .post('http://localhost:8080/user/readRegionList', form)
             .then((response) => {
-                console.log(response.data);
-                setRegionArrays = response.data;
+         
+                regionArrays = response.data;
                 setTableData(regionArrays.map(renderInput));
                 
                     
@@ -70,7 +70,7 @@ function ApplyChangeRegion() {
     useEffect(() => {
         var form = new FormData;
         form.append("id", localStorage.getItem('id'));
-        readRegionList();
+        readRegionList(form);
         }, []
     )
 
@@ -103,7 +103,7 @@ function ApplyChangeRegion() {
 
             <Modal isOpen={modalApplyChangeRegion} >
                          <ModalHeader toggle={toggleApplyChangeRegion}>지역본부 변경 요청</ModalHeader>
-                         <ChangeReason messageId={modalInput}></ChangeReason>                         
+                         <ChangeReason regionCode={modalInput}></ChangeReason>                         
             </Modal>
     </div>
     )

@@ -445,7 +445,28 @@ public class UserDAO {
         }
         return user;
     }
+    public int applyChangeRegion(String regionCode, String id,String changeReason) { // 등록
+        int result =0;
 
+        String sql = "insert into region_change_application"+
+                " (regionCode, mentorId, changeReason) values(?,?,?)";
+        try {
+
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, regionCode);
+            pstmt.setString(2, id);
+            pstmt.setString(3, changeReason);
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
 
 
     // 지역본부 관리자가 소속 연계기관 담당자 조회 : linkAgencyCode 받아서 해당하는 연계기관의 담당자 조회

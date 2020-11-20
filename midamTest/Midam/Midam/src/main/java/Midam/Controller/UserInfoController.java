@@ -1,5 +1,6 @@
 package Midam.Controller;
 
+import Midam.DAO.community.PostDAO;
 import Midam.DAO.linkAgency.LinkAgencyDAO;
 import Midam.DAO.region.RegionDAO;
 import Midam.DAO.user.UserDAO;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -135,16 +137,19 @@ public class UserInfoController {
 
         return result;
     }
-    @ResponseBody  //소속변경
+    @ResponseBody  //소속변경시 지역본부 목록 조회
     @PostMapping(value = "/readRegionList")
-    public ArrayList readRegionList(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+    public ArrayList readRegionList(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
 
-
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        Object objectId = map.get("id");
+        String id = objectId.toString();
 
         RegionDAO regionDAO =new RegionDAO();
-        ArrayList<HashMap> regionArrayList = regionDAO.readRegionList();
-        String ken = request.getParameter("dd");
-        System.out.print(ken);
+        ArrayList<HashMap> regionArrayList = regionDAO.readChangeRegionList(id);
+
+
 
         return regionArrayList;
     }
@@ -242,6 +247,27 @@ public class UserInfoController {
             result.put("responseMsg","실패");
         }
 
+        return result;
+    }
+
+    @ResponseBody
+    @PostMapping(value="/applyChangeRegion")
+    public HashMap createPost(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+
+        HashMap result = new HashMap();
+
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        Object objectId = map.get("id");
+        String id = objectId.toString();
+
+        String regionCode=request.getParameter("regionCode");
+        String changeReason=request.getParameter("changeReason");
+
+        UserDAO userDAO = new UserDAO();
+
+        int createResult = userDAO.applyChangeRegion(regionCode, id,changeReason);
+        result.put("responseMsg",createResult);
         return result;
     }
 }
