@@ -29,6 +29,8 @@ import QrScanner from '../Shared/QrScanner';
 import axios from 'axios';
 import ReadActivityHistoryRegionManager from './ReadActivityHistoryRegionManager';
 import ReadApplicant from './ReadApplicant';
+import ReadMentor from './ReadMentor';
+import ReadLinkAgencyManager from './ReadLinkAgencyManager';
 
 const HeaderRegionManager = ({match, history}) => {
     
@@ -77,6 +79,8 @@ const HeaderRegionManager = ({match, history}) => {
                                         <DropdownToggle nav caret><span class = "nav-title">회원 관리</span></DropdownToggle>
                                             <DropdownMenu left>
                                                 <DropdownItem >  <Link to={`${match.url}/readApplicant`}><span>회원 가입 신청자 조회</span></Link></DropdownItem>
+                                                <DropdownItem >  <Link to={`${match.url}/readMentor`}><span>소속 멘토 조회</span></Link></DropdownItem>
+                                                <DropdownItem >  <Link to={`${match.url}/readLinkAgencyManager`}><span>소속 연계기관 담당자 조회</span></Link></DropdownItem>
                                                 <DropdownItem ><span>~~</span></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
@@ -134,8 +138,15 @@ const HeaderRegionManager = ({match, history}) => {
             </div>
 
             <Switch>
-                <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryRegionManager}></Route>
+                {/* 회원관리 */}
                 <Route exact path={`${match.path}/readApplicant`} component={ReadApplicant}></Route>
+                <Route exact path={`${match.path}/readMentor`} component={ReadMentor}></Route>
+                <Route exact path={`${match.path}/readLinkAgencyManager`} component={ReadLinkAgencyManager}></Route>
+
+                {/* 활동관리 */}
+                <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryRegionManager}></Route>
+                
+
             </Switch>
         </div>
     )

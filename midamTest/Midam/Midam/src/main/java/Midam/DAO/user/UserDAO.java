@@ -266,26 +266,157 @@ public class UserDAO {
         return result;
     }
     // 연계기관 담당자 회원가입 신청자 승인
-    public HashMap approveLinkAgencyApplicant(String applicantId){
-        HashMap result = new HashMap();
+    public int approveLinkAgencyApplicant(String applicantId){
+        int result = 0;
         sql = "UPDATE user SET authority = 3 WHERE (id = ?);";
         try {
             conn=getConnection();
 
             pstmt = conn.prepareStatement(sql);  //회원테이블 회원가입
             pstmt.setString(1, applicantId);
-            int resultRows = pstmt.executeUpdate();
+            result = pstmt.executeUpdate();
 
-            if(resultRows > 0){
-                result.put("resultMsg","성공");
-            }else{
-                result.put("resultMsg","실패");
-            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
             closeConnection(conn);
         }
+        return result;
+    }
+
+    // 연계기관 담당자 회원가입 신청자 승인
+    public int[] deleteLinkAgencyApplicant(String applicantId){
+        int result[] = {0};
+        sql = "DELETE FROM link_agency_manager WHERE (id = ?);";
+        String sql2 = "DELETE FROM user WHERE id=?";
+        try {
+            conn=getConnection();
+
+            pstmt = conn.prepareStatement(sql);  //회원테이블 회원가입
+            pstmt.setString(1, applicantId);
+            result[0] = pstmt.executeUpdate();
+
+
+            pstmt = conn.prepareStatement(sql2);
+            pstmt.setString(1,applicantId);
+            result[1] = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+
+    //SELECT * FROM user JOIN mentor ON user.id=mentor.id WHERE mentor.regionCode=?;
+        //액터: 시스템 관리자, 해당 지역본부의 멘토와 관리자를 조회
+    public ArrayList readMentorAndRegionManagerList(String regionCode){
+        ArrayList result = new ArrayList();
+        ArrayList listMentor = new ArrayList();
+        ArrayList listRegionManager = new ArrayList();
+
+        sql = "SELECT * FROM user JOIN mentor ON user.id=mentor.id WHERE mentor.regionCode=? AND user.authority=1;";
+        String sql2 = "SELECT * FROM user JOIN mentor ON user.id=mentor.id WHERE mentor.regionCode=? AND user.authority=2;";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, regionCode);
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                HashMap applicant = new HashMap();
+                applicant.put("id", rs.getString("id"));
+                applicant.put("name", rs.getString("name"));
+                applicant.put("gender",rs.getString("gender"));
+                applicant.put("age",rs.getInt("age"));
+                applicant.put("address",rs.getString("address"));
+                applicant.put("phoneNumber",rs.getString("phoneNumber"));
+                applicant.put("volunteerId", rs.getString("1365Id"));
+                applicant.put("authority", rs.getString("authority"));
+                listMentor.add(applicant);
+            }
+
+            pstmt = conn.prepareStatement(sql2);
+            pstmt.setString(1, regionCode);
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                HashMap applicant = new HashMap();
+                applicant.put("id", rs.getString("id"));
+                applicant.put("name", rs.getString("name"));
+                applicant.put("gender",rs.getString("gender"));
+                applicant.put("age",rs.getInt("age"));
+                applicant.put("address",rs.getString("address"));
+                applicant.put("phoneNumber",rs.getString("phoneNumber"));
+                applicant.put("volunteerId", rs.getString("1365Id"));
+                applicant.put("authority", rs.getInt("authority"));
+                listRegionManager.add(applicant);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+
+        result.add(listMentor);
+        result.add(listRegionManager);
+
+        return result;
+    }
+
+    //멘토와 지역본부 관리자 사이에 권한 변경. 멘토->관리자/ 관리자->멘토
+    public int changeMentorAuthority(String userId, int userAuthority){
+        int result = 0;
+        sql = "UPDATE user SET authority = ? WHERE (id = ?);";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            if(userAuthority==1) {
+                pstmt.setInt(1, 2);
+            }else if(userAuthority==2){
+                pstmt.setInt(1,1);
+            }
+            pstmt.setString(2, userId);
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+
+    }
+
+    // 지역본부 관리자가 소속 연계기관 담당자 조회 : default, 모든 연계기관 조회
+    public ArrayList readLinkAgencyManagerList(String id){
+        ArrayList result = new ArrayList();
+
+        sql = "SELECT user.id, user.name, user.age, user.gender, user.address, user.phoneNumber, link_agency.linkAgencyName FROM mentor JOIN link_agency JOIN link_agency_manager JOIN user ON mentor.regionCode=link_agency.regionCode AND link_agency.linkAgencyCode=link_agency_manager.linkAgencyCode AND link_agency_manager.id=user.id WHERE mentor.id = ? AND user.authority =3 AND link_agency.status=1;";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                HashMap linkAgencyManager = new HashMap();
+                linkAgencyManager.put("id", rs.getString("id"));
+                linkAgencyManager.put("name", rs.getString("name"));
+                linkAgencyManager.put("age",rs.getInt("age"));
+                linkAgencyManager.put("gender",rs.getString("gender"));
+                linkAgencyManager.put("address",rs.getString("address"));
+                linkAgencyManager.put("phoneNumber",rs.getString("phoneNumber"));
+                linkAgencyManager.put("linkAgencyName", rs.getString("linkAgencyName"));
+                result.add(linkAgencyManager);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+
         return result;
     }
 
@@ -308,13 +439,39 @@ public class UserDAO {
             }
 
 
+    // 지역본부 관리자가 소속 연계기관 담당자 조회 : linkAgencyCode 받아서 해당하는 연계기관의 담당자 조회
+    public ArrayList readLinkAgencyManagerListWithOption(String id, String linkAgencyCode){
+        ArrayList result = new ArrayList();
+
+        sql = "SELECT user.id, user.name, user.age, user.gender, user.address, user.phoneNumber, link_agency.linkAgencyName FROM mentor JOIN link_agency JOIN link_agency_manager JOIN user ON mentor.regionCode=link_agency.regionCode AND link_agency.linkAgencyCode=link_agency_manager.linkAgencyCode AND link_agency_manager.id=user.id WHERE mentor.id = ? AND link_agency.linkAgencyCode=? AND user.authority =3 AND link_agency.status=1;";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            pstmt.setString(2,linkAgencyCode);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                HashMap linkAgencyManager = new HashMap();
+                linkAgencyManager.put("id", rs.getString("id"));
+                linkAgencyManager.put("name", rs.getString("name"));
+                linkAgencyManager.put("age",rs.getInt("age"));
+                linkAgencyManager.put("gender",rs.getString("gender"));
+                linkAgencyManager.put("address",rs.getString("address"));
+                linkAgencyManager.put("phoneNumber",rs.getString("phoneNumber"));
+                linkAgencyManager.put("linkAgencyName", rs.getString("linkAgencyName"));
+                result.add(linkAgencyManager);
+            }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
             closeConnection(conn);
         }
-        return user;
-    }
+        
 
+
+        return result;
+    }
 
 }

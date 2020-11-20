@@ -175,17 +175,64 @@ public class SignInController {
         HashMap result = new HashMap();
         UserDAO userDAO = new UserDAO();
         LinkAgencyDAO linkAgencyDAO = new LinkAgencyDAO();
-        HashMap linkAgencyResult = new HashMap();
-        HashMap applicantResult = new HashMap();
 
-        //지역본부 등록을 승인 한 후
+
+        //연계기관 등록을 승인 한 후
         if(linkAgencyStatus == 0 ) {
-            linkAgencyResult = linkAgencyDAO.approveLinkAgency(linkAgencyCode);
-            result.put("linkAgencyResult",linkAgencyResult.get("resultMsg"));
+            int linkAgencyResult = linkAgencyDAO.approveLinkAgency(linkAgencyCode);
+            int applicantResult = userDAO.approveLinkAgencyApplicant(applicantId);
+            if(linkAgencyResult==1 && applicantResult==1) {
+                result.put("responseMsg", "성공");
+            }else{
+                result.put("responseMsg", "실패");
+            }
+            return result;
+        }else {
+            //연계기관 담당자 승인.
+            int applicantResult = userDAO.approveLinkAgencyApplicant(applicantId);
+            if(applicantResult == 1){
+                result.put("responseMsg", "성공");
+            }else{
+                result.put("responseMsg", "실패");
+            }
+            return result;
         }
-        //연계기관 담당자 승인.
-        applicantResult = userDAO.approveLinkAgencyApplicant(applicantId);
-        result.put("applicantResult", applicantResult.get("resultMsg"));
+    }
+
+    //회원가입 신청자 거절
+    @ResponseBody
+    @PostMapping(value="/rejectLinkAgencyApplicant/regionManager")
+    public HashMap rejectLinkAgencyApplicant(HttpServletRequest request) throws UnsupportedEncodingException {
+        String applicantId = request.getParameter("applicantId");
+        String linkAgencyCode = request.getParameter("linkAgencyCode");
+        int linkAgencyStatus = Integer.parseInt(request.getParameter("linkAgencyStatus"));
+
+        HashMap result = new HashMap();
+        UserDAO userDAO = new UserDAO();
+        LinkAgencyDAO linkAgencyDAO = new LinkAgencyDAO();
+
+
+
+
+        //연계기관 등록신청을 삭제
+        if(linkAgencyStatus == 0 ) {
+            int[] applicantResult = userDAO.deleteLinkAgencyApplicant(applicantId);
+            int linkAgencyResult = linkAgencyDAO.deleteLinkAgency(linkAgencyCode);
+            if(applicantResult[0] ==1 && applicantResult[1] ==1 && linkAgencyResult==1){
+                result.put("responseMsg","성공");
+            }else{
+                result.put("responseMsg","실패");
+            }
+        }else{
+            //연계기관 담당자 삭제.
+            int[] applicantResult = userDAO.deleteLinkAgencyApplicant(applicantId);
+            //index 0: link_agency_manager에서 삭제, 1: user에서 삭제 한 결과
+            if(applicantResult[0] ==1 && applicantResult[1] ==1){
+                result.put("responseMsg","성공");
+            }else{
+                result.put("responseMsg","실패");
+            }
+        }
         return result;
     }
 }

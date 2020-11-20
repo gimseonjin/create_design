@@ -27,7 +27,7 @@ const SignInLinkAgency = ({history},props) => {
 
     //옵션 선택용
     const [regionList, setRegionList] = useState();
-    const [linkAgencyList, setLinkAgencyList] = useState(<option value="">선택</option>);
+    const [linkAgencyList, setLinkAgencyList] = useState("");
     let regionArrays = [];
     let linkAgencyArrays = [];
 
@@ -149,7 +149,6 @@ const SignInLinkAgency = ({history},props) => {
         
     }
 
-  
     const readRegionList=()=>{
         axios.post("/signIn/readRegionList").then((response)=>{
             regionArrays = response.data;
@@ -261,6 +260,7 @@ const SignInLinkAgency = ({history},props) => {
                         <Col sm={4}>
                             <Input type='select' name='region' onChange={handleSubmitRegionCode} >
                             {/* 여기에 option을 지역본부를 DB에서 select 해서 for문으로 추가하면 될듯! */}
+                            <option>선택</option>
                               {regionList}
                             </Input>
                         </Col>
@@ -274,6 +274,7 @@ const SignInLinkAgency = ({history},props) => {
                         <Col sm={4}>
                             <Input type='select' name='selectRegion' disabled={isNewLinkAgency} onChange={handleSubmitLinkAgencyCode}>
                                 {/* 여기에 option을 연계기관을 DB에서 select 해서 for문으로 추가하면 될듯! */}
+                                <option>선택</option>
                                {linkAgencyList}
                             </Input>
                         </Col>

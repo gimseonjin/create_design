@@ -9,7 +9,7 @@ function ReadApplicant(){
     const [mentorApplicantList, setMentorApplicantList] = useState();
     const [linkAgencyApplicantList, setLinkAgencyApplicantList] = useState();
     const [modalApproveApplicant, setModalApproveApplicant] = useState();
-    const [applicantId, setApplicantId] = useState();
+    const [applicantId, setApplicantId] = useState('');
 
     const toggleModalApproveApplicant = () => {
         setModalApproveApplicant(!modalApproveApplicant);

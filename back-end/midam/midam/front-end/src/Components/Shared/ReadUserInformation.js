@@ -29,10 +29,9 @@ const ReadUserInformation = (props) => {
     }
     var lis = [];
     const getUserInformation = () => {
-      console.log(token);
       let form = new FormData();
       form.append("userToken", token);
-      axios.post('/reqUserInfo',form).then((response)=>{
+      axios.post('/user/readUserInfo',form).then((response)=>{
         
         setUserInfo(response.data)
         

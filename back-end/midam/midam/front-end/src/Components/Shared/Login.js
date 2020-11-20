@@ -104,6 +104,7 @@ const Login = ({props, history}) => {
                             form.append('reqAuthority', rSelected);
                             loginTest(form);
                             }}>로그인</Button>
+                            
 
                         <hr class = "under_line"></hr>
     
