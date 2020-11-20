@@ -438,6 +438,14 @@ public class UserDAO {
 
             }
 
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return user;
+    }
+
 
     // 지역본부 관리자가 소속 연계기관 담당자 조회 : linkAgencyCode 받아서 해당하는 연계기관의 담당자 조회
     public ArrayList readLinkAgencyManagerListWithOption(String id, String linkAgencyCode){
