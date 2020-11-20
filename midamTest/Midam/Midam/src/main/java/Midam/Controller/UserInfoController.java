@@ -50,7 +50,7 @@ public class UserInfoController {
         System.out.println(result);
         return result;
     }
-
+/*
     @ResponseBody
     @PostMapping(value="/searchId")
     public HashMap searchId(HttpServletRequest request)  {
@@ -67,6 +67,8 @@ public class UserInfoController {
 
         return result;
     }
+
+ */
     @PostMapping(value = "/readMentorAndRegionManagerList")
     public ArrayList readMentorAndRegionManagerList(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
 

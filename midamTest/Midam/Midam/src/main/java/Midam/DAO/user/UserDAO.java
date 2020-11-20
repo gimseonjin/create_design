@@ -419,7 +419,7 @@ public class UserDAO {
 
         return result;
     }
-
+/*
     public User searchId(String name){
         User user = new User();
 
@@ -437,7 +437,7 @@ public class UserDAO {
                 user.setId(rs.getString("id"));
 
             }
-
+*/
 
     // 지역본부 관리자가 소속 연계기관 담당자 조회 : linkAgencyCode 받아서 해당하는 연계기관의 담당자 조회
     public ArrayList readLinkAgencyManagerListWithOption(String id, String linkAgencyCode){
