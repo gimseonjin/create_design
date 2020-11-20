@@ -8,8 +8,8 @@ public class Message {
     private String receiverId;
     private String title;
     private String content;
-    private java.sql.Timestamp sendDate;
-    private java.sql.Timestamp receiveDate;
+    private String sendDate;
+    private String receiveDate;
     private int status;
 
     public int getMessageId() {
@@ -52,19 +52,19 @@ public class Message {
         this.content = content;
     }
 
-    public Timestamp getSendDate() {
+    public String getSendDate() {
         return sendDate;
     }
 
-    public void setSendDate(Timestamp sendDate) {
+    public void setSendDate(String sendDate) {
         this.sendDate = sendDate;
     }
 
-    public Timestamp getReceiveDate() {
+    public String getReceiveDate() {
         return receiveDate;
     }
 
-    public void setReceiveDate(Timestamp receiveDate) {
+    public void setReceiveDate(String receiveDate) {
         this.receiveDate = receiveDate;
     }
 

@@ -1,6 +1,7 @@
 package Midam.DAO.community;
 
 
+
 import Midam.model.community.Post;
 
 import java.sql.Connection;
@@ -377,5 +378,8 @@ public class PostDAO {
         }
         return result;
     } //댓글 삭제
+
+
+
 
 }

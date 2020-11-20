@@ -57,4 +57,21 @@ public class UserInfoController {
         System.out.println(result);
         return result;
     }
+
+    @ResponseBody
+    @PostMapping(value="/searchId")
+    public HashMap searchId(HttpServletRequest request)  {
+        HashMap result = new HashMap();
+
+
+        String name =request.getParameter("name");
+
+        UserDAO userDAO = new UserDAO();
+
+        User searchResult = userDAO.searchId(name);
+        result.put("id",searchResult.getId());
+
+
+        return result;
+    }
 }

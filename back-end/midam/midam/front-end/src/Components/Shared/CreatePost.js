@@ -68,7 +68,7 @@ function CreatePost(props) {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>내용</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="note" onChange={handleContentOnChange}></Input>
+                        <Input type="textarea" name="note" cols="50" rows="10" onChange={handleContentOnChange}></Input>
                     </InputGroup>
                 </FormGroup>
 

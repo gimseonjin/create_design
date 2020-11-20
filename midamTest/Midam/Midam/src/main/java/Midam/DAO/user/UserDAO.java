@@ -1,5 +1,6 @@
 package Midam.DAO.user;
 
+import Midam.model.community.Message;
 import Midam.model.linkAgency.LinkAgency;
 import Midam.model.user.Mentor;
 import Midam.model.user.User;
@@ -286,6 +287,33 @@ public class UserDAO {
             closeConnection(conn);
         }
         return result;
+    }
+
+    public User searchId(String name){
+        User user = new User();
+
+        String sql = "SELECT id FROM user WHERE name = ? ";
+
+
+        try {
+            conn=getConnection();
+
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, name);
+            ResultSet rs= pstmt.executeQuery();
+            while(rs.next()){
+                user.setId(rs.getString("id"));
+
+            }
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return user;
     }
 
 

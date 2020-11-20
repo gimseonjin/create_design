@@ -101,7 +101,7 @@ function CreateRecruitment(props) {
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>모집인원</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="note" onChange={handleNumberOfMentorOnChange}></Input>
+                        <Input type="text" name="note" onChange={handleNumberOfMentorOnChange}></Input>
                     </InputGroup>
 
                 
