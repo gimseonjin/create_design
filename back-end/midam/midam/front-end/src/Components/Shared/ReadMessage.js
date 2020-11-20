@@ -130,7 +130,7 @@ const ReadMessage = (props) => {
                     
                 </Col>
             </Row>
-            <Modal isOpen={modalCreateMessage}>
+            <Modal isOpen={modalCreateMessage} >
                          <ModalHeader toggle={toggleCreateMessage}>쪽지 보내기</ModalHeader>
                          <CreateMessage messageId={modalInput}></CreateMessage>                         
             </Modal>

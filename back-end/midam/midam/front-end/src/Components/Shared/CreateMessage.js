@@ -65,7 +65,7 @@ function CreateMessage(props) {
         
         form.append("name", name);
         axios
-            .post('http://localhost:8080/reqUserInfo/searchId', form, {
+            .post('http://localhost:8080/user/searchId', form, {
               
             })
             .then((response) => {

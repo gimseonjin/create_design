@@ -15,15 +15,14 @@ const ReadUserInformation = (props) => {
     const [authority, setAuthority] = useState("1");
     const [userInfo, setUserInfo] = useState([]);
 
-    const [modalUpdateInfo, setModalUpdateInfo] = useState(false);
-    
-    const [modalUpdateRegion, setModalUpdateRegion] = useState(false);
+    const [modalUpdateInfo, setModalUpdateInfo] = useState(false);    
+    const [modalApplyChangeRegion, setModalApplyChangeRegion] = useState(false);
 
     const [backdrop, setBackdrop] = useState(true);
-    // true: 바깥누르면 꺼짐, false: 안꺼짐, "static": 바깥누르면 모달 강조되고 꺼지지않음.
+ 
 
     const toggleUpdateInfo = () => setModalUpdateInfo(!modalUpdateInfo);
-    const toggleUpdateRegion = () => setModalUpdateRegion(!modalUpdateRegion);
+    const toggleApplyChangeRegion = () => setModalApplyChangeRegion(!modalApplyChangeRegion);
     const callbackModal = () => {
         this.setModal(false);
     }
@@ -95,8 +94,8 @@ const ReadUserInformation = (props) => {
 
             {/* 멘토/지역본부 관리자만 사용가능하고 나머지 시스템관리자/연계기관 담당자는 소속지역본부 변경기능 비활성화 해야함 */}
 
-            <Modal isOpen={modalUpdateRegion}>
-                <ModalHeader toggle={toggleUpdateRegion}>소속지역본부 변경신청</ModalHeader>
+            <Modal isOpen={modalApplyChangeRegion}>
+                <ModalHeader toggle={toggleApplyChangeRegion}>소속지역본부 변경신청</ModalHeader>
                 <ApplyChangeRegion></ApplyChangeRegion>
 
             </Modal>
@@ -104,7 +103,7 @@ const ReadUserInformation = (props) => {
             <Button color="danger" onClick={()=>{
               getUserInformation();
             }}>조회</Button>
-            <Button color="primary" onClick={toggleUpdateRegion}>지역본부 변경요청</Button>
+            <Button color="primary" onClick={toggleApplyChangeRegion}>지역본부 변경요청</Button>
             <Button color="primary" onClick={toggleUpdateInfo}>수정</Button>
             <Route path="update" ></Route>
         

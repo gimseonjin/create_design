@@ -1,6 +1,7 @@
 package Midam.Controller;
 
 import Midam.DAO.linkAgency.LinkAgencyDAO;
+import Midam.DAO.region.RegionDAO;
 import Midam.DAO.user.UserDAO;
 import Midam.model.token.Token;
 import Midam.model.user.Mentor;
@@ -134,7 +135,19 @@ public class UserInfoController {
 
         return result;
     }
+    @ResponseBody  //소속변경
+    @PostMapping(value = "/readRegionList")
+    public ArrayList readRegionList(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
 
+
+
+        RegionDAO regionDAO =new RegionDAO();
+        ArrayList<HashMap> regionArrayList = regionDAO.readRegionList();
+        String ken = request.getParameter("dd");
+        System.out.print(ken);
+
+        return regionArrayList;
+    }
     //지역본부 관리자가 소속 멘토 조회
     @ResponseBody
     @PostMapping(value = "/readMentorList/regionManager")
