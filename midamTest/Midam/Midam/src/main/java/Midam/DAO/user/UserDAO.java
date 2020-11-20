@@ -1,5 +1,6 @@
 package Midam.DAO.user;
 
+import Midam.model.community.Message;
 import Midam.model.linkAgency.LinkAgency;
 import Midam.model.user.Mentor;
 import Midam.model.user.User;
@@ -418,6 +419,25 @@ public class UserDAO {
 
         return result;
     }
+
+    public User searchId(String name){
+        User user = new User();
+
+        String sql = "SELECT id FROM user WHERE name = ? ";
+
+
+        try {
+            conn=getConnection();
+
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, name);
+            ResultSet rs= pstmt.executeQuery();
+            while(rs.next()){
+                user.setId(rs.getString("id"));
+
+            }
+
 
     // 지역본부 관리자가 소속 연계기관 담당자 조회 : linkAgencyCode 받아서 해당하는 연계기관의 담당자 조회
     public ArrayList readLinkAgencyManagerListWithOption(String id, String linkAgencyCode){

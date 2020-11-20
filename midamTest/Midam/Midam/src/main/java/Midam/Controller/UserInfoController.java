@@ -52,6 +52,21 @@ public class UserInfoController {
     }
 
     @ResponseBody
+    @PostMapping(value="/searchId")
+    public HashMap searchId(HttpServletRequest request)  {
+        HashMap result = new HashMap();
+
+
+        String name =request.getParameter("name");
+
+        UserDAO userDAO = new UserDAO();
+
+        User searchResult = userDAO.searchId(name);
+        result.put("id",searchResult.getId());
+
+
+        return result;
+    }
     @PostMapping(value = "/readMentorAndRegionManagerList")
     public ArrayList readMentorAndRegionManagerList(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
 

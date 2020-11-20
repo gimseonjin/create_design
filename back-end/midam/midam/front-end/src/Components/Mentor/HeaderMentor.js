@@ -33,7 +33,7 @@ import ReadPost from '../Shared/ReadPost';
 import CreatePost from '../Shared/CreatePost';
 import UserListComponent from './showUser';
 import ReadRecruitment from '../Shared/ReadRecruitment';
-
+import ReadMessage from '../Shared/ReadMessage';
 import useModal from 'react-hooks-use-modal';
 import QRCode from 'qrcode.react';
 import midamLogo from '../img/midam.png';
@@ -42,14 +42,45 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 
 const HeaderMentor = ({match, history}) => {
-    
+; 
     let form = new FormData();
     const [isOpen, setIsOpen] = useState(false);
+    const [buttonColor, setButtonColor] = useState();
     const toggle = () => setIsOpen(!isOpen);
     const [Modal, open, close, isOpenPop] = useModal('root', {
         preventScroll: true
-    });
+    });    
+    const [numberOfMessage, setNumberOfMessage] = useState();
+    const handleNumberOfMessageOnChange = (e) => {
+        e.preventDefault();
+        setNumberOfMessage(e.target.value);
+    }
+    const handleButtonColorOnChange = (e) => {
+        e.preventDefault();
+        setButtonColor(e.target.value);
+    }
+    const readNumberOfMessage = () =>{
+        var form = new FormData;      
+       
+        form.append('userToken', localStorage.getItem("userToken"));
+       
+        axios.post("http://localhost:8080/community/message/number", form,{headers: {'content-type':'multipart/form-data'}})
+        .then((response)=>{
+            setNumberOfMessage(response.data.numberOfMessage);
+            if(response.data.numberOfMessage >0){
+               setButtonColor("warning");
+            }else{
+                setButtonColor("primary");
+            }
+            
+     })
+    }
+    
+
+        
     useEffect(() => {
+        readNumberOfMessage();//받은 쪽지 갯수
+        
         if(!localStorage.getItem("userToken") || localStorage.getItem("userToken") === "bearer: "){
             alert("Pleas Login");
             history.push("/");    
@@ -69,9 +100,11 @@ const HeaderMentor = ({match, history}) => {
         }
       },[]);
 
-   
+     
       
     return (
+
+        
         <div>
             <div>
             <div class = "top-header">
@@ -116,16 +149,13 @@ const HeaderMentor = ({match, history}) => {
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </NavItem>
+                                
                                 <NavItem>
                                     <UncontrolledDropdown nav inNavbar>
-                                        <DropdownToggle nav caret><span class = "nav-title">쪽지</span></DropdownToggle>
-                                            <DropdownMenu left>
-                                                <DropdownItem><span>쪽지 조회</span></DropdownItem>
-                                                <DropdownItem><span>쪽지 보내기</span></DropdownItem>
-                                            </DropdownMenu>
+                                    <Link to={`${match.url}/readMessage`}><Button color={buttonColor} onChange={handleNumberOfMessageOnChange}><span>쪽지</span><span> </span><span>{numberOfMessage}</span></Button></Link>
+                                          
                                     </UncontrolledDropdown>
                                 </NavItem>
-                                
                                 </Nav>
                                 <Nav className="mr-right" navbar >
                                     <NavItem variant="outline-light">
@@ -145,6 +175,7 @@ const HeaderMentor = ({match, history}) => {
                                                         </CardBody>
                                                     </Card>
                                                 </div>
+
                                             </Modal>
                                             <Button className = "header-bnt w-75" color="light" onClick = {
                                                 () => {localStorage.removeItem("userToken");
@@ -156,6 +187,9 @@ const HeaderMentor = ({match, history}) => {
                                 </Nav>
                             </Collapse>
                     </Navbar>  
+
+                    
+                   
             </div>
         </div>
 
@@ -173,7 +207,10 @@ const HeaderMentor = ({match, history}) => {
                 <Route exact path={`${match.path}/readPost`} component = {ReadPost}></Route>
                 <Route exact path={`${match.path}/createPost`} component = {CreatePost}></Route>
                 <Route exact path={`${match.path}/readRecruitment`} component = {ReadRecruitment}></Route>
+                <Route exact path={`${match.path}/readMessage`} component = {ReadMessage}></Route>
             </Switch>
+
+          
         </div>
     )
 }
