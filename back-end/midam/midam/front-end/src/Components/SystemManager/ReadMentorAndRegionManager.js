@@ -76,9 +76,9 @@ function ReadMentorAndRegionManager(){
 
         $(".changeAuthorityButton").on("click", function () {
 
-            var reportButton = $(this);
+            var button = $(this);
 
-            var tr = reportButton
+            var tr = button
                 .parent()
                 .parent();
             var td = tr.children();
@@ -86,7 +86,6 @@ function ReadMentorAndRegionManager(){
             td.each(function(i){
                 tdArr.push(td.eq(i).text())
             })
-            console.log(tdArr);
             setUserInfoInRow(
                tdArr
             )

@@ -1,25 +1,16 @@
 import React,{useState,useEffect} from 'react';
-import {BrowserRouter, Router, Route, Switch, Link, HashRouter} from 'react-router-dom';
+import {Route, Switch, Link} from 'react-router-dom';
 import {
     Collapse,
     Navbar,
     NavbarToggler,
-    NavbarBrand,
     Nav,
     NavItem,
-    NavLink,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    NavbarText,
     Button,
-    Card,
-    CardImg,
-    CardText,
-    CardBody,
-    CardTitle,
-    CardSubtitle
   } from 'reactstrap';
 import midamLogo from '../img/midam.png';
 //import './Header.css';

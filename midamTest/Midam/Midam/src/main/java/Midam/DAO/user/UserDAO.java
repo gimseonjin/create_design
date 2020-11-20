@@ -448,7 +448,75 @@ public class UserDAO {
         } finally {
             closeConnection(conn);
         }
+        return result;
+    }
 
+    // 지역본부 관리자가 소속 멘토 조회
+    public ArrayList readMentorList(String id){
+        ArrayList result = new ArrayList();
+
+        sql = "SELECT user.id, user.name, user.gender, user.age, user.address, user.phoneNumber, mentor.1365Id FROM mentor JOIN user ON mentor.id=user.id where mentor.regionCode=(SELECT regionCode from mentor where id=?) AND user.authority = 1;";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                HashMap mentor = new HashMap();
+                mentor.put("id", rs.getString("id"));
+                mentor.put("name", rs.getString("name"));
+                mentor.put("age",rs.getInt("age"));
+                mentor.put("gender",rs.getString("gender"));
+                mentor.put("address",rs.getString("address"));
+                mentor.put("phoneNumber",rs.getString("phoneNumber"));
+                mentor.put("volunteerId", rs.getString("1365Id"));
+                result.add(mentor);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+
+        return result;
+    }
+
+
+    //연계기관 담당자 삭제. 권한 3 -> -3(연계기관 담당자,비활성화)
+    public int deleteLinkAgencyManager(String linkAgencyManagerId){
+        int result=0;
+
+        sql = "UPDATE user SET authority = -3 WHERE id = ?;";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, linkAgencyManagerId);
+            result = pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+
+    //멘토 삭제. 권한 1->-1 (멘토 비활성화)
+    public int deleteMentor(String mentorId){
+        int result=0;
+
+        sql = "UPDATE user SET authority = -1 WHERE id = ?;";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, mentorId);
+            result = pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
         return result;
     }
 
