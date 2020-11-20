@@ -285,7 +285,7 @@ public class UserDAO {
     }
 
     // 연계기관 담당자 회원가입 신청자 승인
-    public int[] deleteLinkAgencyApplicant(String applicantId){
+    public int[] deleteLinkAgencyManagerApplicant(String applicantId){
         int result[] = {0};
         sql = "DELETE FROM link_agency_manager WHERE (id = ?);";
         String sql2 = "DELETE FROM user WHERE id=?";

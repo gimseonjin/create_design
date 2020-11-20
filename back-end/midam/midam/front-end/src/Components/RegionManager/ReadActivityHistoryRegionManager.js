@@ -1,10 +1,8 @@
 import React,{useEffect, useState} from 'react';
 import { Button, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Modal, ModalHeader, Row, Table } from 'reactstrap';
 import ExportMentoringActivity from '../LinkAgencyManager/ExportMentoringActivity';
-import useRequest from '../Shared/useRequest';
 import axios from 'axios';
 import $ from 'jquery';
-import cookie from 'react-cookies';
 import ReadReportRegionManager from './ReadReportRegionManager';
 
 //활동 내역 조회

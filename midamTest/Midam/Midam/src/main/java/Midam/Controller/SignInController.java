@@ -216,8 +216,8 @@ public class SignInController {
 
         //연계기관 등록신청을 삭제
         if(linkAgencyStatus == 0 ) {
-            int[] applicantResult = userDAO.deleteLinkAgencyApplicant(applicantId);
-            int linkAgencyResult = linkAgencyDAO.deleteLinkAgency(linkAgencyCode);
+            int[] applicantResult = userDAO.deleteLinkAgencyManagerApplicant(applicantId);
+            int linkAgencyResult = linkAgencyDAO.deleteLinkAgencyApplication(linkAgencyCode);
             if(applicantResult[0] ==1 && applicantResult[1] ==1 && linkAgencyResult==1){
                 result.put("responseMsg","성공");
             }else{
@@ -225,7 +225,7 @@ public class SignInController {
             }
         }else{
             //연계기관 담당자 삭제.
-            int[] applicantResult = userDAO.deleteLinkAgencyApplicant(applicantId);
+            int[] applicantResult = userDAO.deleteLinkAgencyManagerApplicant(applicantId);
             //index 0: link_agency_manager에서 삭제, 1: user에서 삭제 한 결과
             if(applicantResult[0] ==1 && applicantResult[1] ==1){
                 result.put("responseMsg","성공");

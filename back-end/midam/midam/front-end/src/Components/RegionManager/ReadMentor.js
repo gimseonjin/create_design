@@ -7,7 +7,6 @@ import DeleteMentor from './DeleteMentor';
 //소속 연계기관 담당자 조회.
 function ReadMentor() {
 
-    const [linkAgencyCode, setLinkAgencyCode] = useState();
     const [mentorList,setMentorList] = useState();
 
     let mentorArrays = [];
@@ -25,11 +24,6 @@ function ReadMentor() {
             <td><Button className="deleteMentorButton" color="danger" >삭제</Button></td>
             </tr>
         )
-    }
-
-    const handleLinkAgencyCodeOnChange = (e) =>{
-        e.preventDefault();
-        setLinkAgencyCode(e.target.value);
     }
 
     function readMentorList(){

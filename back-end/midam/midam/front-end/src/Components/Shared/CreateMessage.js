@@ -86,8 +86,6 @@ function CreateMessage(props) {
     //         setModalInput(name);
     //         toggleSearchId();
     //     })
-
-        
     // })
 
     useEffect(() => {
