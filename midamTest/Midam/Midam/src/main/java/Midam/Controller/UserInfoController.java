@@ -50,7 +50,7 @@ public class UserInfoController {
         System.out.println(result);
         return result;
     }
-
+/*
     @ResponseBody
     @PostMapping(value="/searchId")
     public HashMap searchId(HttpServletRequest request)  {
@@ -67,6 +67,8 @@ public class UserInfoController {
 
         return result;
     }
+
+ */
     @PostMapping(value = "/readMentorAndRegionManagerList")
     public ArrayList readMentorAndRegionManagerList(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
 
@@ -133,6 +135,23 @@ public class UserInfoController {
         return result;
     }
 
+    //지역본부 관리자가 소속 멘토 조회
+    @ResponseBody
+    @PostMapping(value = "/readMentorList/regionManager")
+    public ArrayList readMentorList(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+        ArrayList result = new ArrayList();
+        UserDAO userDAO = new UserDAO();
+
+        String userToken = request.getParameter("userToken");
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
+
+        result = userDAO.readMentorList(id);
+
+        return result;
+    }
+
     //지역본부 관리자가 소속 연계기관담당자 조회
     @ResponseBody
     @PostMapping(value = "/readLinkAgencyManagerList/regionManager")
@@ -155,4 +174,61 @@ public class UserInfoController {
         return result;
     }
 
+    //지역본부관리자가 연계기관 담당자를 삭제. 실제로 delete는아니고 권한을 바꿔서 비활성화.
+    @ResponseBody
+    @PostMapping(value = "/deleteLinkAgencyManager/regionManager")
+    public HashMap deleteLinkAgencyManager(HttpServletRequest request) throws UnsupportedEncodingException {
+        HashMap result = new HashMap();
+        String userToken = request.getParameter("userToken");
+        String linkAgencyManagerId = request.getParameter("linkAgencyManagerId");
+
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        int authority = (Integer)map.get("authority");
+        if(authority!=2){
+            result.put("responseMsg","권한 없음");
+            return result;
+        }
+
+        UserDAO userDAO = new UserDAO();
+
+        int resultRows = userDAO.deleteLinkAgencyManager(linkAgencyManagerId);
+
+        if(resultRows==1){
+            result.put("responseMsg","성공");
+        }else{
+            result.put("responseMsg","실패");
+        }
+
+        return result;
+    }
+
+    //지역본부관리자가 소속 멘토를 삭제. 실제로 delete는아니고 권한을 바꿔서 비활성화.
+    @ResponseBody
+    @PostMapping(value = "/deleteMentor/regionManager")
+    public HashMap deleteMentor(HttpServletRequest request) throws UnsupportedEncodingException {
+        HashMap result = new HashMap();
+        String userToken = request.getParameter("userToken");
+        String mentorId = request.getParameter("mentorId");
+
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        int authority = (Integer)map.get("authority");
+        if(authority!=2){
+            result.put("responseMsg","권한 없음");
+            return result;
+        }
+
+        UserDAO userDAO = new UserDAO();
+
+        int resultRows = userDAO.deleteMentor(mentorId);
+
+        if(resultRows==1){
+            result.put("responseMsg","성공");
+        }else{
+            result.put("responseMsg","실패");
+        }
+
+        return result;
+    }
 }

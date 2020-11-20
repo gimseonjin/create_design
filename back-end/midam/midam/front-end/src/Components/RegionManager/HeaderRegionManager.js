@@ -1,25 +1,16 @@
 import React,{useState,useEffect} from 'react';
-import {BrowserRouter, Router, Route, Switch, Link, HashRouter} from 'react-router-dom';
+import {Route, Switch, Link} from 'react-router-dom';
 import {
     Collapse,
     Navbar,
     NavbarToggler,
-    NavbarBrand,
     Nav,
     NavItem,
-    NavLink,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    NavbarText,
     Button,
-    Card,
-    CardImg,
-    CardText,
-    CardBody,
-    CardTitle,
-    CardSubtitle
   } from 'reactstrap';
 import midamLogo from '../img/midam.png';
 //import './Header.css';
@@ -31,6 +22,7 @@ import ReadActivityHistoryRegionManager from './ReadActivityHistoryRegionManager
 import ReadApplicant from './ReadApplicant';
 import ReadMentor from './ReadMentor';
 import ReadLinkAgencyManager from './ReadLinkAgencyManager';
+import ReadLinkAgency from './ReadLinkAgency';
 
 const HeaderRegionManager = ({match, history}) => {
     
@@ -85,11 +77,20 @@ const HeaderRegionManager = ({match, history}) => {
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </NavItem>
-                            <NavItem>
+                                <NavItem>
                                     <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">활동 관리</span></DropdownToggle>
                                             <DropdownMenu left>
                                                 <DropdownItem >  <Link to={`${match.url}/readActivityHistory`}><span>활동 내역 조회</span></Link></DropdownItem>
+                                                <DropdownItem ><span>~~</span></DropdownItem>
+                                            </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </NavItem>
+                                <NavItem>
+                                    <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle nav caret><span class = "nav-title">연계기관 관리</span></DropdownToggle>
+                                            <DropdownMenu left>
+                                                <DropdownItem >  <Link to={`${match.url}/readLinkAgency`}><span>연계기관 조회</span></Link></DropdownItem>
                                                 <DropdownItem ><span>~~</span></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
@@ -146,6 +147,8 @@ const HeaderRegionManager = ({match, history}) => {
                 {/* 활동관리 */}
                 <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryRegionManager}></Route>
                 
+                {/* 연계기관 관리 */}
+                <Route exact path={`${match.path}/readLinkAgency`} component={ReadLinkAgency}></Route>
 
             </Switch>
         </div>

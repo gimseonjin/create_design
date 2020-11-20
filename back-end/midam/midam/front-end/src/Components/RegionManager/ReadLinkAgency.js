@@ -4,7 +4,7 @@ import React from 'react';
 function ReadLinkAgency() {
     return (
         <div>
-            
+            "링크 에이전시를 리드 한다."
         </div>
     )
 }
