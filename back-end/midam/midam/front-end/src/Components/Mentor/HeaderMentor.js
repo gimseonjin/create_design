@@ -1,10 +1,9 @@
 import React,{useState, useEffect} from 'react';
-import {BrowserRouter, Router, Route, Switch, Link, HashRouter} from 'react-router-dom';
+import {Route, Switch, Link} from 'react-router-dom';
 import {Button, 
     Collapse,
     Navbar,
     NavbarToggler,
-    NavbarBrand,
     Nav,
     NavItem,
     NavLink,
@@ -12,26 +11,22 @@ import {Button,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    NavbarText,
     Card,
-    CardImg,
     CardText,
     CardBody,
-    CardTitle,
-    CardSubtitle} from 'reactstrap';
+    CardTitle
+} from 'reactstrap';
 
-import * as ReactBootStrap from "react-bootstrap"; //nav
-import ApplyChangeRegion from './ApplyChangeRegion';
+
 import ReadUserInformation from '../Shared/ReadUserInformation';
-import UpdateUserInformation from '../Shared/UpdateUserInformation';
+
 import Withdraw from '../Shared/Withdraw';
 import ReadActivityHistoryMentor from './ReadActivityHistoryMentor';
-import CreateMentorRecruitment from '../LinkAgencyManager/CreateMentorRecruitment';
-import CreateReport from './CreateReport';
+
 import ReadMentoringApplication from './ReadMentoringApplication';
 import ReadPost from '../Shared/ReadPost';
 import CreatePost from '../Shared/CreatePost';
-import UserListComponent from './showUser';
+
 import ReadRecruitment from '../Shared/ReadRecruitment';
 import ReadMessage from '../Shared/ReadMessage';
 import useModal from 'react-hooks-use-modal';
@@ -39,7 +34,6 @@ import QRCode from 'qrcode.react';
 import midamLogo from '../img/midam.png';
 import establishment from '../img/establishment.png';
 import axios from 'axios';
-import cookie from 'react-cookies';
 
 const HeaderMentor = ({match, history}) => {
 ; 

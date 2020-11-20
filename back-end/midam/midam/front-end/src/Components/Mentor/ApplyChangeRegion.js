@@ -1,39 +1,110 @@
-import React from 'react';
-import { Button, Form, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
-
+import React, {useState, setState, useEffect} from 'react';
+import { Button,Col,Row,Table, Form, Input, InputGroup, InputGroupAddon, InputGroupText,Modal,ModalHeader } from 'reactstrap';
+import axios from 'axios';
+import ChangeReason from '../Mentor/ChangeReason'
+import $ from 'jquery';
 //소속 지역 본부 변경 요청
 function ApplyChangeRegion() {
+
+    const [tableData, setTableData] = useState();
+    const [modalApplyChangeRegion, setModalApplyChangeRegion] = useState(false); 
+    const toggleApplyChangeRegion = () => setModalApplyChangeRegion(!modalApplyChangeRegion);
+    let regionArrays = [];
+    const [modalInput, setModalInput] = useState("default");
+
+    function setRegionArrays(newArrays) {
+        regionArrays = newArrays;
+
+    }
+    const renderInput = (regionArray, index) => {
+        
+        return (
+            <tr key={index} >
+                <th className="display">{regionArray.regionCode}</th>
+                <td>{regionArray.regionName}</td>
+                <td>{regionArray.regionAddress}</td>
+                <td> <Button className={"applyChangeRegion"} color={"primary"}>{"변경요청"}</Button></td>
+                
+                
+               
+            </tr>
+        )
+    }
+
+    function readRegionList(form) {
+        var form = new FormData;
+        form.append("userToken", localStorage.getItem('userToken'));
+       
+        axios
+            .post('http://localhost:8080/user/readRegionList', form)
+            .then((response) => {
+                console.log(response.data);
+                setRegionArrays = response.data;
+                setTableData(regionArrays.map(renderInput));
+                
+                    
+            });
+    }
+
+
+
+   
+
+
+    $(function () {
+        $(".applyChangeRegion").off("click")
+
+        $(".applyChangeRegion").on("click", function () {
+
+            var Button = $(this);
+
+            var tr = Button.parent().parent();
+            var td = tr.children();
+            console.log("row데이터 : " + td.eq(0).text());
+            setModalInput(td.eq(0).text());
+            toggleApplyChangeRegion();
+        })
+
+        
+    })
+    useEffect(() => {
+        var form = new FormData;
+        form.append("id", localStorage.getItem('id'));
+        readRegionList();
+        }, []
+    )
+
     return (
         <div className="container">
-        <h1>회원 정보 조회</h1>
-        <Form>
-        <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>현재 소속 지역본부</InputGroupText>
-            </InputGroupAddon>
-            <Input type="text" value="소속 지역본부" disabled></Input>
-        </InputGroup>
+       
+       <Row>
+                
+               
+                <Col>
+                    <Table>
+                     
+                        <thead className="text-nowrap">
+                        
+                            <tr>
+                    
+                                <th>지역본부 명</th> 
+                                <th>지역본부 주소</th>                               
+                                <th>변경</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            {/* 내용부분 여기에 서버에서 정보 받아와서 포문돌려서 넣으면 될듯!*/}
+                            {tableData}
+                        </tbody>
+                    </Table>
+                    
+                </Col>
+            </Row>
 
-        <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>변경 요청 지역본부</InputGroupText>
-            </InputGroupAddon>
-            <Input type="select" value="소속 지역본부">
-                <option>지역본부선택</option>
-                <option>지역본부1</option>
-                <option>지역본부2</option>
-                <option>지역본부3</option>
-
-            </Input>
-        </InputGroup>
-
-        {/* submit 버튼. */}
-
-        <Button type="submit">수정</Button>
-        {/* <Input type="submit" value="수정" size=''></Input> */}
-
-        </Form>
-    
+            <Modal isOpen={modalApplyChangeRegion} >
+                         <ModalHeader toggle={toggleApplyChangeRegion}>지역본부 변경 요청</ModalHeader>
+                         <ChangeReason messageId={modalInput}></ChangeReason>                         
+            </Modal>
     </div>
     )
 }
