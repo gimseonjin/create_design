@@ -44,7 +44,7 @@ public class RegionDAO {
     public ArrayList<HashMap> readRegionList(){
         ArrayList<HashMap> list =new ArrayList<HashMap>();
         String sql = "select * from region WHERE status=1";
-        //status 가 1이면 정상. -1이면 비활성화상태.
+
         try {
             conn=getConnection();
             pstmt = conn.prepareStatement(sql);
@@ -126,6 +126,37 @@ public class RegionDAO {
                 }
             } catch (SQLException seRollback) {
                 seRollback.printStackTrace();
+  
+        return result;
+    }
+
+    public ArrayList<HashMap> readChangeRegionList(String id){
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+
+        String sql_region = "select regionCode from mentor where id =? ";
+        String sql = "select * from region WHERE status=1 and regionCode != ?";
+
+        try {
+            conn=getConnection();
+
+            pstmt = conn.prepareStatement(sql_region);
+            pstmt.setString(1,id);
+            ResultSet rs= pstmt.executeQuery();
+            rs.next();
+            String regionCode =rs.getString(1);
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,regionCode);
+            rs= pstmt.executeQuery();
+
+            while(rs.next()) {
+
+                HashMap regionHashMap = new HashMap();
+                regionHashMap.put("regionCode",rs.getString("regionCode"));
+                regionHashMap.put("regionName",rs.getString("regionName"));
+                regionHashMap.put("regionAddress",rs.getString("regionAddress"));
+
+                list.add(regionHashMap);
             }
         }catch(Exception e) {
             e.printStackTrace();
@@ -133,7 +164,8 @@ public class RegionDAO {
         }finally {
             closeConnection(conn);
         }
-        return result;
+        return list;
     }
+    
     
 }

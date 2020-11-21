@@ -3,6 +3,7 @@ package Midam.DAO.user;
 import Midam.model.community.Message;
 import Midam.model.linkAgency.LinkAgency;
 import Midam.model.user.Mentor;
+import Midam.model.user.RegionChangeApplication;
 import Midam.model.user.User;
 
 import java.sql.Connection;
@@ -463,7 +464,28 @@ public class UserDAO {
         }
         return user;
     }
+    public int applyChangeRegion(String regionCode, String id,String changeReason) { // 등록
+        int result =0;
 
+        String sql = "insert into region_change_application"+
+                " (regionCode, mentorId, changeReason) values(?,?,?)";
+        try {
+
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, regionCode);
+            pstmt.setString(2, id);
+            pstmt.setString(3, changeReason);
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
 
 
     // 지역본부 관리자가 소속 연계기관 담당자 조회 : linkAgencyCode 받아서 해당하는 연계기관의 담당자 조회
@@ -559,6 +581,91 @@ public class UserDAO {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, mentorId);
             result = pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+
+    public ArrayList readChangeRegionApplication(String id){
+        ArrayList result = new ArrayList();
+        sql="select * from region_change_application" +
+                " join user join region" +
+                " on region_change_application.mentorId = user.id " +
+                "and region_change_application.regionCode  = region.regionCode" +
+                " where region_change_application.regionCode = (SELECT regionCode from mentor where id = ?);";
+
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                HashMap mentor = new HashMap();
+                mentor.put("id", rs.getString("id"));
+                mentor.put("name", rs.getString("name"));
+                mentor.put("age",rs.getInt("age"));
+                mentor.put("gender",rs.getString("gender"));
+                mentor.put("address",rs.getString("address"));
+                mentor.put("regionCode",rs.getString("regionCode"));
+                mentor.put("changeReason",rs.getString("changeReason"));
+
+                result.add(mentor);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+
+        return result;
+    }
+
+    public int approvalPass(String id, String regionCode) {
+        int result =0;
+
+
+        String sql = "update mentor set regionCode =? where id =?";
+        String sql_delete ="delete from region_change_application where mentorId=? and regionCode =?";
+
+        try {
+
+            conn=getConnection();
+
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, regionCode);
+                pstmt.setString(2, id);
+                pstmt.executeUpdate();
+
+                pstmt = conn.prepareStatement(sql_delete);
+                pstmt.setString(1, id);
+                pstmt.setString(2, regionCode);
+                pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+    public int approvalFail(String id, String regionCode) {
+        int result =0;
+
+
+        String sql_delete ="delete from region_change_application where mentorId=? and regionCode =?";
+        try {
+
+            conn=getConnection();
+
+            pstmt = conn.prepareStatement(sql_delete);
+            pstmt.setString(1, id);
+            pstmt.setString(2, regionCode);
+            pstmt.executeUpdate();
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
