@@ -1,11 +1,14 @@
 package Midam.Controller;
 
+import Midam.DAO.activity.ApplicationDAO;
 import Midam.DAO.community.PostDAO;
 import Midam.DAO.linkAgency.LinkAgencyDAO;
 import Midam.DAO.region.RegionDAO;
 import Midam.DAO.user.UserDAO;
+import Midam.model.activity.MentoringApplication;
 import Midam.model.token.Token;
 import Midam.model.user.Mentor;
+import Midam.model.user.RegionChangeApplication;
 import Midam.model.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -252,7 +255,7 @@ public class UserInfoController {
 
     @ResponseBody
     @PostMapping(value="/applyChangeRegion")
-    public HashMap createPost(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+    public HashMap applyChangeRegion(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
         HashMap result = new HashMap();
 
@@ -270,4 +273,50 @@ public class UserInfoController {
         result.put("responseMsg",createResult);
         return result;
     }
+
+    @ResponseBody
+    @PostMapping(value="/readChangeRegionApplication")
+    public ArrayList readApplication(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException,IOException , UnsupportedEncodingException {
+
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        Object objectId = map.get("id");
+        String id = objectId.toString();
+
+        UserDAO userDAO = new UserDAO();
+        ArrayList<HashMap> applicationArrayList = userDAO.readChangeRegionApplication(id);
+
+        return applicationArrayList;
+    }
+
+    @ResponseBody
+    @PostMapping(value="/approvalPass")
+    public HashMap approvalPass(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+
+        HashMap result = new HashMap();
+
+        String id =request.getParameter("id");
+        String regionCode =request.getParameter("regionCode");
+        UserDAO userDAO = new UserDAO();
+
+        int updateResult = userDAO.approvalPass(id,regionCode);
+        result.put("responseMsg",updateResult);
+        return result;
+    }
+    @ResponseBody
+    @PostMapping(value="/approvalFail")
+    public HashMap approvalFail(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+
+        HashMap result = new HashMap();
+
+        String id=request.getParameter("id");
+        String regionCode =request.getParameter("regionCode");
+        UserDAO userDAO = new UserDAO();
+
+        int updateResult = userDAO.approvalFail(id,regionCode);
+        result.put("responseMsg",updateResult);
+        return result;
+    }
+
+
 }

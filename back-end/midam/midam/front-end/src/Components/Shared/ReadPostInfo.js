@@ -226,7 +226,7 @@ function ReadPostInfo(props){
                         <InputGroupAddon addonType="prepend"  >
                             <InputGroupText >내용</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="content" placeholder="내용" onChange={handleContentOnChange} value={content} readOnly={isReadOnly}></Input>
+                        <Input type="textarea" name="content" cols="50" rows="10" placeholder="내용" onChange={handleContentOnChange} value={content} readOnly={isReadOnly}></Input>
                     </InputGroup>          
                 </FormGroup>
             </Form>

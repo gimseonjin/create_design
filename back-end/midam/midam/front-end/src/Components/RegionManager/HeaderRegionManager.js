@@ -19,6 +19,7 @@ import '../Css/Header.css';
 import QrScanner from '../Shared/QrScanner';
 import axios from 'axios';
 import ReadActivityHistoryRegionManager from './ReadActivityHistoryRegionManager';
+import ReadChangeRegionApplication from './ReadChangeRegionApplication';
 import ReadApplicant from './ReadApplicant';
 import ReadMentor from './ReadMentor';
 import ReadLinkAgencyManager from './ReadLinkAgencyManager';
@@ -101,6 +102,7 @@ const HeaderRegionManager = ({match, history}) => {
                                                 <DropdownItem >  <Link to={`${match.url}/readApplicant`}><span>회원 가입 신청자 조회</span></Link></DropdownItem>
                                                 <DropdownItem >  <Link to={`${match.url}/readMentor`}><span>소속 멘토 조회</span></Link></DropdownItem>
                                                 <DropdownItem >  <Link to={`${match.url}/readLinkAgencyManager`}><span>소속 연계기관 담당자 조회</span></Link></DropdownItem>
+                                                <DropdownItem >  <Link to={`${match.url}/readChangeRegionApplication`}><span>지역본부 변경 신청 승인</span></Link></DropdownItem>
                                                 <DropdownItem ><span>~~</span></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
@@ -169,7 +171,7 @@ const HeaderRegionManager = ({match, history}) => {
                 <Route exact path={`${match.path}/readApplicant`} component={ReadApplicant}></Route>
                 <Route exact path={`${match.path}/readMentor`} component={ReadMentor}></Route>
                 <Route exact path={`${match.path}/readLinkAgencyManager`} component={ReadLinkAgencyManager}></Route>
-
+                <Route exact path={`${match.path}/readChangeRegionApplication`} component={ReadChangeRegionApplication}></Route>                                           
                 {/* 활동관리 */}
                 <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryRegionManager}></Route>
                 
