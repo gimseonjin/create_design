@@ -84,7 +84,6 @@ public class UserDAO {
     public Mentor getUserInfo(String id){
         try {
             getConnection();
-            System.out.println(id);
             sql = "SELECT * FROM mydb.user JOIN mentor ON user.id=mentor.id Join region on mentor.regionCode=region.regionCode WHERE user.id=?;";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,id);
@@ -96,13 +95,32 @@ public class UserDAO {
             }
             else
                 return null;
-
-
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return null;
+    }
+
+    //회원정보수정.
+    public int updateUserInfo(String id, String name, int age, String phoneNumber,String address, String volunteerId ){
+        int result=0;
+        try {
+            getConnection();
+            sql = "UPDATE user JOIN mentor on user.id=mentor.id SET user.name = ?, user.age = ?, user.address = ?, user.phoneNumber = ?, mentor.1365Id=? WHERE user.id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,name);
+            pstmt.setInt(2,age);
+            pstmt.setString(3,address);
+            pstmt.setString(4,phoneNumber);
+            pstmt.setString(5,volunteerId);
+            pstmt.setString(6,id);
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return result;
     }
     
     //회원가입

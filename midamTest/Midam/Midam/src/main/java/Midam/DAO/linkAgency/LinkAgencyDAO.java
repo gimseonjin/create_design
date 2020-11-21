@@ -40,8 +40,6 @@ public class LinkAgencyDAO {
         }
     }
 
-
-
     public ArrayList<HashMap> getLinkAgencyList(String id){
         ArrayList<HashMap> list =new ArrayList<HashMap>();
         sql = "SELECT * FROM link_agency where regionCode=?;";
@@ -287,8 +285,32 @@ public class LinkAgencyDAO {
         }
 
         return result;
+    }
+
+    //연계기관 수정 -> 이름, 주소, 정보 수정
+    public int updateLinkAgency(String linkAgencyCode, String linkAgencyName, String linkAgencyAddress, String linkAgencyInfo){
+        int result = 0;
+        sql = "UPDATE link_agency SET linkAgencyName=?, linkAgencyAddress=?, linkAgencyInfo=? WHERE linkAgencyCode = ?;";
+
+        try {
+            conn=getConnection();
+            pstmt=conn.prepareStatement(sql);
+            pstmt.setString(1,linkAgencyName);
+            pstmt.setString(2,linkAgencyAddress);
+            pstmt.setString(3,linkAgencyInfo);
+            pstmt.setString(4,linkAgencyCode);
+            result = pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+
+        return result;
 
     }
+    
+    
 
     // "XX0000" 형식에서 다음 코드 반환
     public String getNextCode(String code){

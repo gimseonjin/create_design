@@ -27,6 +27,7 @@ import '../Css/Header.css';
 import QrScanner from '../Shared/QrScanner';
 import axios from 'axios';
 import ReadMentorAndRegionManager from './ReadMentorAndRegionManager';
+import ReadRegion from './ReadRegion';
 
 const HeaderSystemManager = ({match, history}) => {
 
@@ -82,6 +83,15 @@ const HeaderSystemManager = ({match, history}) => {
                                 </NavItem>
                                 <NavItem>
                                     <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle nav caret><span class = "nav-title">지역본부 관리</span></DropdownToggle>
+                                            <DropdownMenu left>
+                                                <DropdownItem ><Link to ={`${match.url}/readRegion`}><span>지역본부 조회</span></Link></DropdownItem>
+                                                <DropdownItem ><span>멘토링 모집</span></DropdownItem>
+                                            </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </NavItem>
+                                <NavItem>
+                                    <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">커뮤니티</span></DropdownToggle>
                                             <DropdownMenu left>
                                                 <DropdownItem ><span>게시판 보기</span></DropdownItem>
@@ -125,8 +135,11 @@ const HeaderSystemManager = ({match, history}) => {
                     </Navbar>
 
                     <Switch>
-                     <Route exact path={`${match.path}/readMentorAndRegionManager`} component={ReadMentorAndRegionManager}></Route>
+                        {/* 회원 관리 */}
+                        <Route exact path={`${match.path}/readMentorAndRegionManager`} component={ReadMentorAndRegionManager}></Route>
 
+                        {/* 지역본부 관리 */}
+                        <Route exact path={`${match.path}/readRegion`} component={ReadRegion}></Route>
                     </Switch>
             </div>
         </div>

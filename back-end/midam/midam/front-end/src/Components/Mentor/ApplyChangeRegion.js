@@ -24,9 +24,6 @@ function ApplyChangeRegion() {
                 <td>{regionArray.regionName}</td>
                 <td>{regionArray.regionAddress}</td>
                 <td> <Button className={"applyChangeRegion"} color={"primary"}>{"변경요청"}</Button></td>
-                
-                
-               
             </tr>
         )
     }
@@ -34,15 +31,12 @@ function ApplyChangeRegion() {
     function readRegionList(form) {
         var form = new FormData;
         form.append("userToken", localStorage.getItem('userToken'));
-       
         axios
             .post('http://localhost:8080/user/readRegionList', form)
             .then((response) => {
                 console.log(response.data);
-                setRegionArrays = response.data;
+                regionArrays = response.data;
                 setTableData(regionArrays.map(renderInput));
-                
-                    
             });
     }
 

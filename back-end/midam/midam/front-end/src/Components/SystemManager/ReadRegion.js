@@ -1,44 +1,126 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Table } from 'reactstrap';
+import React,{useEffect, useState} from 'react';
+import { Button, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Modal, ModalHeader, Table } from 'reactstrap';
+import axios from 'axios';
+import $ from 'jquery';
+import DeleteRegion from './DeleteRegion';
+import UpdateRegion from './UpdateRegion';
+import '../Css/test.css'
+
+//소속 연계기관 조회.
+function ReadRegion(){
+
+    const [regionList,setRegionList] = useState();
+
+    let regionArrays = [];
+
+    function renderRegionList(regionArray, index){
+        return(
+            <tr key={index}>
+                <td className="display">{regionArray.regionCode}</td>
+                <td>{regionArray.regionName}</td>
+                <td>{regionArray.regionAddress}</td>
+                <td><Button className="updateRegionButton" color="primary" >수정</Button></td>
+                <td><Button className="deleteRegionButton" color="danger" >삭제</Button></td>
+            </tr>
+        )
+    }
 
 
-//게시글 조회
-function ReadRegion() {
-    return (
+    function readRegionList(){
+        var form = new FormData();
+        form.append("userToken",localStorage.getItem("userToken"));
+        axios.post("/region/readRegionList/systemManager",form).then((response)=>{
+            regionArrays=response.data;
+            setRegionList(regionArrays.map(renderRegionList));
+        });
+    }
 
+    //모달
+    const [regionInfo, setRegionInfo] = useState();
+    const [updateRegionModal, setUpdateRegionModal] = useState(false);
+    const [deleteRegionModal, setDeleteRegionModal] = useState(false);
+
+    const toggleDeleteRegionModal = () =>{
+        setDeleteRegionModal(!deleteRegionModal);
+    }
+
+    const toggleUpdateRegionModal = () =>{
+        setUpdateRegionModal(!updateRegionModal);
+    }
+
+      // jquery 사용. 버튼 클릭시 해당 Row 값을 가져오기
+      $(function () {
+        $(".deleteRegionButton").off("click")
+        $(".updateRegionButton").off("click")
+        
+        // $(document).ready 에 해당하는부분. 업데이트되며 문법이 바뀐듯하다
+
+        $(".deleteRegionButton").on("click", function(){
+            var button = $(this);
+            var tr = button
+                .parent()
+                .parent();
+            var td = tr.children();
+            var tdArr=[];
+            td.each(function(i){
+                tdArr.push(td.eq(i).text())
+            })
+            setRegionInfo(
+               tdArr
+            )
+            toggleDeleteRegionModal();
+        })
+
+        $(".updateRegionButton").on("click", function(){
+            var button = $(this);
+            var tr = button
+                .parent()
+                .parent();
+            var td = tr.children();
+            var tdArr=[];
+            td.each(function(i){
+                tdArr.push(td.eq(i).text())
+            })
+            setRegionInfo(
+               tdArr
+            )
+            toggleUpdateRegionModal();
+        })
+    })
+
+
+    useEffect(()=>{
+        readRegionList();
+    },[])
+
+    return(
         <div className="container">
-            <Form className="mb-5" inline>
-                <Input type="text" name="keyword" placeholder="검색어를 입력하세요"></Input>
-                <Button>검색</Button>
-            </Form>
 
-            <Table className="text-nowrap">
-                    {/* text-nowrap 문자 안끊기게 */}
-                    <thead>
-                        {/* 열 이름부분 */}
-                        <tr>
-                           
-                            <th>No.</th>
-                            <th>지역본부 명</th>
-                            <th>주소</th>
-                         
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {/* 내용부분 여기에 서버에서 정보 받아와서 포문돌려서 넣으면 될듯!*/}
-                        <tr>
-                            <th scope="row">1</th>
-                            <td><Link>지역본부1</Link></td>
-                            <td>구미</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>지역본부2</td>
-                            <td>대구</td>
-                        </tr>
-                    </tbody>
-                </Table>
+            연계기관
+            <Table>
+                <thead>
+                    <tr className="text-nowrap">
+                        <th>지역본부 명</th>
+                        <th>지역본부 주소</th>
+                        <th>수정</th>
+                        <th>삭제</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {regionList}
+                </tbody>
+            </Table>
+            <Button onClick={readRegionList}>조회</Button>
+
+            <Modal isOpen={deleteRegionModal}>
+                <ModalHeader toggle={toggleDeleteRegionModal}>연계기관 삭제</ModalHeader>
+                <DeleteRegion regionInfo={regionInfo} toggle={toggleDeleteRegionModal}></DeleteRegion>
+            </Modal>
+
+            <Modal className="modal-lg" isOpen={updateRegionModal}>
+                <ModalHeader toggle={toggleUpdateRegionModal}>연계기관 수정</ModalHeader>
+                <UpdateRegion regionInfo={regionInfo} ></UpdateRegion>
+            </Modal>
 
         </div>
     )

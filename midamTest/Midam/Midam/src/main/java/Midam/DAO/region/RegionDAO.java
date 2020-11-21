@@ -68,6 +68,72 @@ public class RegionDAO {
         }
         return list;
     }
-    
+
+    //지역본부 정보 수정
+    public int updateRegion(String regionCode, String regionName, String regionAddress){
+        int result=0;
+        sql = "UPDATE region SET regionName=?, regionAddress=? WHERE regionCode=?";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,regionName);
+            pstmt.setString(2,regionAddress);
+            pstmt.setString(3,regionCode);
+            result= pstmt.executeUpdate();
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+    //지역본부 비활성화, 소속된 멘토/관리자도 비활성화
+    public int[] deleteRegion(String regionCode){
+        int[] result={0,0,0};
+        sql = "UPDATE region SET status=-1 WHERE regionCode=?";
+        String sql2 = "UPDATE user JOIN mentor ON user.id=mentor.id  SET user.authority=? WHERE mentor.regionCode=? AND user.authority=?;";
+
+        try {
+            conn = getConnection();
+
+            conn.setAutoCommit(false); //자동 커밋을 하지않도록, 이 함수와 동시에 begin(); 시작됨.
+
+            Savepoint savepoint1 = conn.setSavepoint("before_delete_region");
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, regionCode);
+            result[0] = pstmt.executeUpdate();
+
+            pstmt = conn.prepareStatement(sql2);
+            pstmt.setInt(1,-1);
+            pstmt.setString(2, regionCode);
+            pstmt.setInt(3,1);
+            result[1] = pstmt.executeUpdate();
+
+            pstmt.setInt(1,-2);
+            pstmt.setString(2, regionCode);
+            pstmt.setInt(3,2);
+            result[2] = pstmt.executeUpdate();
+
+            conn.commit();
+
+        }catch(SQLException se){
+            se.printStackTrace();
+            System.out.println("지역본부/ 소속인원 삭제 실패. 롤백");
+            try{
+                if(conn!=null){
+                    conn.rollback();
+                }
+            } catch (SQLException seRollback) {
+                seRollback.printStackTrace();
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
     
 }

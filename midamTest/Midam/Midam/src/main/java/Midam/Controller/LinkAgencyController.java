@@ -24,7 +24,6 @@ public class LinkAgencyController {
         ArrayList result = new ArrayList();
         LinkAgencyDAO linkAgencyDAO = new LinkAgencyDAO();
 
-
         Token token = new Token();
         Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
         String id = map.get("id").toString();
@@ -52,6 +51,30 @@ public class LinkAgencyController {
 
         return result;
     }
+
+    @ResponseBody
+    @PostMapping(value = "/updateLinkAgency/regionManager")
+    public HashMap updateLinkAgency(HttpServletRequest request){
+        HashMap result = new HashMap();
+
+        String linkAgencyCode = request.getParameter("linkAgencyCode");
+        String linkAgencyName = request.getParameter("linkAgencyName");
+        String linkAgencyAddress = request.getParameter("linkAgencyAddress");
+        String linkAgencyInfo = request.getParameter("linkAgencyInfo");
+
+        LinkAgencyDAO linkAgencyDAO = new LinkAgencyDAO();
+
+        int resultRows = linkAgencyDAO.updateLinkAgency(linkAgencyCode, linkAgencyName, linkAgencyAddress, linkAgencyInfo);
+
+        if(resultRows == 1){
+            result.put("responseMsg","성공");
+        }else{
+            result.put("responseMsg","실패");
+        }
+
+        return result;
+    }
+
 
 
 }

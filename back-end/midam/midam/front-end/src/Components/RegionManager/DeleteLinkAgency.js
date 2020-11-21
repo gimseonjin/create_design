@@ -12,6 +12,7 @@ function DeleteLinkAgency(props) {
         form.append("linkAgencyCode",linkAgencyInfo[0]);
         axios.post("/linkAgency/deleteLinkAgency/regionManager",form).then((response)=>{
             alert(response.data.responseMsg);
+            window.location.reload();
         })
     }
 

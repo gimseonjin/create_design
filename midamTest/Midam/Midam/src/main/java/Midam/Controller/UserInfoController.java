@@ -24,8 +24,8 @@ import java.util.Map;
 public class UserInfoController {
 
     @ResponseBody
-    @PostMapping(value = "/readUserInfo")
-    public HashMap getUserInfo(@RequestParam(name="userToken") String userToken) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+    @PostMapping(value = "/readUserInfo/mentor")
+    public HashMap readUserInfo(@RequestParam(name="userToken") String userToken) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
 
         HashMap result = new HashMap();
         UserDAO userDAO = new UserDAO();
@@ -53,6 +53,34 @@ public class UserInfoController {
     }
 
     @ResponseBody
+    @PostMapping(value = "/updateUserInfo/mentor")
+    public HashMap updateUserInfo(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+
+        String userToken = request.getParameter("userToken");
+        String name = request.getParameter("name");
+        int age =  Integer.parseInt(request.getParameter("age"));
+        String phoneNumber =  request.getParameter("phoneNumber");
+        String volunteerId =  request.getParameter("volunteerId");
+        String address = request.getParameter("address");
+
+        HashMap result = new HashMap();
+        UserDAO userDAO = new UserDAO();
+
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
+
+        int resultRows = userDAO.updateUserInfo(id, name, age, phoneNumber, address,volunteerId);
+        if(resultRows==2){
+            result.put("responseMsg","성공");
+        }else{
+            result.put("responseMsg","실패");
+        }
+        
+        return result;
+    }
+
+    @ResponseBody
     @PostMapping(value="/searchId")
     public HashMap searchId(HttpServletRequest request)  {
         HashMap result = new HashMap();
@@ -69,7 +97,7 @@ public class UserInfoController {
         return result;
     }
 
-
+    @ResponseBody
     @PostMapping(value = "/readMentorAndRegionManagerList")
     public ArrayList readMentorAndRegionManagerList(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
 

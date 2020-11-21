@@ -185,23 +185,12 @@ const ReadActivityHistoryRegionManager=(props)=> {
         form.append("endDate", endDate);
 
         axios.post('/activityHistory/readHistory/regionManager',form).then((response)=>{
-        //setHistoryArrays(response.data); 
-        historyArrays = response.data[0];
-        setActivityHistoryList(historyArrays.map(renderHistoryArrays));
-            
+            historyArrays = response.data[0];
+            setActivityHistoryList(historyArrays.map(renderHistoryArrays));
         }
             );
     }
-    // 연계기관 리스트 받아오기, 디폴트로 하는 조회에서 같이받아와서 안쓰는중.
-    /* function getLinkAgencyList(){
-        var form = new FormData;
-        form.append("userToken", localStorage.getItem('userToken'));
-        axios.post('/activityHistory/getLinkAgencyList/mentor').then((response)=>{
-            console.log(response.data);
-        });
-
-    }; */
-
+   
 
     // 연계기관 리스트 선택 시 해당 연계기관의 활동 받아오기
     function readActivityList(linkAgencyCode){
@@ -228,8 +217,6 @@ const ReadActivityHistoryRegionManager=(props)=> {
         $(".readReportButton").on("click",function(){
 
             var reportButton = $(this);
-
-
             var tr = reportButton.parent().parent();
             var td = tr.children();
             console.log("row데이터 : "+td.eq(0).text());

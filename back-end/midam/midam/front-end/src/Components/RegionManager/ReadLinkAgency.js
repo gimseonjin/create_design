@@ -6,7 +6,7 @@ import DeleteLinkAgency from './DeleteLinkAgency';
 import UpdateLinkAgency from './UpdateLinkAgency';
 import '../Css/test.css'
 
-//소속 연계기관 담당자 조회.
+//소속 연계기관 조회.
 function ReadLinkAgency() {
 
     const [linkAgencyList,setLinkAgencyList] = useState();
@@ -120,7 +120,7 @@ function ReadLinkAgency() {
                 <DeleteLinkAgency linkAgencyInfo={linkAgencyInfo} ></DeleteLinkAgency>
             </Modal>
 
-            <Modal isOpen={updateLinkAgencyModal}>
+            <Modal className="modal-lg" isOpen={updateLinkAgencyModal}>
                 <ModalHeader toggle={toggleUpdateLinkAgencyModal}>연계기관 수정</ModalHeader>
                 <UpdateLinkAgency linkAgencyInfo={linkAgencyInfo} ></UpdateLinkAgency>
             </Modal>
