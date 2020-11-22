@@ -39,7 +39,7 @@ function ApproveApplicant(props) {
         form.append("linkAgencyCode", linkAgencyCode);
         form.append("linkAgencyStatus", linkAgencyStatus);
         axios.post("/signIn/approveLinkAgencyApplicant/regionManager",form).then((response)=>{
-            alert(response.data.resultMsg);
+            alert(response.data.responseMsg);
         })
     }
     function rejectLinkAgencyApplicant(){
@@ -49,7 +49,7 @@ function ApproveApplicant(props) {
         form.append("linkAgencyCode", linkAgencyCode);
         form.append("linkAgencyStatus", linkAgencyStatus);
         axios.post("/signIn/rejectLinkAgencyApplicant/regionManager",form).then((response)=>{
-            alert(response.data.resultMsg);
+            alert(response.data.responseMsg);
         })
     }
 

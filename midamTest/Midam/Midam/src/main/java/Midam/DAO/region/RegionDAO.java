@@ -117,15 +117,17 @@ public class RegionDAO {
 
             conn.commit();
 
-        }catch(SQLException se){
+        }catch(SQLException se) {
             se.printStackTrace();
             System.out.println("지역본부/ 소속인원 삭제 실패. 롤백");
-            try{
-                if(conn!=null){
+            try {
+                if (conn != null) {
                     conn.rollback();
                 }
             } catch (SQLException seRollback) {
                 seRollback.printStackTrace();
+            }
+        }
   
         return result;
     }

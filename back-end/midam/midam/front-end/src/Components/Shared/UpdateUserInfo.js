@@ -90,7 +90,6 @@ const UpdateUserInformation = (props) => {
 
             <Button color="primary" onClick={()=>setIsReadOnly(!isReadOnly)}>수정</Button>
             {isReadOnly?"":<Button color="danger" onClick={updateUserInfo}>완료</Button>}
-            <Button onClick={()=>console.log(userInfo)}>test</Button>
 
             
         

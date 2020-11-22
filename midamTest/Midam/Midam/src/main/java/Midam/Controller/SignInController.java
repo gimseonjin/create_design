@@ -107,12 +107,11 @@ public class SignInController {
         return result;
     }
 
-    
-    
     // 회원가입시 선택할 지역본부 목록 리스트로 반환
     @ResponseBody
     @PostMapping(value="/readRegionList")
     public ArrayList<HashMap> readRegionList(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+
         HashMap result = new HashMap();
 
         RegionDAO regionDAO = new RegionDAO();
