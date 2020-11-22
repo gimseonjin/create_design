@@ -36,12 +36,11 @@ public class UserInfoController {
         HashMap result = new HashMap();
         UserDAO userDAO = new UserDAO();
 
-        System.out.println(userToken);
         Token token = new Token();
         Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
         Object objectId = map.get("id");
         String id = objectId.toString();
-        System.out.println(id);
+
 
         Mentor mentor = userDAO.getUserInfo(id);
         result.put("id",mentor.getId());

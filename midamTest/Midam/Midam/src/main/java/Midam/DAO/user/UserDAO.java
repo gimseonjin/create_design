@@ -7,12 +7,7 @@ import Midam.model.user.Mentor;
 import Midam.model.user.RegionChangeApplication;
 import Midam.model.user.User;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -708,7 +703,6 @@ public class UserDAO {
     public int approvalFail(String id, String regionCode) {
         int result =0;
 
-
         String sql_delete ="delete from region_change_application where mentorId=? and regionCode =?";
         try {
 
@@ -727,4 +721,55 @@ public class UserDAO {
         return result;
     }
 
+    public int approveMentorApplicant(String id){
+        int result = 0;
+        sql = "UPDATE user SET authority=1 WHERE id=?";
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,id);
+            result = pstmt.executeUpdate();
+        }catch (SQLException se){
+            se.printStackTrace();
+        }finally {
+            closeConnection(conn);
+        }
+
+        return result;
+    }
+
+    public int[] rejectMentorApplicant(String id){
+        int[] result = {0,0};
+        sql = "DELETE FROM mentor WHERE id = ?";
+        String sql2 = "DELETE FROM user WHERE id = ?";
+        try {
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            Savepoint savepoint1 = conn.setSavepoint("before_delete_mentor");
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,id);
+            result[0] = pstmt.executeUpdate();
+
+            pstmt = conn.prepareStatement(sql2);
+            pstmt.setString(1,id);
+            result[1] = pstmt.executeUpdate();
+
+            conn.commit();
+        }catch (SQLException se){
+            se.printStackTrace();
+            System.out.println("회원가입 신청 멘토 삭제 실패. 롤백");
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException seRollback) {
+                seRollback.printStackTrace();
+            }
+
+        }finally {
+            closeConnection(conn);
+        }
+
+        return result;
+    }
 }

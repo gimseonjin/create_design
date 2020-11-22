@@ -3,16 +3,23 @@ import React, { useEffect, useState } from 'react';
 import { Button, Input, Modal, ModalHeader, Table } from 'reactstrap';
 import $ from 'jquery';
 import ApproveApplicant from './ApproveApplicant';
+import ApproveMentorApplicant from './ApproveMentorApplicant';
 
 //회원가입 신청자 조회.
 function ReadApplicant(){
     const [mentorApplicantList, setMentorApplicantList] = useState();
     const [linkAgencyApplicantList, setLinkAgencyApplicantList] = useState();
-    const [modalApproveApplicant, setModalApproveApplicant] = useState();
+    const [modalApproveApplicant, setModalApproveApplicant] = useState(false);
+    const [modalApproveMentor, setModalApproveMentor] = useState(false);
     const [applicantId, setApplicantId] = useState('');
+    const [applicantInfo, setApplicantInfo] = useState([]);
 
     const toggleModalApproveApplicant = () => {
         setModalApproveApplicant(!modalApproveApplicant);
+    }
+
+    const toggleModalApproveMentor = () => {
+        setModalApproveMentor(!modalApproveMentor);
     }
 
     function renderMentorApplicantList(mentorApplicantArray, index){
@@ -26,7 +33,7 @@ function ReadApplicant(){
             <td>{mentorApplicantArray.address}</td>
             <td>{mentorApplicantArray.phoneNumber}</td>
             <td>{mentorApplicantArray.volunteerId}</td>
-            <td><Button color = "primary">{buttonValue}</Button></td>
+            <td><Button className="approveMentorApplicantButton" color = "primary">{buttonValue}</Button></td>
         </tr>
         )
     }
@@ -69,7 +76,8 @@ function ReadApplicant(){
     //버튼 누르면 코드를 받아서 modal 열도록 onclick 액션 부여
     $(function() { 
         $(".approveLinkAgencyApplicantButton").off("click")
-        
+        $(".approveMentorApplicantButton").off("click")
+
         $(".approveLinkAgencyApplicantButton").on("click",function(){
 
             var Button = $(this);
@@ -80,6 +88,25 @@ function ReadApplicant(){
             toggleModalApproveApplicant();
         }
         )        
+
+        $(".approveMentorApplicantButton").on("click",function(){
+
+            var button = $(this);
+
+            var tr = button
+                .parent()
+                .parent();
+            var td = tr.children();
+            var tdArr=[];
+            td.each(function(i){
+                tdArr.push(td.eq(i).text())
+            })
+            setApplicantInfo(
+               tdArr
+            )
+            toggleModalApproveMentor();
+        }
+        )       
     }
     )
 
@@ -139,8 +166,13 @@ function ReadApplicant(){
                     </Table>
 
             <Modal isOpen={modalApproveApplicant}>
-                <ModalHeader toggle={toggleModalApproveApplicant}>활동보고서 조회</ModalHeader>
+                <ModalHeader toggle={toggleModalApproveApplicant}>연계기관 담당자 가입 승인</ModalHeader>
                 <ApproveApplicant applicantId = {applicantId}></ApproveApplicant>
+            </Modal>
+
+            <Modal isOpen={modalApproveMentor}>
+                <ModalHeader toggle={toggleModalApproveMentor}>멘토 가입 승인</ModalHeader>
+                <ApproveMentorApplicant applicantInfo={applicantInfo}></ApproveMentorApplicant>
             </Modal>
             
         </div>
