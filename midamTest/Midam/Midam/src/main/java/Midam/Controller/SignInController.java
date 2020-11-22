@@ -198,7 +198,7 @@ public class SignInController {
         }
     }
 
-    //회원가입 신청자 거절
+    //연계기관 담당자 회원가입 신청자 거절
     @ResponseBody
     @PostMapping(value="/rejectLinkAgencyApplicant/regionManager")
     public HashMap rejectLinkAgencyApplicant(HttpServletRequest request) throws UnsupportedEncodingException {
@@ -209,9 +209,6 @@ public class SignInController {
         HashMap result = new HashMap();
         UserDAO userDAO = new UserDAO();
         LinkAgencyDAO linkAgencyDAO = new LinkAgencyDAO();
-
-
-
 
         //연계기관 등록신청을 삭제
         if(linkAgencyStatus == 0 ) {
@@ -234,4 +231,43 @@ public class SignInController {
         }
         return result;
     }
+
+    //멘토 회원가입 승인
+    @ResponseBody
+    @PostMapping(value="/approveMentorApplicant/regionManager")
+    public HashMap approveMentorApplicant(HttpServletRequest request) throws UnsupportedEncodingException {
+        String applicantId = request.getParameter("applicantId");
+
+        HashMap result = new HashMap();
+        UserDAO userDAO = new UserDAO();
+
+        //멘토 담당자 승인.
+        int applicantResult = userDAO.approveMentorApplicant(applicantId);
+        if(applicantResult == 1){
+            result.put("responseMsg", "성공");
+        }else{
+            result.put("responseMsg", "실패");
+        }
+        return result;
+    }
+
+    //멘토 회원가입 신청자 거절
+    @ResponseBody
+    @PostMapping(value="/rejectMentorApplicant/regionManager")
+    public HashMap rejectMentorApplicant(HttpServletRequest request) throws UnsupportedEncodingException {
+        String applicantId = request.getParameter("applicantId");
+
+        HashMap result = new HashMap();
+        UserDAO userDAO = new UserDAO();
+
+        int[] resultRows = userDAO.rejectMentorApplicant(applicantId);
+        if(resultRows[0] == 1 && resultRows[1] == 1){
+            result.put("responseMsg","성공");
+        }else{
+            result.put("responseMsg","성공");
+        }
+
+        return result;
+    }
+    
 }
