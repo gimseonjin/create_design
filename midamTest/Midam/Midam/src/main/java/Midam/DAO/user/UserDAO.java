@@ -2,6 +2,7 @@ package Midam.DAO.user;
 
 import Midam.model.community.Message;
 import Midam.model.linkAgency.LinkAgency;
+import Midam.model.user.LinkAgencyManager;
 import Midam.model.user.Mentor;
 import Midam.model.user.RegionChangeApplication;
 import Midam.model.user.User;
@@ -85,7 +86,7 @@ public class UserDAO {
     public Mentor getUserInfo(String id){
         try {
             getConnection();
-            sql = "SELECT * FROM mydb.user JOIN mentor ON user.id=mentor.id Join region on mentor.regionCode=region.regionCode WHERE user.id=?;";
+            sql = "SELECT * FROM user JOIN mentor ON user.id=mentor.id Join region on mentor.regionCode=region.regionCode WHERE user.id=?;";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,id);
             rs = pstmt.executeQuery();
@@ -123,7 +124,59 @@ public class UserDAO {
         }
         return result;
     }
-    
+    public LinkAgencyManager getUserInfoManager(String id){
+        try {
+            getConnection();
+            sql = "SELECT * FROM user " +
+                    "JOIN link_agency_manager ON user.id=link_agency_manager.id " +
+                    "Join link_agency on link_agency_manager.linkAgencyCode=link_agency.linkAgencyCode" +
+                    " WHERE user.id=?;";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,id);
+            rs = pstmt.executeQuery();
+            LinkAgencyManager linkAgencyManager = new LinkAgencyManager();
+            if(rs.next()){
+
+                linkAgencyManager.setId(rs.getString("id"));
+                linkAgencyManager.setName(rs.getString("name"));
+                linkAgencyManager.setGender(rs.getString("gender"));
+                linkAgencyManager.setAge(rs.getInt("age"));
+                linkAgencyManager.setAddress(rs.getString("address"));
+                linkAgencyManager.setPhoneNumber(rs.getString("phoneNumber"));
+                linkAgencyManager.setAuthority(rs.getInt("authority"));
+                linkAgencyManager.setLinkAgencyCode(rs.getString("linkAgencyName"));
+
+
+
+
+                return linkAgencyManager;
+            }
+            else
+                return null;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+    public int updateUserInfoManager(String id, String name, int age, String phoneNumber,String address ){
+        int result=0;
+        try {
+            getConnection();
+            sql = "UPDATE user JOIN link_agency_manager on user.id=link_agency_manager.id SET user.name = ?, user.age = ?, user.address = ?, user.phoneNumber = ? WHERE user.id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,name);
+            pstmt.setInt(2,age);
+            pstmt.setString(3,address);
+            pstmt.setString(4,phoneNumber);
+            pstmt.setString(5,id);
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return result;
+    }
     //회원가입
     public int createMentor(String id, String password, String name, String gender, int age, String address, String phoneNumber, String regionCode, String volunteerId) { // 등록
         int result =0;

@@ -19,7 +19,7 @@ import {Button,
 
 
 import ReadUserInformation from '../Shared/ReadUserInformation';
-
+import ApplyChangeRegion from './ApplyChangeRegion';
 import Withdraw from '../Shared/Withdraw';
 import ReadActivityHistoryMentor from './ReadActivityHistoryMentor';
 
@@ -114,9 +114,22 @@ const HeaderMentor = ({match, history}) => {
                         <Collapse isOpen={isOpen} navbar>
                             <Nav className="mr-auto" navbar>
                                 <NavItem>
-                                    <NavLink href="#">
-                                        <Link to={`${match.url}/readUserInformation`}><span class = "nav-title">회원정보</span></Link>
-                                    </NavLink>
+                                <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle nav caret><span class = "nav-title">회원정보</span></DropdownToggle>
+                                            <DropdownMenu left>
+                                                <DropdownItem>
+                                                <Link to={`${match.url}/readUserInformation`}><span>회원정보 조회</span></Link>
+                                                </DropdownItem>
+                                                <DropdownItem>
+                                                <Link to={`${match.url}/applyChangeRegion`}><span >지역본부 변경 신청</span></Link>
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                        
+                                    
+                                    
+             
+                                   
                                 </NavItem>
                                 <NavItem>
                                     <UncontrolledDropdown nav inNavbar>
@@ -190,6 +203,7 @@ const HeaderMentor = ({match, history}) => {
             <Switch>
                 <Route exact path={`${match.path}`} children={<img class = "establishment" src={establishment} art="midam"></img>}></Route>
                 <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
+                <Route exact path={`${match.path}/applyChangeRegion`} component={ApplyChangeRegion}></Route>
                 <Route exact path={`${match.path}/withdraw`} component={Withdraw}></Route>
                 <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryMentor}></Route>
                

@@ -7,6 +7,7 @@ import Midam.DAO.region.RegionDAO;
 import Midam.DAO.user.UserDAO;
 import Midam.model.activity.MentoringApplication;
 import Midam.model.token.Token;
+import Midam.model.user.LinkAgencyManager;
 import Midam.model.user.Mentor;
 import Midam.model.user.RegionChangeApplication;
 import Midam.model.user.User;
@@ -57,6 +58,9 @@ public class UserInfoController {
         return result;
     }
 
+
+
+
     @ResponseBody
     @PostMapping(value = "/updateUserInfo/mentor")
     public HashMap updateUserInfo(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
@@ -84,6 +88,62 @@ public class UserInfoController {
         
         return result;
     }
+
+    @ResponseBody
+    @PostMapping(value = "/readUserInfo/linkAgencyManager")
+    public HashMap readUserInfoManager(@RequestParam(name="userToken") String userToken) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+
+        HashMap result = new HashMap();
+        UserDAO userDAO = new UserDAO();
+
+        System.out.println(userToken);
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        Object objectId = map.get("id");
+        String id = objectId.toString();
+        System.out.println(id);
+
+        LinkAgencyManager linkAgencyManager = userDAO.getUserInfoManager(id);
+        result.put("id",linkAgencyManager.getId());
+        result.put("name",linkAgencyManager.getName());
+        result.put("gender",linkAgencyManager.getGender());
+        result.put("age",linkAgencyManager.getAge());
+        result.put("address",linkAgencyManager.getAddress());
+        result.put("phoneNumber",linkAgencyManager.getPhoneNumber());
+        result.put("authority",linkAgencyManager.getAuthority());
+        result.put("linkAgency", linkAgencyManager.getLinkAgencyCode());
+
+        System.out.println(result);
+        return result;
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/updateUserInfo/linkAgencyManager")
+    public HashMap updateUserInfoManager(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+
+        String userToken = request.getParameter("userToken");
+        String name = request.getParameter("name");
+        int age =  Integer.parseInt(request.getParameter("age"));
+        String phoneNumber =  request.getParameter("phoneNumber");
+        String address = request.getParameter("address");
+
+        HashMap result = new HashMap();
+        UserDAO userDAO = new UserDAO();
+
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
+
+        int resultRows = userDAO.updateUserInfoManager(id, name, age, phoneNumber, address);
+        if(resultRows==1){
+            result.put("responseMsg","성공");
+        }else{
+            result.put("responseMsg","실패");
+        }
+
+        return result;
+    }
+
 
     @ResponseBody
     @PostMapping(value="/searchId")
