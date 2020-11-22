@@ -88,7 +88,7 @@ const HeaderLinkAgencyManager = ({match, history}) => {
         <div>
             <div class = "top-header">
                 <div class = "left">
-                    <img class = "headerLogo" src={midamLogo} art="midam"></img>
+                <Link to ={`${match.url}`}><img class = "headerLogo" src={midamLogo} art="midam"></img></Link>
                     <h4 class = "title">미담장학회</h4>
                 </div>
                 
