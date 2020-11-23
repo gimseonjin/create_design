@@ -634,6 +634,7 @@ public class MentoringHistoryDAO {
         }
         return result;
     }
+
     public int createActivityHistory(String mentorRecruitmentCode,String id,String mentorId,String startTime) { // 등록
         sql = "insert into activity_history(mentorRecruitmentCode, linkAgencyManagerId, mentorId ,startTime)"
                 + " values(?, ?, ?, ?)";

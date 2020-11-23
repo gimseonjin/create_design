@@ -89,7 +89,7 @@ function CreateReport(props) {
 
     return (
         <div className="container">
-            <h1>props.activityHistoryCode : {activityHistoryCode}</h1>
+           
             <Form onSubmit={submitReport}>
                 <FormGroup>
                     <InputGroup>
@@ -119,7 +119,7 @@ function CreateReport(props) {
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동내용</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="content" placeholder="활동내용입력" onChange={handleContentOnChange}></Input>
+                        <Input type="textarea" cols="50" rows="10" name="content" placeholder="활동내용입력" onChange={handleContentOnChange}></Input>
                     </InputGroup>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
