@@ -100,6 +100,29 @@ public class ActivityHistoryController {
     }
 
     @ResponseBody
+    @PostMapping(value="/createActivityHistory")
+    public HashMap createActivityHistory(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+        HashMap result = new HashMap();
+        String userToken = request.getParameter("userToken");
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
+
+        String mentorRecruitmentCode = request.getParameter("activity");
+
+        String mentorId = request.getParameter("mentorId");
+        String startTime = request.getParameter("startTime");
+
+
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+        int createResult = mentoringHistoryDAO.createActivityHistory(mentorRecruitmentCode,id,mentorId,startTime);
+
+        result.put("responseMsg",createResult);
+        return result;
+    }
+
+
+    @ResponseBody
     @PostMapping(value="/createReport/mentor")
     public HashMap createReport(MultipartHttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
         HashMap result = new HashMap();

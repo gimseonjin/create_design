@@ -17,7 +17,7 @@ import {
 import midamLogo from '../img/midam.png';
 import useModal from 'react-hooks-use-modal';
 import QrScanner from '../Shared/QrScanner';
-
+import ReadActivityHistoryLinkAgencyManager from '../LinkAgencyManager/ReadActivityHistoryLinkAgencyManager';
 import ReadUserInformation from './ReadUserInformation';
 import ReadPost from '../Shared/ReadPost';
 import CreatePost from '../Shared/CreatePost';
@@ -105,6 +105,15 @@ const HeaderLinkAgencyManager = ({match, history}) => {
                                 </NavItem>
                                 <NavItem>
                                     <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle nav caret><span class = "nav-title">활동 관리</span></DropdownToggle>
+                                            <DropdownMenu left>
+                                                <DropdownItem >  <Link to={`${match.url}/readActivityHistory`}><span>활동 내역 조회</span></Link></DropdownItem>
+                                                <DropdownItem ><span>~~</span></DropdownItem>
+                                            </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </NavItem>
+                                <NavItem>
+                                    <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">커뮤니티</span></DropdownToggle>
                                             <DropdownMenu left>
                                                 <DropdownItem>
@@ -146,8 +155,13 @@ const HeaderLinkAgencyManager = ({match, history}) => {
             </div>
 
             <Switch>
+                <Route exact path={`${match.path}/readMess`} component = {ReadMessage}></Route>  
+
                 <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
            
+                {/* 활동관리 */}
+                <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryLinkAgencyManager}></Route>
+
                 <Route exact path={`${match.path}/readPost`} component = {ReadPost}></Route>
                 <Route exact path={`${match.path}/createPost`} component = {CreatePost}></Route>
                 <Route exact path={`${match.path}/readRecruitment`} component = {ReadRecruitment}></Route>

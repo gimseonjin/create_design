@@ -424,4 +424,30 @@ public class MentoringHistoryDAO {
         return result;
     }
 
+    public int createActivityHistory(String mentorRecruitmentCode,String id,String mentorId,String startTime) { // 등록
+        sql = "insert into activity_history(mentorRecruitmentCode, linkAgencyManagerId, mentorId ,startTime)"
+                + " values(?, ?, ?, ?)";
+        int result =0;
+
+        try {
+            conn= getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+
+            pstmt.setString(1,mentorRecruitmentCode);
+            pstmt.setString(2,id);
+            pstmt.setString(3,mentorId);
+            pstmt.setString(4,startTime);
+
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+
 }
