@@ -18,7 +18,7 @@ public class LinkAgencyDAO {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=utf8", "root", "root");
+            conn = DriverManager.getConnection("jdbc:mysql://midam-db.cd0zkvanrwmx.ap-northeast-2.rds.amazonaws.com/mydb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=utf8", "admin", "midam1234");
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
