@@ -153,7 +153,7 @@ const ReadReportMentor = (props) =>{
 
     return (
         <div className="container">
-            <h1>props.activityHistoryCode : {activityHistoryCode}</h1>
+          
             <Form>
                 <FormGroup>
                     <InputGroup>
@@ -241,7 +241,7 @@ const ReadReportMentor = (props) =>{
                 {!$imagePreview && <Image src={imagePreviewUrl} className="mw-100"></Image>}
                 {approvalStatus===3?"":<Button onClick={toggleIsReadOnly}>수정</Button>}
                 {approvalStatus===3?"":<Button className={isReadOnly? "invisible": ""} disabled={isReadOnly} color="danger" onClick={updateReport}>완료</Button>}
-                <Button className="float-right" color="primary" onClick={readReport}>조회</Button>
+              
                    
             </Form>
             <div className="mw-100">
