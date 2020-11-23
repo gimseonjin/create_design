@@ -6,19 +6,17 @@ import {
     NavbarToggler,
     Nav,
     NavItem,
-    NavLink,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
     Button,
-
+    Modal,
+    ModalHeader
   } from 'reactstrap';
 import midamLogo from '../img/midam.png';
-import useModal from 'react-hooks-use-modal';
 import QrScanner from '../Shared/QrScanner';
 
-import ReadUserInformation from './ReadUserInformation';
 import ReadPost from '../Shared/ReadPost';
 import CreatePost from '../Shared/CreatePost';
 import ReadMessage from '../Shared/ReadMessage';
@@ -36,9 +34,10 @@ const HeaderLinkAgencyManager = ({match, history}) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
-    const [Modal, open, close, isOpenPop] = useModal('root', {
-        preventScroll: true
-    });
+    const [modalScanQR, setModalScanQR] = useState(false);
+    const toggleModalScanQR =()=>{
+        setModalScanQR(!modalScanQR);
+    }
     const handleNumberOfMessageOnChange = (e) => {
         e.preventDefault();
         setNumberOfMessage(e.target.value);
@@ -63,6 +62,7 @@ const HeaderLinkAgencyManager = ({match, history}) => {
             
      })
     }
+
     useEffect(() => {
         readNumberOfMessage();//받은 쪽지 갯수
         if(!localStorage.getItem("userToken") || localStorage.getItem("userToken") === "bearer: "){
@@ -88,7 +88,7 @@ const HeaderLinkAgencyManager = ({match, history}) => {
         <div>
             <div class = "top-header">
                 <div class = "left">
-                <Link to ={`${match.url}`}><img class = "headerLogo" src={midamLogo} art="midam"></img></Link>
+                    <img class = "headerLogo" src={midamLogo} art="midam"></img>
                     <h4 class = "title">미담장학회</h4>
                 </div>
                 
@@ -98,11 +98,6 @@ const HeaderLinkAgencyManager = ({match, history}) => {
                     <NavbarToggler onClick={toggle} />
                         <Collapse isOpen={isOpen} navbar>
                             <Nav className="mr-auto" navbar>
-                            <NavItem>
-                                    <NavLink href="#">
-                                        <Link to={`${match.url}/readUserInformation`}><span class = "nav-title">회원정보</span></Link>
-                                    </NavLink>
-                                </NavItem>
                                 <NavItem>
                                     <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">커뮤니티</span></DropdownToggle>
@@ -127,12 +122,10 @@ const HeaderLinkAgencyManager = ({match, history}) => {
                                 <Nav className="mr-right" navbar >
                                     <NavItem variant="outline-light">
                                         <div class = "right">
-                                        <Button className = "header-bnt w-75" color="light" onClick={open}><span>QR 스캔</span></Button>
-                                            <Modal>
-                                                <div className = "pop-up">
+                                        <Button className = "header-bnt w-75" color="light" onClick={toggleModalScanQR}><span>QR 스캔</span></Button>
+                                            <Modal isOpen={modalScanQR}>
+                                               <ModalHeader toggle={toggleModalScanQR}>ScanQR</ModalHeader>
                                                     <QrScanner/>
-                                                    <Button onClick={close}>CLOSE</Button>
-                                                </div>
                                             </Modal>
                                             <Button className = "header-bnt w-75" color="light" onClick = {
                                                 () => {localStorage.removeItem("userToken");
@@ -146,8 +139,7 @@ const HeaderLinkAgencyManager = ({match, history}) => {
             </div>
 
             <Switch>
-                <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
-           
+
                 <Route exact path={`${match.path}/readPost`} component = {ReadPost}></Route>
                 <Route exact path={`${match.path}/createPost`} component = {CreatePost}></Route>
                 <Route exact path={`${match.path}/readRecruitment`} component = {ReadRecruitment}></Route>

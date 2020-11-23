@@ -771,4 +771,28 @@ public class UserDAO {
 
         return result;
     }
+
+    //연계기관 문의 시 지역본부 관리자 목록 조회
+    public ArrayList readRegionManager(String regionCode){
+        ArrayList result = new ArrayList();
+        sql = "SELECT user.id, user.name FROM mentor JOIN user ON mentor.id=user.id WHERE mentor.regionCode=? AND user.authority=2;";
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,regionCode);
+            rs=pstmt.executeQuery();
+            while(rs.next()){
+                HashMap regionManager = new HashMap();
+                regionManager.put("id",rs.getString("id"));
+                regionManager.put("name",rs.getString("name"));
+                result.add(regionManager);
+            }
+        }catch (SQLException se){
+            se.printStackTrace();
+        }finally {
+            closeConnection(conn);
+        }
+
+        return result;
+    }
 }

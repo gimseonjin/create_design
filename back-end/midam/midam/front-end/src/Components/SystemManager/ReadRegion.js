@@ -4,6 +4,7 @@ import axios from 'axios';
 import $ from 'jquery';
 import DeleteRegion from './DeleteRegion';
 import UpdateRegion from './UpdateRegion';
+import CreateRegion from './CreateRegion';
 import '../Css/test.css'
 
 //소속 연계기관 조회.
@@ -39,6 +40,7 @@ function ReadRegion(){
     const [regionInfo, setRegionInfo] = useState();
     const [updateRegionModal, setUpdateRegionModal] = useState(false);
     const [deleteRegionModal, setDeleteRegionModal] = useState(false);
+    const [createRegionModal, setCreateRegionModal] = useState(false);
 
     const toggleDeleteRegionModal = () =>{
         setDeleteRegionModal(!deleteRegionModal);
@@ -46,6 +48,10 @@ function ReadRegion(){
 
     const toggleUpdateRegionModal = () =>{
         setUpdateRegionModal(!updateRegionModal);
+    }
+
+    const toggleCreateRegionModal = () =>{
+        setCreateRegionModal(!createRegionModal);
     }
 
       // jquery 사용. 버튼 클릭시 해당 Row 값을 가져오기
@@ -94,9 +100,10 @@ function ReadRegion(){
     },[])
 
     return(
-        <div className="container">
+        <div className="container pt-5">
 
-            연계기관
+            지역본부
+            <Button color="primary" className="float-right" onClick={()=>toggleCreateRegionModal()}>등록</Button>
             <Table>
                 <thead>
                     <tr className="text-nowrap">
@@ -110,7 +117,7 @@ function ReadRegion(){
                     {regionList}
                 </tbody>
             </Table>
-            <Button onClick={readRegionList}>조회</Button>
+
 
             <Modal isOpen={deleteRegionModal}>
                 <ModalHeader toggle={toggleDeleteRegionModal}>연계기관 삭제</ModalHeader>
@@ -120,6 +127,11 @@ function ReadRegion(){
             <Modal className="modal-lg" isOpen={updateRegionModal}>
                 <ModalHeader toggle={toggleUpdateRegionModal}>연계기관 수정</ModalHeader>
                 <UpdateRegion regionInfo={regionInfo} ></UpdateRegion>
+            </Modal>
+
+            <Modal className="modal-lg" isOpen={createRegionModal}>
+                <ModalHeader toggle={toggleCreateRegionModal}>연계기관 등록</ModalHeader>
+                <CreateRegion ></CreateRegion>
             </Modal>
 
         </div>

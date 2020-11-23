@@ -236,7 +236,25 @@ import java.util.Map;
         return result;
     }
 
+    //연계기관 문의
+    @ResponseBody
+    @PostMapping(value="/inquiry")
+    public HashMap inquiry(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
+        HashMap result = new HashMap();
+        String receiverId = request.getParameter("receiverId");
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        MessageDAO messageDAO = new MessageDAO();
+
+        int inquiryResult = messageDAO.inquiry(receiverId, title, content);
+        if(inquiryResult==1) {
+            result.put("responseMsg", "성공");
+        }else{
+            result.put("responseMsg", "실패");
+        }
+        return result;
+    }
 
 
 }

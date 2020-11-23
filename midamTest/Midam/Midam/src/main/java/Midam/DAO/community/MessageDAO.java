@@ -142,7 +142,7 @@ public class MessageDAO {
         return message;
     }
 
-    public int createMessage(String senderId,String recevierId, String title, String content) { // 수정
+    public int createMessage(String senderId,String receiverId, String title, String content) { // 수정
         int result =0;
 
         String sendDate = sdfDate.format(now);
@@ -152,7 +152,7 @@ public class MessageDAO {
             conn=getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, senderId);
-            pstmt.setString(2, recevierId);
+            pstmt.setString(2, receiverId);
             pstmt.setString(3, title);
             pstmt.setString(4, content);
             pstmt.setString(5, sendDate);
@@ -175,6 +175,31 @@ public class MessageDAO {
             conn=getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, messageId);
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+
+    //연계기관 문의
+    public int inquiry(String receiverId, String title, String content) { // 수정
+        int result =0;
+
+        String sendDate = sdfDate.format(now);
+        String sql = "insert into message (senderId, receiverId,title,content,sendDate)  values (?,?,?,?,?) ";
+        try {
+
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "inquiry");
+            pstmt.setString(2, receiverId);
+            pstmt.setString(3, title);
+            pstmt.setString(4, content);
+            pstmt.setString(5, sendDate);
             result = pstmt.executeUpdate();
 
         } catch (SQLException throwables) {

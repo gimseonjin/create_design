@@ -481,4 +481,100 @@ public class MentoringHistoryDAO {
         return result;
     }
 
+    // QR 스캔 후 활동 내역 입력.
+    public int enterActivity(String linkAgencyManagerId, String mentorId, String activityCode){
+        int result = 0;
+        String now = LocalDateTime.now().toString();
+        String today = LocalDate.now().toString();
+
+        sql = "select * from activity_history WHERE mentorId=? AND startTime > ? AND mentorRecruitmentCode=?";
+        String sql2 = "INSERT INTO activity_history(mentorRecruitmentCode, linkAgencyManagerId, mentorId, startTime) VALUES (?,?,?,?);";
+        try {
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            Savepoint savepoint1 = conn.setSavepoint("before_duplicate_check");
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, mentorId);
+            pstmt.setString(2, today);
+            pstmt.setString(3, activityCode);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                return -1; // 오늘 이미 이 활동에대한 기록이 있으니 중복, 실패
+            }
+
+
+            pstmt = conn.prepareStatement(sql2);
+            pstmt.setString(1, activityCode);
+            pstmt.setString(2, linkAgencyManagerId);
+            pstmt.setString(3, mentorId);
+            pstmt.setString(4,now);
+            result = pstmt.executeUpdate();
+            conn.commit();
+        }catch(SQLException se){
+            se.printStackTrace();
+            System.out.println("QR스캔 후 활동 시작 기록 실패. 롤백");
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException seRollback) {
+                seRollback.printStackTrace();
+            }
+
+        }catch(Exception e) {
+            e.printStackTrace();
+        }finally {
+            closeConnection(conn);
+        }
+
+        return result;
+    }
+
+    //QR 스캔 -> 활동 종료
+    public int exitActivity(String linkAgencyManagerId, String mentorId, int activityHistoryCode){
+        int result = 0;
+        String now = LocalDateTime.now().toString();
+        String today = LocalDate.now().toString();
+        sql = "select * from activity_history WHERE mentorId=? AND startTime < ? AND activityHistoryCode=?"; // 오늘 0시00분 이전에 있었던 활동은 종료할 수 없도록
+        String sql2 = "UPDATE activity_history SET endTime = ?, approvalStatus = 1 WHERE activityHistoryCode = ? AND mentorId=? AND approvalStatus=0;";
+
+        try {
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            Savepoint savepoint1 = conn.setSavepoint("before_duplicate_check");
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, mentorId);
+            pstmt.setString(2, today);
+            pstmt.setInt(3, activityHistoryCode);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                return -1; // 오늘 이미 이 활동에대한 기록이 있으니 중복, 실패
+            }
+
+            pstmt = conn.prepareStatement(sql2);
+            pstmt.setString(1, now);
+            pstmt.setInt(2, activityHistoryCode);
+            pstmt.setString(3, mentorId);
+            result = pstmt.executeUpdate();
+            conn.commit();
+        }catch(SQLException se){
+            se.printStackTrace();
+            System.out.println("QR스캔 후 활동 종료 기록 실패. 롤백");
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException seRollback) {
+                seRollback.printStackTrace();
+            }
+
+        }catch(Exception e) {
+            e.printStackTrace();
+        }finally {
+            closeConnection(conn);
+        }
+
+        return result;
+    }
+
 }

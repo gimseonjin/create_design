@@ -44,7 +44,9 @@ public class LinkAgencyController {
         int[] resultRows = linkAgencyDAO.deleteLinkAgency(linkAgencyCode);
 
         if(resultRows[0] == 1 && resultRows[1] == 1){
-            result.put("responseMsg","성공");
+            result.put("responseMsg","기관 및 소속 인원 삭제 성공.");
+        }else if(resultRows[0] == 1 && resultRows[1] == 0){
+            result.put("responseMsg","기관 삭제 성공");
         }else{
             result.put("responseMsg","실패");
         }
@@ -75,6 +77,32 @@ public class LinkAgencyController {
         return result;
     }
 
+    //연계기관 신규등록 - 지역본부 관리자가
+    @ResponseBody
+    @PostMapping(value = "/createLinkAgency/regionManager")
+    public HashMap createLinkAgency(HttpServletRequest request) throws UnsupportedEncodingException {
+        HashMap result = new HashMap();
+
+        String userToken = request.getParameter("userToken");
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
+
+        String linkAgencyName = request.getParameter("linkAgencyName");
+        String linkAgencyAddress = request.getParameter("linkAgencyAddress");
+        String linkAgencyInfo = request.getParameter("linkAgencyInfo");
+        LinkAgencyDAO linkAgencyDAO = new LinkAgencyDAO();
+
+        int resultRows = linkAgencyDAO.createLinkAgency(id, linkAgencyName, linkAgencyAddress, linkAgencyInfo);
+
+        if(resultRows == 1){
+            result.put("responseMsg","성공");
+        }else{
+            result.put("responseMsg","실패");
+        }
+
+        return result;
+    }
 
 
 }

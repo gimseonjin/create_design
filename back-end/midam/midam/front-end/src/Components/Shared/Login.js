@@ -10,11 +10,14 @@ import {
     Label,
     Input,
     Col,
-    Row
+    Row,
+    Modal,
+    ModalHeader
 } from 'reactstrap';
 import midamLogo from '../img/midam.png';
 import '../Css/Login.css'
 import axios from 'axios';
+import InquiryOfLinkAgency from './InquiryOfLinkAgency';
 
 const Login = ({props, history}) => {
 
@@ -37,6 +40,11 @@ const Login = ({props, history}) => {
         const handleSubmitPw = (e) => {
             e.preventDefault();
             setPassword(e.target.value);
+       }
+
+       const [inquiryModal, setInquiryModal] = useState(false);
+       const toggleInquiryModal = () =>{
+           setInquiryModal(!inquiryModal);
        }
 
        const loginTest = (form) => {
@@ -108,12 +116,17 @@ const Login = ({props, history}) => {
     
                     </FormGroup>
                     <div className = "d-flex justify-content-center align-self-center">
-                        <Link to={`/SignIn`} style={{ textDecoration: 'none', color : 'black', fontSize : '10px', marginRight : '2%', marginLeft : '2%'}}>회원 가입</Link> 
+                        <Link to="/signIn" style={{ textDecoration: 'none', color : 'black', fontSize : '10px', marginRight : '2%', marginLeft : '2%'}}>회원 가입</Link> 
                         <div class="vl"></div>                       
-                        <Link to={`/Inquiry`} style={{ textDecoration: 'none', color : 'black', fontSize : '10px', marginRight : '2%', marginLeft : '2%'}}>연계 기관 문의</Link>
+                        <span onClick={toggleInquiryModal} style={{ cursor:"pointer", textDecoration: 'none', color : 'black', fontSize : '10px', marginRight : '2%', marginLeft : '2%'}}>연계 기관 문의</span>
                     </div>
 
                 </Form>
+
+                <Modal isOpen={inquiryModal}>
+                    <ModalHeader toggle={toggleInquiryModal}>연계기관 문의</ModalHeader>
+                    <InquiryOfLinkAgency></InquiryOfLinkAgency>
+                </Modal>
             </div>
         );
 }

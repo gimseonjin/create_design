@@ -60,7 +60,7 @@ function CreateQR() {
 
     const activityOnChange = (e) =>{
         activityCode=e.target.value;
-        QRValue=localStorage.getItem("userToken")+","+isSelected+","+activityCode;
+        QRValue=isSelected+","+localStorage.getItem("userToken")+","+activityCode;
         createQR();
     }
 
@@ -85,7 +85,7 @@ function CreateQR() {
                 <option value="">선택안함</option>
                 {activityList}
             </Input>
-            
+
             {qr}
 
         </div>

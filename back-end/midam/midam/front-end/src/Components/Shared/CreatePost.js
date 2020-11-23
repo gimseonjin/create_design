@@ -36,7 +36,7 @@ function CreatePost(props) {
         form.append("title", title);
         form.append("content", content);
         axios
-            .post('http://localhost:8080/community/createPost', form, {
+            .post('/community/createPost', form, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }

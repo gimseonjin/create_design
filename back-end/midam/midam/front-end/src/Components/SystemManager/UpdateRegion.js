@@ -35,29 +35,7 @@ function UpdateRegion(props) {
     return (
         <div>
           
-            <Row>
-                <Col >
-                <p>기존 정보</p>
-                <InputGroup>
-                    <InputGroupAddon addonType="prepend">
-                        <InputGroupText>지역본부 이름</InputGroupText>
-                    </InputGroupAddon>
-                    <Input type="text" value={regionInfo[1]}></Input>
-                </InputGroup>
-
-                <InputGroup>
-                    <InputGroupAddon addonType="prepend">
-                        <InputGroupText>지역본부 주소</InputGroupText>
-                    </InputGroupAddon>
-                    <Input type="text" value={regionInfo[2]}></Input>
-                </InputGroup>
-            </Col>
-
-            <Col>
-            </Col>
-
-            <Col>
-            <p>변경 할 정보</p>
+            <h4>변경 할 정보 입력</h4>
                 <Form>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
@@ -73,8 +51,7 @@ function UpdateRegion(props) {
                     </InputGroup>
 
                 </Form>
-            </Col>
-            </Row>
+
             <Button color="primary" onClick={()=>setIsReadOnly(!isReadOnly)}>수정</Button>
             {!isReadOnly?<Button color="danger" onClick={updateRegion}>완료</Button>:""}
         </div>

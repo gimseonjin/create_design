@@ -141,8 +141,10 @@ public class LinkAgencyDAO {
             pstmt = conn.prepareStatement(sql);//검색하기위해 입력한 아이디
             rs= pstmt.executeQuery();
 
-            while(rs.next()){
+            if(rs.next()){
                 linkAgencyCode=getNextCode(rs.getString(1));
+            }else{
+                linkAgencyCode="LC0000";
             }
 
             pstmt = conn.prepareStatement(sql2);
@@ -280,6 +282,7 @@ public class LinkAgencyDAO {
             result[1] = pstmt.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+
         } finally {
             closeConnection(conn);
         }
@@ -307,10 +310,7 @@ public class LinkAgencyDAO {
         }
 
         return result;
-
     }
-    
-    
 
     // "XX0000" 형식에서 다음 코드 반환
     public String getNextCode(String code){
@@ -329,4 +329,37 @@ public class LinkAgencyDAO {
 
     }
 
+    //연계기관 신규 등록
+    public int createLinkAgency(String regionManagerId, String linkAgencyName, String linkAgencyAddress, String linkAgencyInfo){
+        int result=0;
+        sql = "SELECT max(linkAgencyCode) FROM link_agency;";
+        String sql2 = "INSERT INTO link_agency(linkAgencyCode, linkAgencyName, linkAgencyAddress, linkAgencyInfo, status, regionCode) VALUES(?, ?, ?, ?,1,(SELECT regionCode from mentor WHERE id=?))";
+        String linkAgencyCode="";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);//검색하기위해 입력한 아이디
+            rs= pstmt.executeQuery();
+
+            if(rs.next()){
+                linkAgencyCode=getNextCode(rs.getString(1));
+            }else{
+                linkAgencyCode="LC0000";
+            }
+
+            pstmt = conn.prepareStatement(sql2);
+
+            pstmt.setString(1,linkAgencyCode);
+            pstmt.setString(2,linkAgencyName);
+            pstmt.setString(3,linkAgencyAddress);
+            pstmt.setString(4,linkAgencyInfo);
+            pstmt.setString(5,regionManagerId);
+            result= pstmt.executeUpdate();
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
 }

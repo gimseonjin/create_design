@@ -4,6 +4,7 @@ import axios from 'axios';
 import $ from 'jquery';
 import DeleteLinkAgency from './DeleteLinkAgency';
 import UpdateLinkAgency from './UpdateLinkAgency';
+import CreateLinkAgency from './CreateLinkAgency';
 import '../Css/test.css'
 
 //소속 연계기관 조회.
@@ -41,7 +42,11 @@ function ReadLinkAgency() {
     const [linkAgencyInfo, setLinkAgencyInfo] = useState();
     const [updateLinkAgencyModal, setUpdateLinkAgencyModal] = useState(false);
     const [deleteLinkAgencyModal, setDeleteLinkAgencyModal] = useState(false);
+    const [createLinkAgencyModal, setCreateLinkAgencyModal] = useState(false);
 
+    const toggleCreateLinkAgencyModal = () =>{
+        setCreateLinkAgencyModal(!createLinkAgencyModal);
+    }
     const toggleDeleteLinkAgencyModal = () =>{
         setDeleteLinkAgencyModal(!deleteLinkAgencyModal);
     }
@@ -99,6 +104,8 @@ function ReadLinkAgency() {
         <div className="container">
 
             연계기관
+            <Button onClick={toggleCreateLinkAgencyModal} color="primary" className="float-right">등록</Button>
+            <Button onClick={readLinkAgencyList} className="float-right">조회</Button>
             <Table>
                 <thead>
                     <tr className="text-nowrap">
@@ -113,7 +120,7 @@ function ReadLinkAgency() {
                     {linkAgencyList}
                 </tbody>
             </Table>
-            <Button onClick={readLinkAgencyList}>조회</Button>
+          
 
             <Modal isOpen={deleteLinkAgencyModal}>
                 <ModalHeader toggle={toggleDeleteLinkAgencyModal}>연계기관 삭제</ModalHeader>
@@ -123,6 +130,11 @@ function ReadLinkAgency() {
             <Modal className="modal-lg" isOpen={updateLinkAgencyModal}>
                 <ModalHeader toggle={toggleUpdateLinkAgencyModal}>연계기관 수정</ModalHeader>
                 <UpdateLinkAgency linkAgencyInfo={linkAgencyInfo} ></UpdateLinkAgency>
+            </Modal>
+
+            <Modal className="modal-lg" isOpen={createLinkAgencyModal}>
+                <ModalHeader toggle={toggleCreateLinkAgencyModal}>연계기관 등록</ModalHeader>
+                <CreateLinkAgency></CreateLinkAgency>
             </Modal>
 
         </div>

@@ -262,6 +262,68 @@ public class ActivityHistoryController {
         result = mentoringHistoryDAO.readActivityToExit(id);
         return result;
     }
+    
+    // QR스캔 -> 멘토 활동 시작
+    @ResponseBody
+    @PostMapping(value="/enterActivity/linkAgencyManager")
+    public HashMap enterActivity(HttpServletRequest request) throws UnsupportedEncodingException {
+        HashMap result = new HashMap();
+        String linkAgencyManagerToken = request.getParameter("linkAgencyManagerToken");
+        String mentorToken = request.getParameter("mentorToken");
+        String activityCode = request.getParameter("activityCode");
+
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(linkAgencyManagerToken).get("data", HashMap.class);
+        String linkAgencyManagerId = map.get("id").toString();
+
+        map = token.verifyJWTAll(mentorToken).get("data", HashMap.class);
+        String mentorId = map.get("id").toString();
+
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+
+        int resultRows = mentoringHistoryDAO.enterActivity(linkAgencyManagerId, mentorId, activityCode);
+
+        if(resultRows==1){
+            result.put("responseMsg","성공");
+        }else if(resultRows ==-1){
+            result.put("responseMsg","오늘 중복되는 활동이 있습니다.");
+        }else{
+            result.put("responseMsg","실패");
+        }
+
+        return result;
+    }
+
+    // QR스캔 -> 멘토 활동 종료
+    @ResponseBody
+    @PostMapping(value="/exitActivity/linkAgencyManager")
+    public HashMap exitActivity(HttpServletRequest request) throws UnsupportedEncodingException {
+        HashMap result = new HashMap();
+        String linkAgencyManagerToken = request.getParameter("linkAgencyManagerToken");
+        String mentorToken = request.getParameter("mentorToken");
+        int activityHistoryCode = Integer.parseInt(request.getParameter("activityHistoryCode"));
+
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(linkAgencyManagerToken).get("data", HashMap.class);
+        String linkAgencyManagerId = map.get("id").toString();
+
+        map = token.verifyJWTAll(mentorToken).get("data", HashMap.class);
+        String mentorId = map.get("id").toString();
+
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+
+        int resultRows = mentoringHistoryDAO.exitActivity(linkAgencyManagerId, mentorId, activityHistoryCode);
+
+        if(resultRows==1){
+            result.put("responseMsg","성공");
+        }else if(resultRows ==-1){
+            result.put("responseMsg","오늘 활동이 아닙니다. 기관 담당자에게 문의해주세요.");
+        }else{
+            result.put("responseMsg","실패");
+        }
+
+        return result;
+    }
 
     public Blob multipartFileToBlob(MultipartFile file) throws IOException, SQLException {
         Blob resultBlob;

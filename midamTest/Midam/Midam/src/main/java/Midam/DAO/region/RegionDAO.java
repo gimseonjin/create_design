@@ -11,6 +11,7 @@ public class RegionDAO {
 
     private Connection conn=null;
     private PreparedStatement pstmt;
+    private ResultSet rs;
 
     String sql;
     private Connection getConnection(){
@@ -49,7 +50,7 @@ public class RegionDAO {
             conn=getConnection();
             pstmt = conn.prepareStatement(sql);
 
-            ResultSet rs= pstmt.executeQuery();
+            rs= pstmt.executeQuery();
 
             while(rs.next()) {
 
@@ -143,7 +144,7 @@ public class RegionDAO {
 
             pstmt = conn.prepareStatement(sql_region);
             pstmt.setString(1,id);
-            ResultSet rs= pstmt.executeQuery();
+            rs= pstmt.executeQuery();
             rs.next();
             String regionCode =rs.getString(1);
 
@@ -168,6 +169,79 @@ public class RegionDAO {
         }
         return list;
     }
-    
-    
+
+    //지역본부 등록
+    public int createRegion(String regionName, String regionAddress){
+        int result=0;
+        sql = "SELECT max(regionCode) FROM region;";
+        String sql2 = "INSERT INTO region(regionCode, regionName, regionAddress, status) VALUES(?, ?, ?,1)";
+        String regionCode="";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);//검색하기위해 입력한 아이디
+            rs= pstmt.executeQuery();
+
+            if(rs.next()){
+                regionCode=getNextCode(rs.getString(1));
+            }else{
+                regionCode="RC0000";
+            }
+
+            pstmt = conn.prepareStatement(sql2);
+            pstmt.setString(2,regionName);
+            pstmt.setString(3,regionAddress);
+            pstmt.setString(1,regionCode);
+            result= pstmt.executeUpdate();
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+
+    // "XX0000" 형식에서 다음 코드 반환
+    public String getNextCode(String code){
+
+        String nextCode;
+        String character=code.substring(0,2);
+        String stringNumber=code.substring(2,6);
+
+
+        int intNumber = Integer.parseInt(stringNumber);
+
+        String nextNumber=String.format("%04d", intNumber+1);
+        nextCode= character.concat(nextNumber);
+
+        return nextCode;
+    }
+
+    //지역본부 목록을 List로 반환
+    public ArrayList<HashMap> readRegionInquiry(){
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+        String sql = "select * from region WHERE status=1";
+
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            rs= pstmt.executeQuery();
+
+            while(rs.next()) {
+
+                HashMap regionHashMap = new HashMap();
+                regionHashMap.put("regionCode",rs.getString("regionCode"));
+                regionHashMap.put("regionName",rs.getString("regionName"));
+
+                list.add(regionHashMap);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return list;
+    }
 }

@@ -23,8 +23,7 @@ function PageRouter() {
                 <Route path="/regionManager" component={HeaderRegionManager} />
                 <Route path="/linkAgencyManager" component={HeaderLinkAgencyManager} />
                 <Route path="/systemManager" component={HeaderSystemManager} />
-                <Route path="/SignIn" component={SignInRouter} />
-                <Route path="/Inquiry" component={InquiryOfLinkAgency} />
+                <Route path="/signIn" component={SignInRouter} />
                 <Route path="/*" component={PageNotFound} />
             </Switch>
         </div>

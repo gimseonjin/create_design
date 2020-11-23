@@ -404,5 +404,17 @@ public class UserInfoController {
         return result;
     }
 
+    @ResponseBody
+    @PostMapping(value="/readRegionManager/inquiry")
+    public ArrayList readRegionManagerInquiry(HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
+        ArrayList result = new ArrayList();
+
+        String regionCode =request.getParameter("regionCode");
+        UserDAO userDAO = new UserDAO();
+
+        result= userDAO.readRegionManager(regionCode);
+
+        return result;
+    }
 }

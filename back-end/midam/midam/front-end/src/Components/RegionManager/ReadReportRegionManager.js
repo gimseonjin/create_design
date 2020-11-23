@@ -200,7 +200,7 @@ const ReadReportMentor = (props) =>{
                         <InputGroupAddon addonType="prepend">
                             <InputGroupText>활동내용</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="textarea" name="content" placeholder="활동내용입력" onChange={handleContentOnChange} value={content} readOnly={isReadOnly}></Input>
+                        <Input type="textarea" cols="50" rows="10" name="content" placeholder="활동내용입력" onChange={handleContentOnChange} value={content} readOnly={isReadOnly}></Input>
                     </InputGroup>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
