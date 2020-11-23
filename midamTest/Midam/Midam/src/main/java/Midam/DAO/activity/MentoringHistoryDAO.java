@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 
 public class MentoringHistoryDAO {
@@ -414,6 +415,62 @@ public class MentoringHistoryDAO {
             pstmt.setString(3, activityHistoryCode);  //검색하기위해 입력한 아이디
             result= pstmt.executeUpdate();
 
+
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+    //QR 입장용 활동 목록 리스트 읽기
+    public ArrayList readActivityToEnter(String id){
+        ArrayList result = new ArrayList();
+        sql = "SELECT mentor_recruitment.mentorRecruitmentCode, mentor_recruitment.activityName " +
+                "FROM mentoring_application JOIN mentor_recruitment \n" +
+                "ON mentoring_application.mentorRecruitmentCode=mentor_recruitment.mentorRecruitmentCode\n" +
+                " WHERE mentorId=? AND applicationStatus=1;";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,id);
+            rs= pstmt.executeQuery();
+            while(rs.next()){
+                HashMap activity = new HashMap();
+                activity.put("activityCode",rs.getString("mentorRecruitmentCode"));
+                activity.put("activityName",rs.getString("activityName"));
+                result.add(activity);
+            }
+
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+
+    //QR 퇴장용 활동 목록 리스트 읽기
+    public ArrayList readActivityToExit(String id){
+        ArrayList result = new ArrayList();
+        sql = "SELECT activity_history.activityHistoryCode, activity_history.startTime, mentor_recruitment.activityName \n" +
+                "FROM activity_history JOIN mentor_recruitment \n" +
+                "ON activity_history.mentorRecruitmentCode=mentor_recruitment.mentorRecruitmentCode \n" +
+                "WHERE mentorId=? AND approvalStatus=0;";
+        try {
+            conn=getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,id);
+            rs= pstmt.executeQuery();
+            while(rs.next()){
+                HashMap activity = new HashMap();
+                activity.put("activityHistoryCode",rs.getString("activityHistoryCode"));
+                activity.put("startTime",rs.getString("startTime"));
+                activity.put("activityName",rs.getString("activityName"));
+                result.add(activity);
+            }
 
         }catch(Exception e) {
             e.printStackTrace();

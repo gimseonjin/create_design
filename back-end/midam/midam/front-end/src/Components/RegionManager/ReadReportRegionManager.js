@@ -137,7 +137,7 @@ const ReadReportMentor = (props) =>{
 
     return (
         <div className="container">
-            <h1>props.activityHistoryCode : {activityHistoryCode}</h1>
+           
             <Form>
                 <FormGroup>
                     <InputGroup>

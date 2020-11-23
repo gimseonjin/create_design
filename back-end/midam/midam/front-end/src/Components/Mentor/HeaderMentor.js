@@ -14,7 +14,9 @@ import {Button,
     Card,
     CardText,
     CardBody,
-    CardTitle
+    CardTitle,
+    ModalHeader,
+    Modal
 } from 'reactstrap';
 
 
@@ -30,10 +32,10 @@ import ReadTest from '../Shared/ReadTest';
 import ReadRecruitment from '../Shared/ReadRecruitment';
 import ReadMessage from '../Shared/ReadMessage';
 import useModal from 'react-hooks-use-modal';
-import QRCode from 'qrcode.react';
 import midamLogo from '../img/midam.png';
 import establishment from '../img/establishment.png';
 import axios from 'axios';
+import CreateQR from './CreateQR';
 
 const HeaderMentor = ({match, history}) => {
 ; 
@@ -41,9 +43,14 @@ const HeaderMentor = ({match, history}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [buttonColor, setButtonColor] = useState();
     const toggle = () => setIsOpen(!isOpen);
-    const [Modal, open, close, isOpenPop] = useModal('root', {
+/*     const [Modal, open, close, isOpenPop] = useModal('root', {
         preventScroll: true
-    });    
+    });     */
+    const [modalQR, setModalQR] = useState(false);
+    const toggleModalQR = () =>{
+        setModalQR(!modalQR);
+    }
+
     const [numberOfMessage, setNumberOfMessage] = useState();
     const handleNumberOfMessageOnChange = (e) => {
         e.preventDefault();
@@ -168,23 +175,8 @@ const HeaderMentor = ({match, history}) => {
                                 <Nav className="mr-right" navbar >
                                     <NavItem variant="outline-light">
                                         <div class = "right">
-                                            <Button className = "header-bnt w-75" color="light" onClick={open}><span>내 QR 조회</span></Button>
-                                            <Modal>
-                                                <div className = "pop-up">
-                                                    <Card className = "pop-card">
-                                                        <CardBody>
-                                                            <CardTitle>내 QR 정보</CardTitle>
-                                                        </CardBody>
-                                                        <QRCode value = {localStorage.getItem("userToken")} size = "100" includeMargin = "true"/>
-                                                        <CardBody className = "pop-card" padding = "10px">
-                                                            <CardText>QR 코드는 봉사활동 참가 확인용입니다.
-                                                            <br/>타인에게 무단으로 넘겨주지 마세요.</CardText>
-                                                            <Button onClick={close}>CLOSE</Button>
-                                                        </CardBody>
-                                                    </Card>
-                                                </div>
+                                            <Button className = "header-bnt w-75" color="light" onClick={toggleModalQR}><span>내 QR 조회</span></Button>
 
-                                            </Modal>
                                             <Button className = "header-bnt w-75" color="light" onClick = {
                                                 () => {localStorage.removeItem("userToken");
                                                 history.push("/")
@@ -196,7 +188,7 @@ const HeaderMentor = ({match, history}) => {
                             </Collapse>
                     </Navbar>  
 
-                    
+
                    
             </div>
         </div>
@@ -221,7 +213,10 @@ const HeaderMentor = ({match, history}) => {
                 <Route exact path={`${match.path}/readTest`} component = {ReadTest}></Route>
             </Switch>
 
-          
+            <Modal isOpen={modalQR}>
+                        <ModalHeader className="bg-white" toggle={toggleModalQR}>내정보 QR</ModalHeader>
+                        <CreateQR></CreateQR>
+            </Modal>
         </div>
     )
 }

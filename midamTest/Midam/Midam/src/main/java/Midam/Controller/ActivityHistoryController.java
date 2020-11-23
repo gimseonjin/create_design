@@ -7,6 +7,7 @@ import Midam.DAO.user.UserDAO;
 import Midam.model.activity.ActivityHistory;
 
 import Midam.model.token.Token;
+import Midam.model.user.Mentor;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.stereotype.Controller;
@@ -256,7 +257,34 @@ public class ActivityHistoryController {
         result.put("resultMessage", resultMessage);
         return result;
     }
+    //QR 입장용 활동 목록 리스트 읽기
+    @ResponseBody
+    @PostMapping(value="/readActivityToEnter/mentor")
+    public ArrayList readActivityToEnter(@RequestParam(value = "userToken") String userToken) throws UnsupportedEncodingException {
+        ArrayList result = new ArrayList();
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
 
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+        result = mentoringHistoryDAO.readActivityToEnter(id);
+
+        return result;
+    }
+
+    //QR 퇴장용 활동 목록 리스트 읽기
+    @ResponseBody
+    @PostMapping(value="/readActivityToExit/mentor")
+    public ArrayList readActivityToExit(@RequestParam(value = "userToken") String userToken) throws UnsupportedEncodingException {
+        ArrayList result = new ArrayList();
+        Token token = new Token();
+        Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
+        String id = map.get("id").toString();
+
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+        result = mentoringHistoryDAO.readActivityToExit(id);
+        return result;
+    }
 
     public Blob multipartFileToBlob(MultipartFile file) throws IOException, SQLException {
         Blob resultBlob;
