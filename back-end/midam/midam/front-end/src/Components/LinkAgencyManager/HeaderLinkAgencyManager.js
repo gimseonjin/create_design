@@ -6,6 +6,7 @@ import {
     NavbarToggler,
     Nav,
     NavItem,
+    NavLink,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -17,6 +18,7 @@ import midamLogo from '../img/midam.png';
 import useModal from 'react-hooks-use-modal';
 import QrScanner from '../Shared/QrScanner';
 
+import ReadUserInformation from './ReadUserInformation';
 import ReadPost from '../Shared/ReadPost';
 import CreatePost from '../Shared/CreatePost';
 import ReadMessage from '../Shared/ReadMessage';
@@ -86,7 +88,7 @@ const HeaderLinkAgencyManager = ({match, history}) => {
         <div>
             <div class = "top-header">
                 <div class = "left">
-                    <img class = "headerLogo" src={midamLogo} art="midam"></img>
+                <Link to ={`${match.url}`}><img class = "headerLogo" src={midamLogo} art="midam"></img></Link>
                     <h4 class = "title">미담장학회</h4>
                 </div>
                 
@@ -96,6 +98,11 @@ const HeaderLinkAgencyManager = ({match, history}) => {
                     <NavbarToggler onClick={toggle} />
                         <Collapse isOpen={isOpen} navbar>
                             <Nav className="mr-auto" navbar>
+                            <NavItem>
+                                    <NavLink href="#">
+                                        <Link to={`${match.url}/readUserInformation`}><span class = "nav-title">회원정보</span></Link>
+                                    </NavLink>
+                                </NavItem>
                                 <NavItem>
                                     <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">커뮤니티</span></DropdownToggle>
@@ -139,7 +146,8 @@ const HeaderLinkAgencyManager = ({match, history}) => {
             </div>
 
             <Switch>
-
+                <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
+           
                 <Route exact path={`${match.path}/readPost`} component = {ReadPost}></Route>
                 <Route exact path={`${match.path}/createPost`} component = {CreatePost}></Route>
                 <Route exact path={`${match.path}/readRecruitment`} component = {ReadRecruitment}></Route>

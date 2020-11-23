@@ -234,7 +234,42 @@ public class MentoringHistoryDAO {
 
     }      //전체 활동내역 목록 for 지역본부 관리자
 
+    public ArrayList<HashMap> readActivityHistoryForExport(String linkAgencyCode, String startDate, String endDate){
 
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+
+        try {
+            conn=getConnection();
+
+                sql = "SELECT 1365Id, name, phoneNumber, activityName, startTime ,endTime from activity_history " +
+                        "join mentor_recruitment on activity_history.mentorRecruitmentCode=mentor_recruitment.mentorRecruitmentCode " +
+                        "join mydb.user on activity_history.mentorId = user.id " +
+                        "join mydb.mentor on user.id =mentor.id where linkAgencyCode=? AND startTime >= ? AND startTime <= ?";
+                pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, linkAgencyCode);  //검색하기위해 입력한 아이디
+            pstmt.setString(2, startDate);
+            pstmt.setString(3, endDate);
+            ResultSet rs= pstmt.executeQuery();
+            while(rs.next()) {
+
+                HashMap historyHashMap = new HashMap();
+                historyHashMap.put("volunteerId",rs.getString("1365Id"));
+                historyHashMap.put("name", rs.getString("name"));
+                historyHashMap.put("phoneNumber", rs.getString("phoneNumber"));
+                historyHashMap.put("activityName", rs.getString("activityName"));
+                historyHashMap.put("startTime",rs.getString("startTime"));
+                historyHashMap.put("endTime",rs.getString("endTime"));
+                list.add(historyHashMap);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }return list;
+
+    }
     // 보고서 최초작성 createReport. content, note, image DB상에 업데이트
     public int createReport(int activityHistoryCode, String id, String content, String note, Blob imageBlob){
         int result = 0;

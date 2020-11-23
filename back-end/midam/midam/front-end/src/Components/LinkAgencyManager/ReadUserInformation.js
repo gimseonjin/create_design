@@ -20,7 +20,7 @@ const ReadUserInfo = (props) => {
     const getUserInfo = () => {
       let form = new FormData();
       form.append("userToken", token);
-      axios.post('/user/readUserInfo/mentor',form).then((response)=>{
+      axios.post('/user/readUserInfo/linkAgencyManager',form).then((response)=>{
         setUserInfo(response.data);
       })
     }
@@ -61,18 +61,12 @@ const ReadUserInfo = (props) => {
                   <InputGroupText>주소</InputGroupText>
                 </InputGroupAddon>
                 <Input type="text" value={userInfo.address}></Input>
-            </InputGroup>
+            </InputGroup>          
             <InputGroup>
                 <InputGroupAddon addonType="prepend">
-                  <InputGroupText>소속 지역본부</InputGroupText>
+                  <InputGroupText>소속 연계기관</InputGroupText>
                 </InputGroupAddon>
-                <Input type="text" value={userInfo.region}></Input>
-            </InputGroup>
-            <InputGroup>
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>1365 ID</InputGroupText>
-                </InputGroupAddon>
-                <Input type="text" value={userInfo.volunteerId}></Input>
+                <Input type="text" value={userInfo.linkAgency}></Input>
             </InputGroup>
 
 

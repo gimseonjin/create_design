@@ -6,6 +6,7 @@ import {
     NavbarToggler,
     Nav,
     NavItem,
+    NavLink,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -13,7 +14,7 @@ import {
     Button,
   } from 'reactstrap';
 import midamLogo from '../img/midam.png';
-
+import ReadUserInformation from '../Shared/ReadUserInformation';
 import useModal from 'react-hooks-use-modal';
 import '../Css/Header.css';
 import QrScanner from '../Shared/QrScanner';
@@ -85,7 +86,7 @@ const HeaderRegionManager = ({match, history}) => {
         <div>
             <div class = "top-header">
                 <div class = "left">
-                    <img class = "headerLogo" src={midamLogo} art="midam"></img>
+                <Link to ={`${match.url}`}><img class = "headerLogo" src={midamLogo} art="midam"></img></Link>
                     <h4 class = "title">미담장학회</h4>
                 </div>
                 
@@ -95,6 +96,12 @@ const HeaderRegionManager = ({match, history}) => {
                     <NavbarToggler onClick={toggle} />
                         <Collapse isOpen={isOpen} navbar>
                             <Nav className="mr-auto" navbar>
+                            <NavItem>
+                                    <NavLink href="#">
+                                        <Link to={`${match.url}/readUserInformation`}><span class = "nav-title">회원정보</span></Link>
+                                    </NavLink>
+                                </NavItem>
+
                             <NavItem>
                                     <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle nav caret><span class = "nav-title">회원 관리</span></DropdownToggle>
@@ -167,6 +174,7 @@ const HeaderRegionManager = ({match, history}) => {
             </div>
 
             <Switch>
+            <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
                 {/* 회원관리 */}
                 <Route exact path={`${match.path}/readApplicant`} component={ReadApplicant}></Route>
                 <Route exact path={`${match.path}/readMentor`} component={ReadMentor}></Route>

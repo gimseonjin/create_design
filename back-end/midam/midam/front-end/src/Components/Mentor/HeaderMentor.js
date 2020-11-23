@@ -21,14 +21,14 @@ import {Button,
 
 
 import ReadUserInformation from '../Shared/ReadUserInformation';
-
+import ApplyChangeRegion from './ApplyChangeRegion';
 import Withdraw from '../Shared/Withdraw';
 import ReadActivityHistoryMentor from './ReadActivityHistoryMentor';
 
 import ReadMentoringApplication from './ReadMentoringApplication';
 import ReadPost from '../Shared/ReadPost';
 import CreatePost from '../Shared/CreatePost';
-
+import ReadTest from '../Shared/ReadTest';
 import ReadRecruitment from '../Shared/ReadRecruitment';
 import ReadMessage from '../Shared/ReadMessage';
 import useModal from 'react-hooks-use-modal';
@@ -110,7 +110,7 @@ const HeaderMentor = ({match, history}) => {
             <div>
             <div class = "top-header">
                 <div class = "left">
-                    <img class = "headerLogo" src={midamLogo} art="midam"></img>
+                <Link to ={`${match.url}`}><img class = "headerLogo" src={midamLogo} art="midam"></img></Link>
                     <h4 class = "title">미담장학회</h4>
                 </div>
                 
@@ -121,9 +121,22 @@ const HeaderMentor = ({match, history}) => {
                         <Collapse isOpen={isOpen} navbar>
                             <Nav className="mr-auto" navbar>
                                 <NavItem>
-                                    <NavLink href="#">
-                                        <Link to={`${match.url}/readUserInformation`}><span class = "nav-title">회원정보</span></Link>
-                                    </NavLink>
+                                <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle nav caret><span class = "nav-title">회원정보</span></DropdownToggle>
+                                            <DropdownMenu left>
+                                                <DropdownItem>
+                                                <Link to={`${match.url}/readUserInformation`}><span>회원정보 조회</span></Link>
+                                                </DropdownItem>
+                                                <DropdownItem>
+                                                <Link to={`${match.url}/applyChangeRegion`}><span >지역본부 변경 신청</span></Link>
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                        
+                                    
+                                    
+             
+                                   
                                 </NavItem>
                                 <NavItem>
                                     <UncontrolledDropdown nav inNavbar>
@@ -147,6 +160,7 @@ const HeaderMentor = ({match, history}) => {
                                                 </DropdownItem>
                                                 <DropdownItem><Link to={`${match.url}/createPost`}><span>게시글 작성</span></Link></DropdownItem>
                                                 <DropdownItem><Link to={`${match.url}/readRecruitment`}><span>멘토링 모집</span></Link></DropdownItem>
+                                                <DropdownItem><Link to={`${match.url}/readTest`}><span>킹셀 킹보내기 실습</span></Link></DropdownItem>
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </NavItem>
@@ -182,6 +196,7 @@ const HeaderMentor = ({match, history}) => {
             <Switch>
                 <Route exact path={`${match.path}`} children={<img class = "establishment" src={establishment} art="midam"></img>}></Route>
                 <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
+                <Route exact path={`${match.path}/applyChangeRegion`} component={ApplyChangeRegion}></Route>
                 <Route exact path={`${match.path}/withdraw`} component={Withdraw}></Route>
                 <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryMentor}></Route>
                
@@ -194,6 +209,8 @@ const HeaderMentor = ({match, history}) => {
                 <Route exact path={`${match.path}/createPost`} component = {CreatePost}></Route>
                 <Route exact path={`${match.path}/readRecruitment`} component = {ReadRecruitment}></Route>
                 <Route exact path={`${match.path}/readMessage`} component = {ReadMessage}></Route>
+
+                <Route exact path={`${match.path}/readTest`} component = {ReadTest}></Route>
             </Switch>
 
             <Modal isOpen={modalQR}>
