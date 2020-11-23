@@ -28,10 +28,10 @@ import ReadActivityHistoryMentor from './ReadActivityHistoryMentor';
 import ReadMentoringApplication from './ReadMentoringApplication';
 import ReadPost from '../Shared/ReadPost';
 import CreatePost from '../Shared/CreatePost';
-import ReadTest from '../Shared/ReadTest';
+
 import ReadRecruitment from '../Shared/ReadRecruitment';
 import ReadMessage from '../Shared/ReadMessage';
-import useModal from 'react-hooks-use-modal';
+
 import midamLogo from '../img/midam.png';
 import establishment from '../img/establishment.png';
 import axios from 'axios';
@@ -160,7 +160,7 @@ const HeaderMentor = ({match, history}) => {
                                                 </DropdownItem>
                                                 <DropdownItem><Link to={`${match.url}/createPost`}><span>게시글 작성</span></Link></DropdownItem>
                                                 <DropdownItem><Link to={`${match.url}/readRecruitment`}><span>멘토링 모집</span></Link></DropdownItem>
-                                                <DropdownItem><Link to={`${match.url}/readTest`}><span>킹셀 킹보내기 실습</span></Link></DropdownItem>
+                                                
                                             </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </NavItem>
@@ -210,7 +210,7 @@ const HeaderMentor = ({match, history}) => {
                 <Route exact path={`${match.path}/readRecruitment`} component = {ReadRecruitment}></Route>
                 <Route exact path={`${match.path}/readMessage`} component = {ReadMessage}></Route>
 
-                <Route exact path={`${match.path}/readTest`} component = {ReadTest}></Route>
+        
             </Switch>
 
             <Modal isOpen={modalQR}>
