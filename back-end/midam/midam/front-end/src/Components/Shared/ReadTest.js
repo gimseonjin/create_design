@@ -1,6 +1,7 @@
-import React, {useEffect, useState, Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import CreatePost from '../Shared/CreatePost';
 
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import '../Css/test.css';
 import {
     Button,
@@ -20,7 +21,7 @@ import axios from 'axios';
 import $ from 'jquery';
 import ReadPostInfo from './ReadPostInfo';
 
-const ReadPost = (props) => {
+const ReadTest = (props) => {
 
     const [tableData, setTableData] = useState();
     const [modalCreatePost, setModalCreatePost] = useState(false); 
@@ -94,14 +95,26 @@ const ReadPost = (props) => {
 
     return (
         <div className="container">
+<ReactHTMLTableToExcel
+         download-table-xls-button
+        id="test-table-xls-button"
+        className="rr"
+        table="table-to-xls"
+        filename="tablexls"
+        sheet="tablexls"        
+        buttonText="엑셀 내보내기"/>
+
+
+        
             <Row>
                 
                 {/*게시판 테이블*/}
                 <Col>
-                    <Table  >
+                    <Table  id="table-to-xls" >
                         {/* 문자 안끊기게 */}
                         <thead className="text-nowrap">
                             {/* 열 이름부분 */}
+                            
                             <tr>
                            
                                 <th>게시글 번호</th>
@@ -135,4 +148,4 @@ const ReadPost = (props) => {
         </div>
     )
 }
-export default ReadPost;
+export default ReadTest;

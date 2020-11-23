@@ -57,6 +57,7 @@
     "react-dev-utils": "^10.2.1",
     "react-dom": "^16.14.0",
     "react-hooks-use-modal": "^1.0.9",
+    "react-html-table-to-excel": "^2.0.0",
     "react-qr-code": "^1.0.3",
     "react-qr-reader": "^2.2.1",
     "react-router-dom": "^5.2.0",

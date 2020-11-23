@@ -4,7 +4,7 @@ import ExportMentoringActivity from '../LinkAgencyManager/ExportMentoringActivit
 import axios from 'axios';
 import $ from 'jquery';
 import ReadReportRegionManager from './ReadReportRegionManager';
-
+import '../Css/test.css';
 //활동 내역 조회
 const ReadActivityHistoryRegionManager=(props)=> {
     
@@ -224,6 +224,19 @@ const ReadActivityHistoryRegionManager=(props)=> {
             toggleReadReport();
         }
         )
+        $(".excelButton").off("click")
+            // $(document).ready 에 해당하는부분. 업데이트되며 문법이 바뀐듯하다
+        
+        $(".excelButton").on("click",function(){
+
+            var reportButton = $(this);
+            var tr = reportButton.parent().parent();
+            var td = tr.children();
+            console.log("row데이터 : "+td.eq(0).text());
+            setModalInput(td.eq(0).text());
+            toggleReadReport();
+        }
+        )
     }
     )
 
@@ -300,7 +313,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
 
             <Modal isOpen={modalExportExcel}>
                 <ModalHeader toggle={toggleExportExcel}>활동 내역 내보내기</ModalHeader>
-                <ExportMentoringActivity></ExportMentoringActivity>
+                <ExportMentoringActivity linkAgency ={linkAgency} startDate={startDate} endDate={endDate}></ExportMentoringActivity>
             </Modal>
         </div>
     )

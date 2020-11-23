@@ -1,5 +1,6 @@
 package Midam.Controller;
 
+import Midam.DAO.activity.ApplicationDAO;
 import Midam.DAO.activity.MentoringHistoryDAO;
 import Midam.DAO.linkAgency.LinkAgencyDAO;
 import Midam.DAO.user.UserDAO;
@@ -79,6 +80,22 @@ public class ActivityHistoryController {
             ArrayList<HashMap> linkAgencyArrayList = linkAgencyDAO.readLinkAgencyListMentor(id);
             result.add(linkAgencyArrayList);
         }
+        return result;
+    }
+
+    @ResponseBody
+    @PostMapping(value="/readHistory/excel")
+    public ArrayList readActivityHistoryForExport(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+        ArrayList result = new ArrayList();
+
+        String linkAgencyCode = request.getParameter("linkAgencyCode");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+        result = mentoringHistoryDAO.readActivityHistoryForExport(linkAgencyCode,startDate, endDate);
+
+
         return result;
     }
 
