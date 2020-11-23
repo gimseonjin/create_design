@@ -25,7 +25,7 @@ const ReadReportMentor = (props) =>{
     const [note, setNote] = useState();
     const [file, setFile] = useState("");
     const [imagePreviewUrl, setImagePreviewUrl] = useState("");
-    const [token, setToken] = useState(cookie.load("userToken"));
+    const [token, setToken] = useState(localStorage.getItem("userToken"));
     const [isReadOnly, setIsReadOnly] = useState(true);
     const [dateOfActivity, setDateOfActivity] = useState("");
     const [approvalDate, setApprovalDate] = useState("");

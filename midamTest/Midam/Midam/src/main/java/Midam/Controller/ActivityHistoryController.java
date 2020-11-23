@@ -188,7 +188,11 @@ public class ActivityHistoryController {
         Blob imageBlob = multipartFileToBlob(file);
         MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
         int updateResult = mentoringHistoryDAO.updateReport(activityHistoryCode, id, content, note, imageBlob);
-        result.put("responseMsg",updateResult);
+        if(updateResult==1) {
+            result.put("responseMsg", "성공");
+        }else{
+            result.put("responseMsg", "실패");
+        }
         return result;
     }
 
