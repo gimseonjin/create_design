@@ -102,7 +102,7 @@ const ReadActivityHistoryMentor=(props)=> {
         switch(historyArray.status){
             case '0':
                 statusValue="활동미완료";
-                ButtonValue="작성하기";
+                ButtonValue="작성";
                 break;
             case '1':
                 statusValue="활동완료/보고서미작성";
@@ -296,7 +296,7 @@ const ReadActivityHistoryMentor=(props)=> {
                             readActivityHistoryWithOption ();
                             }}>조회</Button>
                         {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
-                        <Button color="primary" onClick={()=>setModalExportExcel(true)}>내보내기</Button>
+                       
                     </Form>
                 </Col>
                 {/* 활동 내역 테이블 */}
@@ -337,10 +337,6 @@ const ReadActivityHistoryMentor=(props)=> {
                 <CreateQR></CreateQR>
             </Modal>
 
-            <Modal isOpen={modalExportExcel}>
-                <ModalHeader toggle={toggleExportExcel}>활동 내역 내보내기</ModalHeader>
-                <ExportMentoringActivity></ExportMentoringActivity>
-            </Modal>
         </div>
     )
 }

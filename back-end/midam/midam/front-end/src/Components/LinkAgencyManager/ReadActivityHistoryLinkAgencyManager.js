@@ -3,16 +3,19 @@ import { Button, Col, Container, Form, Input, InputGroup, InputGroupAddon, Input
 import ExportMentoringActivity from '../LinkAgencyManager/ExportMentoringActivity';
 import axios from 'axios';
 import $ from 'jquery';
-import ReadReportRegionManager from './ReadReportRegionManager';
+import ReadReportRegionManager from '../RegionManager/ReadReportRegionManager';
+import CreateActivityHistory from '../LinkAgencyManager/CreateActivityHistory';
+import ReadActivityHistoryInfo from '../LinkAgencyManager/ReadActivityHistoryInfo';
 import '../Css/test.css';
 //활동 내역 조회
-const ReadActivityHistoryRegionManager=(props)=> {
+const ReadActivityHistoryLinkAgencyManager=(props)=> {
     
     const [activityHistoryList, setActivityHistoryList] = useState();
     const [linkAgencyList, setLinkAgencyList] = useState();
     const [activityList, setActivityList] = useState();
 
-    const [modalCreateReport, setModalCreateReport] = useState(false); 
+    const [modalReadActivityHistoryInfo, setModalReadActivityHistoryInfo] = useState(false); 
+    const [modalCreateActivityHistory, setModalCreateActivityHistory] = useState(false); 
     const [modalReadReport, setModalReadReport] = useState(false);
     const [modalCreateQR, setModalCreateQR] = useState(false); 
     const [modalExportExcel, setModalExportExcel] = useState(false); 
@@ -62,7 +65,8 @@ const ReadActivityHistoryRegionManager=(props)=> {
     //*/
 
     const toggleReadReport = () => setModalReadReport(!modalReadReport);
-    const toggleCreateReport = () => setModalCreateReport(!modalCreateReport);
+    const toggleReadActivityHistoryInfo = () => setModalReadActivityHistoryInfo(!modalReadActivityHistoryInfo);
+    const toggleCreateActivityHistory = () => setModalCreateActivityHistory(!modalCreateActivityHistory);
     const toggleCreateQR = () => setModalCreateQR(!modalCreateQR);
     const toggleExportExcel = () => setModalExportExcel(!modalExportExcel);
     /* const [historyArrays, setHistoryArrays] = useState([]); */
@@ -137,7 +141,7 @@ const ReadActivityHistoryRegionManager=(props)=> {
                 <th>{historyArray.activityHistoryCode}</th>
                 <td className="text-nowrap">{historyArray.mentorName}</td>
                 <td>{historyArray.startTime}</td>
-                <td>{historyArray.endTime}</td>
+                <td className="readButton">{historyArray.endTime}</td>
                 <td><Button className={buttonClassName} color={ButtonColor} >{ButtonValue}</Button></td>
                 <td>{historyArray.date}</td>
                 <td>{statusValue}</td>
@@ -190,6 +194,9 @@ const ReadActivityHistoryRegionManager=(props)=> {
         }
             );
     }
+
+
+    
    
 
     // 연계기관 리스트 선택 시 해당 연계기관의 활동 받아오기
@@ -237,6 +244,27 @@ const ReadActivityHistoryRegionManager=(props)=> {
             toggleReadReport();
         }
         )
+
+        $(".createButton").on("click",function(){
+
+            var Button = $(this);
+            var tr = Button.parent().parent();
+            var td = tr.children();
+            console.log("row데이터 : "+td.eq(0).text());
+            setModalInput(td.eq(0).text());
+            toggleCreateActivityHistory();
+        }
+        )
+        $(".readButton").on("click",function(){
+
+            var Button = $(this);
+            var tr = Button.parent();
+            var td = tr.children();
+            console.log("row데이터 : "+td.eq(0).text());
+            setModalInput(td.eq(0).text());
+            toggleReadActivityHistoryInfo();
+        }
+        )
     }
     )
 
@@ -277,8 +305,9 @@ const ReadActivityHistoryRegionManager=(props)=> {
                             /* axios.데이터요청->inputs에 넣음 */
                             readActivityHistoryWithOption ();
                             }}>조회</Button>
+                               <Button className="float-left" color="primary" onClick={()=>setModalCreateActivityHistory(true)}>수기등록</Button>
                         {/* <Button className="float-right" color="primary" onClick={()=>setMessage(response.data.message)}>test<p>{message}</p></Button> */}
-                        <Button color="primary" className="float-left" onClick={()=>setModalExportExcel(true)}>내보내기</Button>
+                        <Button className="float-left" color="primary" onClick={()=>setModalExportExcel(true)}>내보내기</Button>
                         
                     </Form>
                 </Col>
@@ -291,8 +320,8 @@ const ReadActivityHistoryRegionManager=(props)=> {
                             <tr>
                                 <th>#</th>
                                 <th>이름</th>
-                                <th>시작 시간</th>
-                                <th>종료 시간</th>
+                                <th>시작 시각</th>
+                                <th>종료 시각</th>
                                 <th>활동 보고서</th>
                                 <th>보고서 작성일</th>
                                 <th>승인 여부</th>
@@ -306,6 +335,14 @@ const ReadActivityHistoryRegionManager=(props)=> {
                 </Col>
             </Row>
 
+            <Modal isOpen={modalCreateActivityHistory}>
+                <ModalHeader toggle={toggleCreateActivityHistory}>수기 등록</ModalHeader>
+                <CreateActivityHistory  linkAgency ={linkAgency} activity={activity}></CreateActivityHistory>
+            </Modal>
+            <Modal isOpen={modalReadActivityHistoryInfo}>
+                <ModalHeader toggle={toggleReadActivityHistoryInfo}>활동 내역 상세 조회</ModalHeader>
+                <ReadActivityHistoryInfo  activityHistoryCode={modalInput}></ReadActivityHistoryInfo>
+            </Modal>
             <Modal isOpen={modalReadReport}>
                 <ModalHeader toggle={toggleReadReport}>활동보고서 조회</ModalHeader>
                 <ReadReportRegionManager activityHistoryCode={modalInput}></ReadReportRegionManager>
@@ -319,4 +356,4 @@ const ReadActivityHistoryRegionManager=(props)=> {
     )
 }
 
-export default ReadActivityHistoryRegionManager;
+export default ReadActivityHistoryLinkAgencyManager;

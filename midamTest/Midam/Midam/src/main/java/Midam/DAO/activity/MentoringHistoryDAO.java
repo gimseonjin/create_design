@@ -233,6 +233,40 @@ public class MentoringHistoryDAO {
         }return list;
 
     }      //전체 활동내역 목록 for 지역본부 관리자
+    public ArrayList<HashMap> readActivityHistoryInfo(int activityHistoryCode){
+
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+
+        try {
+            conn=getConnection();
+
+            sql = "SELECT name, activityName, startTime, endTime from activity_history " +
+                    " join user on activity_history.mentorId = user.id " +
+                    " join mentor_recruitment on activity_history.mentorRecruitmentCode = mentor_recruitment.mentorRecruitmentCode" +
+                    " where activityHistoryCode =?";
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setInt(1, activityHistoryCode);  //검색하기위해 입력한 아이디
+            ResultSet rs= pstmt.executeQuery();
+            while(rs.next()) {
+
+                HashMap historyHashMap = new HashMap();
+                historyHashMap.put("name",rs.getString("name"));
+                historyHashMap.put("activityName", rs.getString("activityName"));
+                historyHashMap.put("startTime", rs.getString("startTime"));
+                historyHashMap.put("endTime", rs.getString("endTime"));
+
+                list.add(historyHashMap);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }return list;
+
+    }
+
 
     public ArrayList<HashMap> readActivityHistoryForExport(String linkAgencyCode, String startDate, String endDate){
 
@@ -270,6 +304,31 @@ public class MentoringHistoryDAO {
         }return list;
 
     }
+
+    public ArrayList<HashMap> updateActivityHistory(int activityHistoryCode, String startTime, String endTime){
+
+        ArrayList<HashMap> list =new ArrayList<HashMap>();
+
+        try {
+            conn=getConnection();
+
+            sql = "update activity_history set startTime =? , endTime =?  where activityHistoryCode =?";
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, startTime);
+            pstmt.setString(2, endTime);
+            pstmt.setInt(3, activityHistoryCode);
+            pstmt.executeUpdate();
+
+        }catch(Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            closeConnection(conn);
+        }return list;
+
+    }
+
     // 보고서 최초작성 createReport. content, note, image DB상에 업데이트
     public int createReport(int activityHistoryCode, String id, String content, String note, Blob imageBlob){
         int result = 0;
@@ -574,6 +633,29 @@ public class MentoringHistoryDAO {
             closeConnection(conn);
         }
 
+    public int createActivityHistory(String mentorRecruitmentCode,String id,String mentorId,String startTime) { // 등록
+        sql = "insert into activity_history(mentorRecruitmentCode, linkAgencyManagerId, mentorId ,startTime)"
+                + " values(?, ?, ?, ?)";
+        int result =0;
+
+        try {
+            conn= getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+
+            pstmt.setString(1,mentorRecruitmentCode);
+            pstmt.setString(2,id);
+            pstmt.setString(3,mentorId);
+            pstmt.setString(4,startTime);
+
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
         return result;
     }
 
