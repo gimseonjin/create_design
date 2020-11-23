@@ -590,7 +590,7 @@ public class MentoringHistoryDAO {
     }
 
     //QR 스캔 -> 활동 종료
-    public int exitActivity(String linkAgencyManagerId, String mentorId, int activityHistoryCode){
+    public int exitActivity(String linkAgencyManagerId, String mentorId, int activityHistoryCode) {
         int result = 0;
         String now = LocalDateTime.now().toString();
         String today = LocalDate.now().toString();
@@ -616,7 +616,7 @@ public class MentoringHistoryDAO {
             pstmt.setString(3, mentorId);
             result = pstmt.executeUpdate();
             conn.commit();
-        }catch(SQLException se){
+        } catch (SQLException se) {
             se.printStackTrace();
             System.out.println("QR스캔 후 활동 종료 기록 실패. 롤백");
             try {
@@ -627,12 +627,13 @@ public class MentoringHistoryDAO {
                 seRollback.printStackTrace();
             }
 
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             closeConnection(conn);
         }
-
+        return result;
+    }
     public int createActivityHistory(String mentorRecruitmentCode,String id,String mentorId,String startTime) { // 등록
         sql = "insert into activity_history(mentorRecruitmentCode, linkAgencyManagerId, mentorId ,startTime)"
                 + " values(?, ?, ?, ?)";
