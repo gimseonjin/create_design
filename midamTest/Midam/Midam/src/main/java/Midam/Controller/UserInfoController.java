@@ -52,7 +52,6 @@ public class UserInfoController {
         result.put("volunteerId",mentor.getVolunteerId());
         result.put("region", mentor.getRegionCode());
 
-        System.out.println(result);
         return result;
     }
 
