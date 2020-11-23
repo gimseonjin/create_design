@@ -5,6 +5,7 @@ import axios from 'axios';
 import $ from 'jquery';
 import ReadReportRegionManager from '../RegionManager/ReadReportRegionManager';
 import CreateActivityHistory from '../LinkAgencyManager/CreateActivityHistory';
+import ReadActivityHistoryInfo from '../LinkAgencyManager/ReadActivityHistoryInfo';
 import '../Css/test.css';
 //활동 내역 조회
 const ReadActivityHistoryLinkAgencyManager=(props)=> {
@@ -13,7 +14,7 @@ const ReadActivityHistoryLinkAgencyManager=(props)=> {
     const [linkAgencyList, setLinkAgencyList] = useState();
     const [activityList, setActivityList] = useState();
 
-    const [modalCreateReport, setModalCreateReport] = useState(false); 
+    const [modalReadActivityHistoryInfo, setModalReadActivityHistoryInfo] = useState(false); 
     const [modalCreateActivityHistory, setModalCreateActivityHistory] = useState(false); 
     const [modalReadReport, setModalReadReport] = useState(false);
     const [modalCreateQR, setModalCreateQR] = useState(false); 
@@ -64,7 +65,7 @@ const ReadActivityHistoryLinkAgencyManager=(props)=> {
     //*/
 
     const toggleReadReport = () => setModalReadReport(!modalReadReport);
-    const toggleCreateReport = () => setModalCreateReport(!modalCreateReport);
+    const toggleReadActivityHistoryInfo = () => setModalReadActivityHistoryInfo(!modalReadActivityHistoryInfo);
     const toggleCreateActivityHistory = () => setModalCreateActivityHistory(!modalCreateActivityHistory);
     const toggleCreateQR = () => setModalCreateQR(!modalCreateQR);
     const toggleExportExcel = () => setModalExportExcel(!modalExportExcel);
@@ -140,7 +141,7 @@ const ReadActivityHistoryLinkAgencyManager=(props)=> {
                 <th>{historyArray.activityHistoryCode}</th>
                 <td className="text-nowrap">{historyArray.mentorName}</td>
                 <td>{historyArray.startTime}</td>
-                <td>{historyArray.endTime}</td>
+                <td className="readButton">{historyArray.endTime}</td>
                 <td><Button className={buttonClassName} color={ButtonColor} >{ButtonValue}</Button></td>
                 <td>{historyArray.date}</td>
                 <td>{statusValue}</td>
@@ -254,6 +255,16 @@ const ReadActivityHistoryLinkAgencyManager=(props)=> {
             toggleCreateActivityHistory();
         }
         )
+        $(".readButton").on("click",function(){
+
+            var Button = $(this);
+            var tr = Button.parent();
+            var td = tr.children();
+            console.log("row데이터 : "+td.eq(0).text());
+            setModalInput(td.eq(0).text());
+            toggleReadActivityHistoryInfo();
+        }
+        )
     }
     )
 
@@ -309,8 +320,8 @@ const ReadActivityHistoryLinkAgencyManager=(props)=> {
                             <tr>
                                 <th>#</th>
                                 <th>이름</th>
-                                <th>시작 시간</th>
-                                <th>종료 시간</th>
+                                <th>시작 시각</th>
+                                <th>종료 시각</th>
                                 <th>활동 보고서</th>
                                 <th>보고서 작성일</th>
                                 <th>승인 여부</th>
@@ -327,6 +338,10 @@ const ReadActivityHistoryLinkAgencyManager=(props)=> {
             <Modal isOpen={modalCreateActivityHistory}>
                 <ModalHeader toggle={toggleCreateActivityHistory}>수기 등록</ModalHeader>
                 <CreateActivityHistory  linkAgency ={linkAgency} activity={activity}></CreateActivityHistory>
+            </Modal>
+            <Modal isOpen={modalReadActivityHistoryInfo}>
+                <ModalHeader toggle={toggleReadActivityHistoryInfo}>활동 내역 상세 조회</ModalHeader>
+                <ReadActivityHistoryInfo  activityHistoryCode={modalInput}></ReadActivityHistoryInfo>
             </Modal>
             <Modal isOpen={modalReadReport}>
                 <ModalHeader toggle={toggleReadReport}>활동보고서 조회</ModalHeader>

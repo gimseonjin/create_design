@@ -83,7 +83,35 @@ public class ActivityHistoryController {
         }
         return result;
     }
+    @ResponseBody
+    @PostMapping(value="/readHistory/info")
+    public ArrayList readActivityHistoryInfo(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+        ArrayList result = new ArrayList();
 
+
+        int activityHistoryCode = Integer.parseInt(request.getParameter("activityHistoryCode"));
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+        result = mentoringHistoryDAO.readActivityHistoryInfo(activityHistoryCode);
+
+
+        return result;
+    }
+
+    @ResponseBody
+    @PostMapping(value="/readHistory/update")
+    public ArrayList updateActivityHistory(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+        ArrayList result = new ArrayList();
+
+
+        int activityHistoryCode = Integer.parseInt(request.getParameter("activityHistoryCode"));
+        String startTime = request.getParameter("startTime");
+        String endTime = request.getParameter("endTime");
+        MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
+        result = mentoringHistoryDAO.updateActivityHistory(activityHistoryCode,startTime,endTime);
+
+
+        return result;
+    }
     @ResponseBody
     @PostMapping(value="/readHistory/excel")
     public ArrayList readActivityHistoryForExport(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
@@ -110,9 +138,9 @@ public class ActivityHistoryController {
         String id = map.get("id").toString();
 
         String mentorRecruitmentCode = request.getParameter("activity");
-
-        String mentorId = request.getParameter("mentorId");
         String startTime = request.getParameter("startTime");
+        String mentorId = request.getParameter("mentorId");
+
 
 
         MentoringHistoryDAO mentoringHistoryDAO = new MentoringHistoryDAO();
