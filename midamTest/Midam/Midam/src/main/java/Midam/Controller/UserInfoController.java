@@ -72,7 +72,7 @@ public class UserInfoController {
 
         HashMap result = new HashMap();
         UserDAO userDAO = new UserDAO();
-
+ 
         Token token = new Token();
         Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
         String id = map.get("id").toString();
