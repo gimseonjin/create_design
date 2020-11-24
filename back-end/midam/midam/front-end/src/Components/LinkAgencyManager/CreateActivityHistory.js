@@ -45,7 +45,7 @@ function CreateActivityHistory(props) {
         form.append("startTime", startTime);
    
         axios
-            .post('http://localhost:8080/activityHistory/createActivityHistory', form, {
+            .post('/activityHistory/createActivityHistory', form, {
                 headers: {
               
                 }

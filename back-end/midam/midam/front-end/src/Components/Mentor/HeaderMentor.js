@@ -65,7 +65,7 @@ const HeaderMentor = ({match, history}) => {
        
         form.append('userToken', localStorage.getItem("userToken"));
        
-        axios.post("http://localhost:8080/community/message/number", form,{headers: {'content-type':'multipart/form-data'}})
+        axios.post("/community/message/number", form,{headers: {'content-type':'multipart/form-data'}})
         .then((response)=>{
             setNumberOfMessage(response.data.numberOfMessage);
             if(response.data.numberOfMessage >0){
@@ -88,7 +88,7 @@ const HeaderMentor = ({match, history}) => {
         }else{
         form.append('userToken', localStorage.getItem("userToken"));
         form.append('authority', '1');
-        axios.post("http://localhost:8080/checkAuthority", form)
+        axios.post("/checkAuthority", form)
         .then((response)=>{
             if(response.data === "TRUE"){
                 //성공

@@ -61,7 +61,7 @@ const ReadMessage = (props) => {
     function getMessageHistory(form) {
         var form=new FormData;
         form.append("userToken",localStorage.getItem('userToken'));
-        axios.post('http://localhost:8080/community/readMessage', form).then((response) => {
+        axios.post('/community/readMessage', form).then((response) => {
          
                 
                 setMessageArrays(response.data);

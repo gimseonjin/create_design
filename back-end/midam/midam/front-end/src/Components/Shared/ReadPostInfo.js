@@ -99,7 +99,7 @@ function ReadPostInfo(props){
     const readPostInfo = () => { 
         var form = new FormData;
         form.append("postId", postId);
-        axios.post('http://localhost:8080/community/readPostInfo',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
+        axios.post('/community/readPostInfo',form, {headers: {'content-type':'multipart/form-data'}}).then((response)=>{
             setWriterId(response.data.writerId);
             setWriteDate(response.data.writeDate);    
             setTitle(response.data.title);
@@ -110,7 +110,7 @@ function ReadPostInfo(props){
         var form = new FormData;
         
         form.append("postId", postId);
-        axios.post('http://localhost:8080/community/readReply', form).then((response) => {
+        axios.post('/community/readReply', form).then((response) => {
          
                 setReplyArrays(response.data);
                 setTableData(replyArrays.map(renderInput));
@@ -124,7 +124,7 @@ function ReadPostInfo(props){
         form.append("content",content);       
 
         axios
-            .post('http://localhost:8080/community/updatePost', form,{headers: {'content-type':'multipart/form-data'}})
+            .post('/community/updatePost', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
                 window.location.reload();
             })
@@ -134,7 +134,7 @@ function ReadPostInfo(props){
         form.append('userToken', localStorage.getItem("userToken"));
         form.append('postId', postId);
         form.append('reply',reply);
-        axios.post("http://localhost:8080/community/createReply", form,{headers: {'content-type':'multipart/form-data'}})
+        axios.post("/community/createReply", form,{headers: {'content-type':'multipart/form-data'}})
         .then((response)=>{
         
             window.location.reload();
@@ -147,7 +147,7 @@ function ReadPostInfo(props){
        
         form.append('postId', postId);
        
-        axios.post("http://localhost:8080/community/deletePost", form,{headers: {'content-type':'multipart/form-data'}})
+        axios.post("/community/deletePost", form,{headers: {'content-type':'multipart/form-data'}})
         .then((response)=>{
         
             window.location.reload();

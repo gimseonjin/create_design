@@ -48,6 +48,8 @@ const ReadPost = (props) => {
     }
     function getPostHistory(form) {
         axios.post('/community/readPost', form).then((response) => {
+         
+                
                 setPostArrays(response.data);
                 setTableData(postArrays.map(renderInput));
             });

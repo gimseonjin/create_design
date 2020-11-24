@@ -33,7 +33,7 @@ function ChangeReason(props) {
         form.append('userToken', localStorage.getItem("userToken"));
         form.append("changeReason", changeReason);
         axios
-            .post('http://localhost:8080/user/applyChangeRegion', form, {headers: {}})
+            .post('/user/applyChangeRegion', form, {headers: {}})
             .then((response) => {})
     }
 

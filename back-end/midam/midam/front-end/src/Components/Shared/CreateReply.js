@@ -35,7 +35,7 @@ function CreateReply(props){
         form.append('userToken', localStorage.getItem("userToken"));
         form.append('postId', postId);
         form.append('reply',reply);
-        axios.post("http://localhost:8080/community/createReply", form,{headers: {'content-type':'multipart/form-data'}})
+        axios.post("/community/createReply", form,{headers: {'content-type':'multipart/form-data'}})
         .then((response)=>{
         
             window.location.reload();

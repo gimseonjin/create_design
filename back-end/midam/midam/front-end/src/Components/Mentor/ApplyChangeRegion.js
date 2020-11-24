@@ -32,7 +32,7 @@ function ApplyChangeRegion() {
         var form = new FormData;
         form.append("userToken", localStorage.getItem('userToken'));
         axios
-            .post('http://localhost:8080/user/readRegionList', form)
+            .post('/user/readRegionList', form)
             .then((response) => {
          
                 regionArrays = response.data;

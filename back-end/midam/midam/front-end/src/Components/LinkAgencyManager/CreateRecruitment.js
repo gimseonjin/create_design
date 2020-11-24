@@ -69,7 +69,7 @@ function CreateRecruitment(props) {
         form.append("startDate", startDate);
         form.append("finishDate", finishDate);
         axios
-            .post('http://localhost:8080/activity/createRecruitment', form, {
+            .post('/activity/createRecruitment', form, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }

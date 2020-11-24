@@ -57,7 +57,7 @@ const HeaderSystemManager = ({match, history}) => {
        
         form.append('userToken', localStorage.getItem("userToken"));
        
-        axios.post("http://localhost:8080/community/message/number", form,{headers: {'content-type':'multipart/form-data'}})
+        axios.post("/community/message/number", form,{headers: {'content-type':'multipart/form-data'}})
         .then((response)=>{
             setNumberOfMessage(response.data.numberOfMessage);
             if(response.data.numberOfMessage >0){
