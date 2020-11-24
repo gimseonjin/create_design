@@ -97,7 +97,7 @@ const ReadActivityHistoryMentor=(props)=> {
         var statusValue="default";
         var ButtonValue="default";
         var ButtonColor="secondary";
-        var buttonClassName = "createReportButton";
+        var buttonClassName = "";
 
         switch(historyArray.status){
             case '0':
@@ -106,8 +106,8 @@ const ReadActivityHistoryMentor=(props)=> {
                 break;
             case '1':
                 statusValue="활동완료/보고서미작성";
-                ButtonValue="조회";
-                ButtonColor="primary";
+                ButtonValue="작성";
+                buttonClassName = "createReportButton";
                 break;
             case '2':
                 statusValue="보고서작성완료";
