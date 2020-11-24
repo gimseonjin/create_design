@@ -20,6 +20,7 @@ function ApproveMentorApplicant(props) {
         form.append("applicantId", applicantId);
         axios.post("/signIn/approveMentorApplicant/regionManager",form).then((response)=>{
             alert(response.data.responseMsg);
+            window.location.reload();
         })
     }
     function rejectMentorApplicant(){
@@ -28,6 +29,7 @@ function ApproveMentorApplicant(props) {
         form.append("applicantId", applicantId);
         axios.post("/signIn/rejectMentorApplicant/regionManager",form).then((response)=>{
             alert(response.data.responseMsg);
+            window.location.reload();
         })
     }
 

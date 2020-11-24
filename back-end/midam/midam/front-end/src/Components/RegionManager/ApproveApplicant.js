@@ -40,6 +40,7 @@ function ApproveApplicant(props) {
         form.append("linkAgencyStatus", linkAgencyStatus);
         axios.post("/signIn/approveLinkAgencyApplicant/regionManager",form).then((response)=>{
             alert(response.data.responseMsg);
+            window.location.reload();
         })
     }
     function rejectLinkAgencyApplicant(){
@@ -50,6 +51,7 @@ function ApproveApplicant(props) {
         form.append("linkAgencyStatus", linkAgencyStatus);
         axios.post("/signIn/rejectLinkAgencyApplicant/regionManager",form).then((response)=>{
             alert(response.data.responseMsg);
+            window.location.reload();
         })
     }
 
