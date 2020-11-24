@@ -54,7 +54,7 @@ function CreateQR() {
 
     function createQR(){
         setQr(
-            <Qrcode  value = {QRValue} size = "500" includeMargin = "true"></Qrcode>
+            <Qrcode  value = {QRValue} size = {window.innerHeight*0.6} includeMargin = "true"></Qrcode>
         )
     }
 

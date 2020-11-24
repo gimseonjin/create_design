@@ -73,6 +73,7 @@ const ReadActivityHistoryMentor=(props)=> {
    
      function setDefualtEnddate(){ //한달전~오늘날짜까지로 input date 값 설정
         let today = new Date();
+        today.setDate(today.getDate()+1);
         let date = ("0"+(today.getDate())).slice(-2);
         let month = ("0"+(today.getMonth()+1)).slice(-2);
         let year = today.getFullYear();

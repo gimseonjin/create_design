@@ -33,7 +33,7 @@ import ReadRecruitment from '../Shared/ReadRecruitment';
 import ReadMessage from '../Shared/ReadMessage';
 
 import midamLogo from '../img/midam.png';
-import establishment from '../img/establishment.png';
+import establishment from '../img/establishment.png';   
 import axios from 'axios';
 import CreateQR from './CreateQR';
 

@@ -11,3 +11,6 @@ body {
   border-left: 1px solid gray;
   height: 15px;
 }
+Button {
+  min-width: 75px;
+}
