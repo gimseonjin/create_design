@@ -77,7 +77,7 @@ const HeaderSystemManager = ({match, history}) => {
         }else{
         form.append('userToken', localStorage.getItem("userToken"));
         form.append('authority', '4');
-        axios.post("http://localhost:8080/checkAuthority", form)
+        axios.post("/checkAuthority", form)
         .then((response)=>{
             if(response.data === "TRUE"){
                 //성공

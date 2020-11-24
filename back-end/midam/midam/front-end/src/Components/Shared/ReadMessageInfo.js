@@ -63,7 +63,7 @@ function ReadMessageInfo(props) {
         var form = new FormData;
         form.append('messageId', messageId);
         axios
-            .post('http://localhost:8080/community/readMessageInfo', form, {
+            .post('/community/readMessageInfo', form, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
@@ -84,7 +84,7 @@ function ReadMessageInfo(props) {
         form.append("messageId", messageId);
 
         axios
-            .post('http://localhost:8080/community/deleteMessage', form, {
+            .post('/community/deleteMessage', form, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }

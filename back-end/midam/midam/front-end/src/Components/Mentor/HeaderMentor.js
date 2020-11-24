@@ -22,7 +22,7 @@ import {Button,
 
 import ReadUserInformation from '../Shared/ReadUserInformation';
 import ApplyChangeRegion from './ApplyChangeRegion';
-import Withdraw from '../Shared/Withdraw';
+
 import ReadActivityHistoryMentor from './ReadActivityHistoryMentor';
 
 import ReadMentoringApplication from './ReadMentoringApplication';
@@ -197,7 +197,7 @@ const HeaderMentor = ({match, history}) => {
                 <Route exact path={`${match.path}`} children={<img class = "establishment" src={establishment} art="midam"></img>}></Route>
                 <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
                 <Route exact path={`${match.path}/applyChangeRegion`} component={ApplyChangeRegion}></Route>
-                <Route exact path={`${match.path}/withdraw`} component={Withdraw}></Route>
+              
                 <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryMentor}></Route>
                
                
