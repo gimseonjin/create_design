@@ -109,7 +109,7 @@ const ReadApplicationManager = (props) => {
         form.append("userToken",localStorage.getItem('userToken'));
 
         axios
-            .post('http://localhost:8080/activity/readApplication/manager', form)
+            .post('/activity/readApplication/manager', form)
             .then((response) => {
                 setApplicationArrays(response.data);
                 

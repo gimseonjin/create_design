@@ -56,7 +56,7 @@ function ReadActivityHistoryInfo(props) {
 
         form.append('activityHistoryCode', activityHistoryCode);
         axios
-            .post('http://localhost:8080/activityHistory/readHistory/info', form, {
+            .post('/activityHistory/readHistory/info', form, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
@@ -76,7 +76,7 @@ function ReadActivityHistoryInfo(props) {
         form.append("endTime", endTime);       
      
         axios
-            .post('http://localhost:8080/activityHistory/readHistory/update', form,{headers: {'content-type':'multipart/form-data'}})
+            .post('/activityHistory/readHistory/update', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
                 window.location.reload();
             })

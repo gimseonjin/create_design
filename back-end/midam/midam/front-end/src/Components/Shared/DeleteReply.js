@@ -31,7 +31,7 @@ function DeleteReply(props){
 
         form.append('postId', postId);
    
-        axios.post("http://localhost:8080/community/deleteReply", form,{headers: {'content-type':'multipart/form-data'}})
+        axios.post("/community/deleteReply", form,{headers: {'content-type':'multipart/form-data'}})
         .then((response)=>{
         
             window.location.reload();

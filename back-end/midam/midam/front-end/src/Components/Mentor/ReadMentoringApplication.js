@@ -48,7 +48,7 @@ const ReadMentoringApplication = (props) => {
         form.append("userToken",localStorage.getItem('userToken'));
 
         axios
-            .post('http://localhost:8080/activity/readMentoringApplication', form)
+            .post('/activity/readMentoringApplication', form)
             .then((response) => {
 
                 setApplicationArrays(response.data);

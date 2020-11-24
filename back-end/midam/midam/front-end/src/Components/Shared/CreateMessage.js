@@ -52,7 +52,7 @@ function CreateMessage(props) {
         form.append("title", title);
         form.append("content", content);
         axios
-            .post('http://localhost:8080/community/createMessage', form, {
+            .post('/community/createMessage', form, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
@@ -65,7 +65,7 @@ function CreateMessage(props) {
         
         form.append("name", name);
         axios
-            .post('http://localhost:8080/user/searchId', form, {
+            .post('/user/searchId', form, {
               
             })
             .then((response) => {

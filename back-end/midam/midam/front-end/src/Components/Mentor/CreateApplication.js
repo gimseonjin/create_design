@@ -48,7 +48,7 @@ function CreateApplication(props) {
         form.append("career", career);
         form.append("ability", ability);
         axios
-            .post('http://localhost:8080/activity/createApplication', form)
+            .post('/activity/createApplication', form)
             .then((response) => {
                
                  

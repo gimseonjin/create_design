@@ -50,7 +50,7 @@ const ReadChangeRegionApplication = (props) => {
           
 
         axios
-            .post('http://localhost:8080/user/approvalPass', form,{headers: {'content-type':'multipart/form-data'}})
+            .post('/user/approvalPass', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
                 
                 window.location.reload();
@@ -64,7 +64,7 @@ const ReadChangeRegionApplication = (props) => {
          
 
         axios
-            .post('http://localhost:8080/user/approvalFail', form,{headers: {'content-type':'multipart/form-data'}})
+            .post('/user/approvalFail', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
                 window.location.reload();
             })
@@ -75,7 +75,7 @@ const ReadChangeRegionApplication = (props) => {
         form.append("userToken",localStorage.getItem('userToken'));
 
         axios
-            .post('http://localhost:8080/user/readChangeRegionApplication', form)
+            .post('/user/readChangeRegionApplication', form)
             .then((response) => {
                 setApplicationArrays(response.data);
                 

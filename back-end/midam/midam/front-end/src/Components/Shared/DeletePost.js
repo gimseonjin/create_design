@@ -31,7 +31,7 @@ function DeletePost(props){
 
         form.append('postId', postId);
    
-        axios.post("http://localhost:8080/community/deletePost", form,{headers: {'content-type':'multipart/form-data'}})
+        axios.post("/community/deletePost", form,{headers: {'content-type':'multipart/form-data'}})
         .then((response)=>{
         
             window.location.reload();

@@ -78,7 +78,7 @@ function ReadRecruitmentInfo(props) {
         var form = new FormData;
         form.append('mentorRecruitmentCode', mentorRecruitmentCode);
         axios
-            .post('http://localhost:8080/activity/readRecruitmentInfo', form, {
+            .post('/activity/readRecruitmentInfo', form, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
@@ -101,7 +101,7 @@ function ReadRecruitmentInfo(props) {
         form.append("mentorRecruitmentCode", mentorRecruitmentCode);
 
         axios
-            .post('http://localhost:8080/activity/updateRecruitment', form, {
+            .post('/activity/updateRecruitment', form, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }

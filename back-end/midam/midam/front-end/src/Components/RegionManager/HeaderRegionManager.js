@@ -50,7 +50,7 @@ const HeaderRegionManager = ({match, history}) => {
        
         form.append('userToken', localStorage.getItem("userToken"));
        
-        axios.post("http://localhost:8080/community/message/number", form,{headers: {'content-type':'multipart/form-data'}})
+        axios.post("/community/message/number", form,{headers: {'content-type':'multipart/form-data'}})
         .then((response)=>{
             setNumberOfMessage(response.data.numberOfMessage);
             if(response.data.numberOfMessage >0){
@@ -69,7 +69,7 @@ const HeaderRegionManager = ({match, history}) => {
         }else{
         form.append('userToken', localStorage.getItem("userToken"));
         form.append('authority', '2');
-        axios.post("http://localhost:8080/checkAuthority", form)
+        axios.post("/checkAuthority", form)
         .then((response)=>{
             if(response.data === "TRUE"){
                 //성공

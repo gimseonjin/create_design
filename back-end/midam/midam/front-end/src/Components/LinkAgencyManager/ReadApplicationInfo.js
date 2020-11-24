@@ -61,7 +61,7 @@ function ReadApplicationInfo(props) {
         form.append('id', id);
         form.append('mentorRecruitmentCode',mentorRecruitmentCode);
         axios
-            .post('http://localhost:8080/activity/readApplicationInfo', form, {
+            .post('/activity/readApplicationInfo', form, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
@@ -84,7 +84,7 @@ function ReadApplicationInfo(props) {
           
 
         axios
-            .post('http://localhost:8080/activity/approvalPass', form,{headers: {'content-type':'multipart/form-data'}})
+            .post('/activity/approvalPass', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
                 if(response.data.responseMsg ==-1){
                     alert('모집 정원이 초과되었습니다.');
@@ -100,7 +100,7 @@ function ReadApplicationInfo(props) {
          
 
         axios
-            .post('http://localhost:8080/activity/approvalFail', form,{headers: {'content-type':'multipart/form-data'}})
+            .post('/activity/approvalFail', form,{headers: {'content-type':'multipart/form-data'}})
             .then((response) => {
                 window.location.reload();
             })

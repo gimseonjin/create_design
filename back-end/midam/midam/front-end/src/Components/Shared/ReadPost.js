@@ -50,7 +50,7 @@ const ReadPost = (props) => {
         )
     }
     function getPostHistory(form) {
-        axios.post('http://localhost:8080/community/readPost', form).then((response) => {
+        axios.post('/community/readPost', form).then((response) => {
          
                 
                 setPostArrays(response.data);
