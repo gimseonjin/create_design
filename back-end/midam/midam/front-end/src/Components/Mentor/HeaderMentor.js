@@ -22,6 +22,7 @@ import {Button,
 
 import ReadUserInformation from '../Shared/ReadUserInformation';
 import ApplyChangeRegion from './ApplyChangeRegion';
+
 import ReadActivityHistoryMentor from './ReadActivityHistoryMentor';
 
 import ReadMentoringApplication from './ReadMentoringApplication';
@@ -32,7 +33,7 @@ import ReadRecruitment from '../Shared/ReadRecruitment';
 import ReadMessage from '../Shared/ReadMessage';
 
 import midamLogo from '../img/midam.png';
-import establishment from '../img/establishment.png';
+import establishment from '../img/establishment.png';   
 import axios from 'axios';
 import CreateQR from './CreateQR';
 
@@ -196,6 +197,7 @@ const HeaderMentor = ({match, history}) => {
                 <Route exact path={`${match.path}`} children={<img class = "establishment" src={establishment} art="midam"></img>}></Route>
                 <Route exact path={`${match.path}/readUserInformation`} component={ReadUserInformation}></Route>
                 <Route exact path={`${match.path}/applyChangeRegion`} component={ApplyChangeRegion}></Route>
+              
                 <Route exact path={`${match.path}/readActivityHistory`} component={ReadActivityHistoryMentor}></Route>
                
                
