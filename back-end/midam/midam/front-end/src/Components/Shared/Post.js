@@ -4,7 +4,7 @@
 
 // const Post = () => {
 //     console.log('1');
-//     const [response, loading, error] = useRequest('http://localhost:8080/testGet');
+//     const [response, loading, error] = useRequest('/testGet');
 //     console.log('1-1');
     
 //     if (loading) {
