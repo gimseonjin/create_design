@@ -44,15 +44,10 @@ const ReadPost = (props) => {
                 <td onmouseover="this.style.background='white'" onmouseout="this.style.background='blue'">{postArray.writeDate}</td>
                 <td>{postArray.numberOfView}</td>
             </tr>
-        
-
-
         )
     }
     function getPostHistory(form) {
-        axios.post('http://localhost:8080/community/readPost', form).then((response) => {
-         
-                
+        axios.post('/community/readPost', form).then((response) => {
                 setPostArrays(response.data);
                 setTableData(postArrays.map(renderInput));
             });
