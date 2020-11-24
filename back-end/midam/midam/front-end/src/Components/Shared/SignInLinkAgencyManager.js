@@ -305,7 +305,7 @@ const SignInLinkAgency = ({history},props) => {
                     </InputGroup>
 
                     <Button onClick={()=>history.push("/")} style={{float: 'right'}}>취소</Button>
-                    <Button  className="btn btn-primary btn-block w-25" style={{float: 'right'}} type="post" onClick={signInPost}>회원가입</Button>
+                    <Button  className="btn btn-primary btn-block w-25" style={{float: 'right'}} onClick={signInPost}>회원가입</Button>
                 </Form>
             </div>
         )

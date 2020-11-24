@@ -44,9 +44,6 @@ const ReadPost = (props) => {
                 <td onmouseover="this.style.background='white'" onmouseout="this.style.background='blue'">{postArray.writeDate}</td>
                 <td>{postArray.numberOfView}</td>
             </tr>
-        
-
-
         )
     }
     function getPostHistory(form) {
