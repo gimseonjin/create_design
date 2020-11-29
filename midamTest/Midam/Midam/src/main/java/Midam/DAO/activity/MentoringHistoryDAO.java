@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -644,7 +645,6 @@ public class MentoringHistoryDAO {
             conn= getConnection();
             pstmt = conn.prepareStatement(sql);
 
-
             pstmt.setString(1,mentorRecruitmentCode);
             pstmt.setString(2,id);
             pstmt.setString(3,mentorId);
@@ -659,6 +659,14 @@ public class MentoringHistoryDAO {
             closeConnection(conn);
         }
         return result;
+    }
+
+    public String getActivityPictureBASE64(byte[] activityPicture){
+        if(activityPicture != null) {
+            return "data:image/jpeg;base64," + new String(Base64.getEncoder().encode(activityPicture));
+        }
+        else
+            return null;
     }
 
 }
