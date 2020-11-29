@@ -58,14 +58,10 @@ public class PostDAO {
 
        String sql = "select * from post where replyStep =0";
 
-       // int start= (page -1 )*10+1;
-       // int end =start+9;
         try {
 
              conn=getConnection();
              pstmt = conn.prepareStatement(sql);
-             //  pstmt.setInt(1, start);
-             //  pstmt.setInt(2, end);
              ResultSet rs= pstmt.executeQuery();
 
 
@@ -96,7 +92,7 @@ public class PostDAO {
         return list;
     }      //게시글 목록 조회
 
-    public Post readPostInfo(int postId){
+    public Post readInfo(int postId){
         Post post = new Post();
         String sql = "SELECT postId, writerId, title, content, writeDate FROM post WHERE postId = ? ;";
         String sql_view = "update post set numberOfView =numberOfView+1 where postId=?";
@@ -126,7 +122,7 @@ public class PostDAO {
         return post;
     }
 
-    public int createPost(String id, String title, String content) { // 등록
+    public int create(String id, String title, String content) { // 등록
         int result =0;
         String writeDate = sdfDate.format(now);
         String sql1 ="select max(postId) from post";
@@ -157,7 +153,7 @@ public class PostDAO {
         }
         return result;
     } //게시글 작성
-    public int updatePost(int postId, String title, String content) { // 수정
+    public int update(int postId, String title, String content) { // 수정
         int result =0;
 
 
@@ -181,7 +177,7 @@ public class PostDAO {
         return result;
     } //게시글 수정
 
-    public int deletePost(int postId) { // 수정
+    public int delete(int postId) { // 수정
         int result =0;
 
 

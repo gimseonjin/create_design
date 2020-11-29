@@ -14,7 +14,7 @@ import {
 } from 'reactstrap';
 import axios from 'axios';
 import $ from 'jquery';
-function CreateMessage(props) {
+function SendMessage(props) {
 
     const [name, setName] = useState();
     const [receiverId, setReceiverId] = useState();
@@ -44,7 +44,7 @@ function CreateMessage(props) {
         setContent(e.target.value);
     }
 
-    const createMessage = () => {
+    const sendMessage = () => {
         var form = new FormData;
         form.append('userToken', localStorage.getItem("userToken"));
         
@@ -52,7 +52,7 @@ function CreateMessage(props) {
         form.append("title", title);
         form.append("content", content);
         axios
-            .post('/community/createMessage', form, {
+            .post('/community/sendMessage', form, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
@@ -73,21 +73,7 @@ function CreateMessage(props) {
                 
             })
     }
-    // $(function () {
-    //     $(".searchId").off("click")
-
-    //     $(".searchId").on("click", function () {
-
-    //         var searchButton = $(this);
-
-    //         var tr = searchButton.parent().parent();
-    //         var td = tr.children();
-    //         console.log("row데이터 : " + td.eq(0).text());
-    //         setModalInput(name);
-    //         toggleSearchId();
-    //     })
-    // })
-
+  
     useEffect(() => {
     
       searchId(); //게시글 상세조회
@@ -148,7 +134,7 @@ function CreateMessage(props) {
                         float: 'right'
                     }}
                     type="Message"
-                    onClick={createMessage}>전송</Button>
+                    onClick={sendMessage}>전송</Button>
                
 
             </Form>
@@ -160,4 +146,4 @@ function CreateMessage(props) {
         </div>
     )
 }
-export default CreateMessage;
+export default SendMessage;
