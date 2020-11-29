@@ -102,7 +102,7 @@ public class LinkAgencyDAO {
     }
 
     // 지역본부 코드를 통해 소속된 연계기관 목록을 리스트로 반환
-    public ArrayList<HashMap> readLinkAgencyList(String regionCode){
+    public ArrayList<HashMap> readLinkAgency(String regionCode){
         ArrayList<HashMap> list =new ArrayList<HashMap>();
         sql = "SELECT linkAgencyCode, linkAgencyName FROM link_agency WHERE regionCode=?;";
 
