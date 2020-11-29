@@ -41,7 +41,6 @@ public class UserInfoController {
         Object objectId = map.get("id");
         String id = objectId.toString();
 
-
         Mentor mentor = userDAO.getUserInfo(id);
         result.put("id",mentor.getId());
         result.put("name",mentor.getName());
@@ -94,12 +93,10 @@ public class UserInfoController {
         HashMap result = new HashMap();
         UserDAO userDAO = new UserDAO();
 
-        System.out.println(userToken);
         Token token = new Token();
         Map<String, Object> map = token.verifyJWTAll(userToken).get("data", HashMap.class);
         Object objectId = map.get("id");
         String id = objectId.toString();
-        System.out.println(id);
 
         LinkAgencyManager linkAgencyManager = userDAO.getUserInfoManager(id);
         result.put("id",linkAgencyManager.getId());
@@ -162,7 +159,7 @@ public class UserInfoController {
 
     @ResponseBody
     @PostMapping(value = "/readMentorAndRegionManagerList")
-    public ArrayList readMentorAndRegionManagerList(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+    public ArrayList readBelongingMentor(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
 
         String userToken = request.getParameter("userToken");
         String regionCode = request.getParameter("regionCode");

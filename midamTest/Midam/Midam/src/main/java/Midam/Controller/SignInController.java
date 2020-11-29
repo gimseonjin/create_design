@@ -43,6 +43,7 @@ public class SignInController {
         result.put("responseMsg",createResult);
         return result;
     }
+
     //연계기관 담당자 기존 연계기관으로 신청
     @ResponseBody
     @PostMapping(value="/createLinkAgencyManager")
@@ -58,8 +59,6 @@ public class SignInController {
         String phoneNumber = request.getParameter("phoneNumber");
 
         String linkAgencyCode = request.getParameter("linkAgencyCode");
-    
-        
 
         UserDAO userDAO = new UserDAO();
 
