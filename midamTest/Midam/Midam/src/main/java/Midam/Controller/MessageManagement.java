@@ -55,7 +55,7 @@ public class MessageManagement {
 
         MessageDAO messageDAO = new MessageDAO();
 
-        Message readResult = messageDAO.readMessageInfo(messageId);
+        Message readResult = messageDAO.readInfo(messageId);
         result.put("messageId",readResult.getMessageId());
         result.put("senderId",readResult.getSenderId());
         result.put("title",readResult.getTitle());
@@ -67,8 +67,8 @@ public class MessageManagement {
     }
 
     @ResponseBody
-    @PostMapping(value="/createMessage")
-    public HashMap createMessage(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+    @PostMapping(value="/sendMessage")
+    public HashMap sendMessage(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
         HashMap result = new HashMap();
         Token token = new Token();
@@ -81,7 +81,7 @@ public class MessageManagement {
         String content = request.getParameter("content");
         MessageDAO messageDAO = new MessageDAO();
 
-        int createResult = messageDAO.createMessage(id, recevierId,title,content);
+        int createResult = messageDAO.send(id, recevierId,title,content);
         result.put("responseMsg",createResult);
         return result;
     }
@@ -95,7 +95,7 @@ public class MessageManagement {
 
         MessageDAO messageDAO = new MessageDAO();
 
-        int deleteResult = messageDAO.deleteMessage(messageId);
+        int deleteResult = messageDAO.delete(messageId);
         result.put("responseMsg",deleteResult);
         return result;
     }

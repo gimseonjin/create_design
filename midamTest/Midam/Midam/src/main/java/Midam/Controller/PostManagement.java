@@ -38,7 +38,7 @@ public class PostManagement {
 
         PostDAO postDAO = new PostDAO();
 
-        Post readResult = postDAO.readPostInfo(postId);
+        Post readResult = postDAO.readInfo(postId);
         result.put("postId",readResult.getPostId());
         result.put("writerId",readResult.getWriterId());
         result.put("writeDate",readResult.getWriteDate());
@@ -64,7 +64,7 @@ public class PostManagement {
 
         PostDAO postDAO = new PostDAO();
 
-        int createResult = postDAO.createPost(id,title,content);
+        int createResult = postDAO.create(id,title,content);
         result.put("responseMsg",createResult);
         return result;
     }
@@ -80,7 +80,7 @@ public class PostManagement {
 
         PostDAO postDAO = new PostDAO();
 
-        int updateResult = postDAO.updatePost(postId,title,content);
+        int updateResult = postDAO.update(postId,title,content);
         result.put("responseMsg",updateResult);
         return result;
     }
@@ -96,7 +96,7 @@ public class PostManagement {
 
         PostDAO postDAO = new PostDAO();
 
-        int deleteResult = postDAO.deletePost(postId);
+        int deleteResult = postDAO.delete(postId);
         result.put("responseMsg",deleteResult);
         return result;
     }

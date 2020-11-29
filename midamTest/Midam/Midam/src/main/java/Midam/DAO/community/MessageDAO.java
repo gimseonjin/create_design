@@ -106,7 +106,7 @@ public class MessageDAO {
         return list;
     }
 
-    public Message readMessageInfo(int messageId){
+    public Message readInfo(int messageId){
         Message message = new Message();
 
         String sql = "SELECT * FROM message WHERE messageId = ? ";
@@ -142,7 +142,7 @@ public class MessageDAO {
         return message;
     }
 
-    public int createMessage(String senderId,String receiverId, String title, String content) { // 수정
+    public int send(String senderId,String receiverId, String title, String content) { // 수정
         int result =0;
 
         String sendDate = sdfDate.format(now);
@@ -165,7 +165,7 @@ public class MessageDAO {
         }
         return result;
     }
-    public int deleteMessage(int messageId) { // 수정
+    public int delete(int messageId) { // 수정
         int result =0;
 
 

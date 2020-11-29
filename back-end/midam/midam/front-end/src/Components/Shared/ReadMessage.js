@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import '../Css/test.css';
 import ReadMessageInfo from './ReadMessageInfo';
-import CreateMessage from './CreateMessage';
+import CreateMessage from './SendMessage';
 import axios from 'axios';
 import $ from 'jquery';
 import {
