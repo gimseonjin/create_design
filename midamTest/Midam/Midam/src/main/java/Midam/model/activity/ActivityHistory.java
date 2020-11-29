@@ -1,7 +1,6 @@
 package Midam.model.activity;
 
-import java.sql.Blob;
-import java.sql.Timestamp;
+
 import java.util.Base64;
 
 

@@ -130,7 +130,7 @@ public class RecruitmentDAO {
     } //모집 수정
 
 
-    public ArrayList<HashMap> getListRecruitment(int option, String regionCode,String linkAgencyCode){
+    public ArrayList<HashMap> readRecruitment(int option, String regionCode,String linkAgencyCode){
 
         ArrayList<HashMap> list =new ArrayList<HashMap>();
 

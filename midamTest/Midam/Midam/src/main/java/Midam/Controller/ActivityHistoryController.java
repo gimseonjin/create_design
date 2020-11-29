@@ -29,12 +29,12 @@ import java.util.Map;
 
 
 @Controller
-@RequestMapping(value= "/activityHistory", method=RequestMethod.POST)
+@RequestMapping(value= "", method=RequestMethod.POST)
 @CrossOrigin("http://localhost:3000")
 public class ActivityHistoryController {
 
     @ResponseBody
-    @PostMapping(value="/readHistory/mentor")
+    @PostMapping(value="/activityHistory/readHistory/mentor")
     public ArrayList readActivityHistoryListMentor(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
         ArrayList result = new ArrayList();
         String jwt = request.getParameter("userToken") ;

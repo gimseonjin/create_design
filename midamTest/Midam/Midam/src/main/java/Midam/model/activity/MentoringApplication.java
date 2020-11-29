@@ -1,6 +1,5 @@
 package Midam.model.activity;
 
-import java.sql.Timestamp;
 
 public class MentoringApplication {
     private String mentorRecruitmentCode;
@@ -20,10 +19,6 @@ public class MentoringApplication {
 
     public String getMentorId() {
         return mentorId;
-    }
-
-    public void setMentorId(String mentorId) {
-        this.mentorId = mentorId;
     }
 
     public String getApplicationDate() {

@@ -1,6 +1,6 @@
 package Midam.model.activity;
 
-import java.sql.Timestamp;
+
 
 public class MentorRecruitment {
     private String mentorRecruitmentCode;

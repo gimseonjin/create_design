@@ -38,7 +38,7 @@ public class RecruitmentController {
 
 
         RecruitmentDAO recruitmentDAO = new RecruitmentDAO();
-        ArrayList<HashMap> recruitmentArrayList = recruitmentDAO.getListRecruitment(option, regionCode, linkAgencyCode);
+        ArrayList<HashMap> recruitmentArrayList = recruitmentDAO.readRecruitment(option, regionCode, linkAgencyCode);
         result.add(recruitmentArrayList);
         if(option==0) {
             RegionDAO regionDAO =new RegionDAO();
