@@ -5,16 +5,7 @@ import {
     InputGroupAddon,
     InputGroupText,
     Input,
-    TabContent,
-    TabPane,
-    Nav,
-    NavItem,
-    NavLink,
-    Card,
     Button,
-    CardTitle,
-    CardText,
-    Row,
     Col
 } from 'reactstrap';
 import axios from 'axios';

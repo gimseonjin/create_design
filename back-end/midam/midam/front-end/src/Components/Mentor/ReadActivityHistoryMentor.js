@@ -167,7 +167,7 @@ const ReadActivityHistoryMentor=(props)=> {
         form.append("startDate", startDate);
         form.append("endDate", endDate);
         axios.post('/activityHistory/readHistory/mentor',form).then((response)=>{
-                //setHistoryArrays(response.data); 
+
                 historyArrays = response.data[0];
                 linkAgencyArrays = response.data[1];
               setActivityHistoryList(historyArrays.map(renderHistoryArrays));
@@ -188,7 +188,7 @@ const ReadActivityHistoryMentor=(props)=> {
         form.append("endDate", endDate);
 
         axios.post('/activityHistory/readHistory/mentor',form).then((response)=>{
-        //setHistoryArrays(response.data); 
+  
         historyArrays = response.data[0];
         setActivityHistoryList(historyArrays.map(renderHistoryArrays));
         

@@ -3,18 +3,12 @@ import React, {useEffect, useState} from 'react';
 
 import {
     Button,
-    Col,
-    Container,
     Form,
     FormGroup,
     Input,
     InputGroup,
     InputGroupAddon,
     InputGroupText,
-    Modal,
-    ModalHeader,
-    Row,
-    Table
 } from 'reactstrap';
 import axios from 'axios';
 

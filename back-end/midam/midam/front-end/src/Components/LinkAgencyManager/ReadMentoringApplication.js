@@ -31,18 +31,7 @@ function ReadMentoringApplication() {
                     </Input>
                     </InputGroup>
 
-{/*                         <InputGroup>
-                    <InputGroupAddon addonType="prepend">
-                        <InputGroupText>기간</InputGroupText>
-                    </InputGroupAddon>
-                    <Input type="date" name="startDate"></Input>
-                    <Input type="date" name="endDate"></Input>
-                    </InputGroup> 
-                    
-                    <Button type="submit" color="primary">내보내기</Button>
-                   
-                    <Button className="float-left" type="submit" color="primary">QR 생성</Button>
-*/}
+
                     <Button className="float-right" type="submit" color="primary">조회</Button>
                 </Form>
             </Col>
