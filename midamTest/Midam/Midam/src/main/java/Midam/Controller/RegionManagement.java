@@ -13,7 +13,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/region")
 @CrossOrigin("http://localhost:3000")
-public class RegionController {
+public class RegionManagement {
 
     @ResponseBody
     @PostMapping(value = "/readRegionList/systemManager")

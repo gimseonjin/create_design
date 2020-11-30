@@ -1,5 +1,5 @@
 import React, {useState, setState, useEffect} from 'react';
-import {Form, InputGroup, InputGroupAddon, InputGroupText, Input, TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, CustomInput } from 'reactstrap';
+import {Form, InputGroup, InputGroupAddon, InputGroupText, Input, Button, Col, CustomInput } from 'reactstrap';
 import axios from 'axios';
 
 

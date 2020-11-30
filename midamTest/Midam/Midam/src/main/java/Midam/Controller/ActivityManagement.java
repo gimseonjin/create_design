@@ -5,24 +5,15 @@ import Midam.DAO.activity.MentoringHistoryDAO;
 import Midam.DAO.activity.RecruitmentDAO;
 import Midam.DAO.linkAgency.LinkAgencyDAO;
 import Midam.DAO.region.RegionDAO;
-import Midam.DAO.user.UserDAO;
 import Midam.model.activity.ActivityHistory;
-
 import Midam.model.activity.MentorRecruitment;
 import Midam.model.activity.MentoringApplication;
 import Midam.model.token.Token;
-import Midam.model.user.Mentor;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
@@ -395,7 +386,7 @@ public class ActivityManagement {
 
 
         RecruitmentDAO recruitmentDAO = new RecruitmentDAO();
-        ArrayList<HashMap> recruitmentArrayList = recruitmentDAO.getListRecruitment(option, regionCode, linkAgencyCode);
+        ArrayList<HashMap> recruitmentArrayList = recruitmentDAO.readRecruitment(option, regionCode, linkAgencyCode);
         result.add(recruitmentArrayList);
         if(option==0) {
             RegionDAO regionDAO =new RegionDAO();

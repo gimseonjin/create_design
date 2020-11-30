@@ -7,12 +7,6 @@ import $ from 'jquery';
 import {
     Button,
     Col,
-    Container,
-    Form,
-    Input,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupText,
     Modal,
     ModalHeader,
     Row,

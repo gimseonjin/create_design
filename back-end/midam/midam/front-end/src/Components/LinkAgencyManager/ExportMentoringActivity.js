@@ -59,7 +59,7 @@ const ExportMentoringActivity = (props) =>{
         form.append("startDate", startDate);
         form.append("endDate", endDate);
         axios.post("/activityHistory/readHistory/excel",form).then((response)=>{
-            //alert(response.data.resultMessage);
+            
             historyArrays =response.data;
             setActivityHistoryList(historyArrays.map(renderHistoryArrays));
      

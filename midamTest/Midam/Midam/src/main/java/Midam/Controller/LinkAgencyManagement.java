@@ -13,7 +13,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/linkAgency")
 @CrossOrigin("http://localhost:3000")
-public class LinkAgencyController {
+public class LinkAgencyManagement {
 
     //지역본부 관리자가 자기 지역본부에 소속된 연계기관 리스트 조회.
     @ResponseBody
