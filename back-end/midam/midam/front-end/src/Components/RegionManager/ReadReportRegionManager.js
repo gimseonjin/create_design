@@ -13,7 +13,7 @@ import {
 } from 'reactstrap';
 import axios from 'axios';
 import {Image} from 'react-bootstrap';
-import cookie from 'react-cookies';
+
 import RejectReport from './RejectReport';
 
 //활동보고서 작성 활동 보고서 조회 페이지 필요할지. 여기서 함께할지 논의.
