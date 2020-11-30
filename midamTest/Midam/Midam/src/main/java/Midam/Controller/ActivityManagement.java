@@ -429,7 +429,7 @@ public class ActivityManagement {
 
     @ResponseBody
     @PostMapping(value="/activity/createRecruitment")
-    public HashMap createRecruitment(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
+    public HashMap createActivity(@RequestParam(name="userToken") String userToken, HttpServletRequest request) throws SQLException, ClassNotFoundException, IOException {
 
         HashMap result = new HashMap();
 
