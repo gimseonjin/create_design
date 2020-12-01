@@ -20,7 +20,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90132010-1ffd-4911-85c8-b50a54c13fe3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../documents/5. 최종보고서양식(20150985이지훈,20150500박성현,20150190김선진).hwp" beforeDir="false" afterPath="$PROJECT_DIR$/../../documents/5. 최종보고서양식(20150985이지훈,20150500박성현,20150190김선진).hwp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/activity/ApplicationDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/activity/ApplicationDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/activity/MentoringHistoryDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/activity/MentoringHistoryDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/activity/RecruitmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/activity/RecruitmentDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/community/MessageDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/community/MessageDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/community/PostDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/community/PostDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/linkAgency/LinkAgencyDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/linkAgency/LinkAgencyDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/region/RegionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/region/RegionDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/user/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midam/src/main/java/Midam/DAO/user/UserDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +83,7 @@
       <option name="presentableId" value="Default" />
       <updated>1604608124567</updated>
       <workItem from="1604608125809" duration="6095000" />
-      <workItem from="1606733394367" duration="1472000" />
+      <workItem from="1606733394367" duration="2254000" />
     </task>
     <servers />
   </component>
