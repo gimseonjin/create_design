@@ -19,7 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90132010-1ffd-4911-85c8-b50a54c13fe3" name="Default Changelist" comment="" />
+    <list default="true" id="90132010-1ffd-4911-85c8-b50a54c13fe3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../documents/5. 최종보고서양식(20150985이지훈,20150500박성현,20150190김선진).hwp" beforeDir="false" afterPath="$PROJECT_DIR$/../../documents/5. 최종보고서양식(20150985이지훈,20150500박성현,20150190김선진).hwp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,7 +75,7 @@
       <option name="presentableId" value="Default" />
       <updated>1604608124567</updated>
       <workItem from="1604608125809" duration="6095000" />
-      <workItem from="1606733394367" duration="888000" />
+      <workItem from="1606733394367" duration="1472000" />
     </task>
     <servers />
   </component>
