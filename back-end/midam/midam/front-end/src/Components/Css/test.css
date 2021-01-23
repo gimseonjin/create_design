@@ -1,0 +1,22 @@
+
+ tbody :hover  {
+    background-color:#BBDEFB;
+  }
+  
+ 
+.modal-content{
+
+  min-height: 0;
+  width : 150%;
+}
+
+.modal-content.textarea{
+  overflow :hidden;
+}
+
+.display{
+  display :none;
+}
+
+
+

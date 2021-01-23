@@ -1,0 +1,18 @@
+.modal-content{
+    font-size: small;
+}
+
+
+
+  .rr{
+    background-color: white; 
+    color: black; 
+    border: 2px solid #555555;
+    padding: 10px 10px;
+    font-size: small;
+  }
+  .rr{
+    background-color: #555555;
+    color: white;
+    font-size: small;
+  }

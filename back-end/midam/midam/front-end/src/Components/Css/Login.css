@@ -1,0 +1,16 @@
+html,
+body {
+  height: 100%;
+}
+
+.under_line {
+  border: solid 1px gray;
+}
+
+.vl {
+  border-left: 1px solid gray;
+  height: 15px;
+}
+Button {
+  min-width: 75px;
+}

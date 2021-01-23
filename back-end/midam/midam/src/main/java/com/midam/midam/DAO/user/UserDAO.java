@@ -8,6 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 
@@ -51,5 +54,42 @@ public class UserDAO {
             }
         }
         return "false";
+    }
+
+    public ArrayList<User> readUser(){
+        sql = "SELECT * FROM User";
+        ArrayList<User> userList = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?autoReconnect=true&useUnicode=true&characterEncoding=utf8&verifyServerCertificate=false&useSSL=false&serverTimezone=UTC", "root", "emm05235");
+            System.out.println(conn);
+
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                User user = new User(rs.getString("id"),rs.getString("password"),
+                        rs.getString("name"),rs.getString("gender"),rs.getInt("authority"));
+                userList.add(user);
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        } finally { // 사용순서와 반대로 close 함
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return userList;
     }
 }
